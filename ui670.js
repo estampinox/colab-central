@@ -69,4 +69,28 @@
 
   const oldCommercial=window.commercialPage;
   window.commercialPage=function(){const raw=D.opportunities||[],map=new Map();raw.forEach(x=>{const k=String(x.name||x.contact_name||x.email||x.phone||x.id).trim().toLowerCase().replace(/\s+/g,' '),p=map.get(k);if(!p||String(x.updated_at||x.created_at||'')>String(p.updated_at||p.created_at||''))map.set(k,x)});const original=D.opportunities;D.opportunities=[...map.values()];try{return oldCommercial()}finally{D.opportunities=original}};
+  const productionInfo=idea=>{
+    const b=ideaBriefV591(idea), f=String(b.format||'').toLowerCase();
+    if(f==='reel'||f==='video')return {kind:'CAPTAÇÃO',format:f==='reel'?'REELS':'VÍDEO',icon:'▶',detail:''};
+    if(f==='carousel')return {kind:'DESIGN',format:'CARROSSEL',icon:'▦',detail:(Number(b.slide_count||0)||'—')+' CARDS'};
+    if(f==='static_post')return {kind:'DESIGN',format:'POST',icon:'◆',detail:'ARTE'};
+    if(f==='story')return {kind:'STORIES',format:'STORY',icon:'▯',detail:''};
+    return {kind:'A DEFINIR',format:'FORMATO',icon:'○',detail:''};
+  };
+
+  window.ideaCardV591=function(idea){
+    const b=ideaBriefV591(idea), converted=idea.status==='converted'||!!idea.converted_content_id, p=productionInfo(idea);
+    const summary=String(b.narrative||b.objective||idea.notes||'').trim(), assets=(D.insightAssets||[]).filter(a=>a.insight_id===idea.id);
+    return '<article class="c701-idea">'+
+      '<div class="c701-type '+(p.kind==='CAPTAÇÃO'?'capture':p.kind==='DESIGN'?'design':'')+'"><span>'+p.icon+'</span><small>'+E(p.kind)+'</small><b>'+E(p.format)+'</b>'+(p.detail?'<em>'+E(p.detail)+'</em>':'')+'</div>'+
+      '<div class="c701-copy"><div class="c701-topline">'+E(pillar(b.editorial_pillar_id)?.name||'Sem linha editorial')+(assets.length?' · '+assets.length+' arquivo'+(assets.length===1?'':'s'):'')+'</div><h3>'+E(idea.title||'Ideia sem título')+'</h3>'+(summary?'<p>'+E(summary.slice(0,160))+(summary.length>160?'…':'')+'</p>':'')+'<small class="c701-author">'+E(ownerName(idea.created_by))+'</small></div>'+
+      '<div class="c701-actions"><button class="btn ghost small" data-v591-idea-edit="'+idea.id+'">Revisar / editar</button>'+(converted?'<button class="btn ghost small" data-v591-open-content="'+E(idea.converted_content_id||'')+'">Abrir produção →</button>':'<button class="btn pri small" data-v591-send-production="'+idea.id+'">Enviar para produção →</button>')+'<details class="c7-more"><summary>•••</summary><div><button type="button" data-v626-delete-idea="'+idea.id+'">Excluir ideia</button></div></details></div></article>';
+  };
+
+  window.clientIdeasPaneV591=function(cid){
+    const rows=ideaRowsV591(cid), active=rows.filter(r=>r.status!=='converted'&&!r.converted_content_id), sent=rows.filter(r=>r.status==='converted'||r.converted_content_id), selected=clientHubTabsV563[cid]==='ideas';
+    const capture=active.filter(i=>['reel','video'].includes(String(ideaBriefV591(i).format||'').toLowerCase())).length;
+    const design=active.filter(i=>['carousel','static_post'].includes(String(ideaBriefV591(i).format||'').toLowerCase())).length;
+    return '<section class="panel v5-hub-wide c701-ideas-pane" id="ideas" '+(selected?'data-v563-active':'')+'><header class="c701-head"><div><small>BANCO DE IDEIAS</small><h2>Ideias para produzir</h2><p>O tipo de produção aparece antes de abrir cada conteúdo.</p></div><button class="btn pri" data-v591-new-idea="'+E(cid)+'">＋ Nova ideia</button></header><div class="c701-summary"><span><b>'+active.length+'</b> no banco</span><span><b>'+design+'</b> design</span><span><b>'+capture+'</b> captação</span></div><div class="c701-list">'+(active.map(ideaCardV591).join('')||'<div class="c7-empty">Nenhuma ideia aguardando produção.</div>')+'</div>'+(sent.length?'<details class="c701-history"><summary>Já enviadas para produção · '+sent.length+'</summary><div class="c701-list">'+sent.slice(0,12).map(ideaCardV591).join('')+'</div></details>':'')+'</section>';
+  };
 })();
