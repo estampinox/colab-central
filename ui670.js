@@ -93,4 +93,25 @@
     const design=active.filter(i=>['carousel','static_post'].includes(String(ideaBriefV591(i).format||'').toLowerCase())).length;
     return '<section class="panel v5-hub-wide c701-ideas-pane" id="ideas" '+(selected?'data-v563-active':'')+'><header class="c701-head"><div><small>BANCO DE IDEIAS</small><h2>Ideias para produzir</h2><p>O tipo de produção aparece antes de abrir cada conteúdo.</p></div><button class="btn pri" data-v591-new-idea="'+E(cid)+'">＋ Nova ideia</button></header><div class="c701-summary"><span><b>'+active.length+'</b> no banco</span><span><b>'+design+'</b> design</span><span><b>'+capture+'</b> captação</span></div><div class="c701-list">'+(active.map(ideaCardV591).join('')||'<div class="c7-empty">Nenhuma ideia aguardando produção.</div>')+'</div>'+(sent.length?'<details class="c701-history"><summary>Já enviadas para produção · '+sent.length+'</summary><div class="c701-list">'+sent.slice(0,12).map(ideaCardV591).join('')+'</div></details>':'')+'</section>';
   };
+  window.clientWorkflowPaneV586=function(cid){
+    const services=typeof clientActiveServicesV582==='function'?clientActiveServicesV582(cid):[];
+    if(!services.includes('social_media')&&typeof clientWorkflowPaneBeforeV662==='function')return clientWorkflowPaneBeforeV662(cid);
+    const client=cl(cid)||{}, items=clientWorkflowItemsV586(cid), active=clientHubTabsV563[cid]==='workflow';
+    const tasks=(D.tasks||[]).filter(t=>t.client_id===cid&&t.status!=='done');
+    const attentionItems=items.filter(x=>!['scheduled','published'].includes(workflowStageV583(workflowWorkV583(x.id))));
+    const waiting=attentionItems.filter(x=>workflowPremiumStageV594(workflowStageV583(workflowWorkV583(x.id)))==='client');
+    const urgentTasks=tasks.filter(t=>t.priority==='urgent'||(t.due_date&&t.due_date<today()));
+    const actions=[];
+    attentionItems.slice(0,5).forEach(x=>{const w=workflowWorkV583(x.id),s=workflowStageV583(w);actions.push('<button class="c703-action" data-contentopen="'+E(x.id)+'"><span class="c703-dot content"></span><div><small>CONTEÚDO · '+E(workflowStageLabelV583(s))+'</small><b>'+E(x.title||'Conteúdo')+'</b><em>'+E(w?.next_action||workflowStageLabelV583(s))+'</em></div><i>→</i></button>')});
+    tasks.slice(0,4).forEach(t=>actions.push('<button class="c703-action" data-op="task-edit" data-id="'+E(t.id)+'"><span class="c703-dot '+((t.priority==='urgent'||(t.due_date&&t.due_date<today()))?'hot':'')+'"></span><div><small>DEMANDA'+(t.due_date?' · '+E(fmtDate(t.due_date)):'')+'</small><b>'+E(t.title||'Demanda')+'</b><em>'+E(taskLabel(t.status))+'</em></div><i>→</i></button>'));
+    const ideas=(D.insights||[]).filter(i=>i.client_id===cid&&i.status!=='converted'&&!i.converted_content_id).length;
+    return '<section class="c703-workspace" id="workflow" '+(active?'data-v563-active':'')+'><header class="c703-workhead"><div><small>VISÃO GERAL</small><h2>'+E(client.name||'Cliente')+'</h2><p>O que precisa acontecer agora.</p></div><div><button class="btn ghost" data-taskquick-client="'+E(cid)+'">＋ Demanda</button><button class="btn pri" data-v591-new-idea="'+E(cid)+'">＋ Conteúdo</button></div></header>'+
+      ((attentionItems.length||tasks.length||ideas)?'<div class="c703-glance">'+
+        (attentionItems.length?'<button data-client-tab="workflow"><b>'+attentionItems.length+'</b><span>em produção</span></button>':'')+
+        (ideas?'<button data-client-tab="ideas"><b>'+ideas+'</b><span>ideias</span></button>':'')+
+        (urgentTasks.length?'<button class="alert" data-client-tab="tasks"><b>'+urgentTasks.length+'</b><span>urgentes</span></button>':'')+
+        (waiting.length?'<button data-client-tab="workflow"><b>'+waiting.length+'</b><span>com cliente</span></button>':'')+'</div>':'')+
+      '<div class="c703-main"><div class="c703-title"><div><small>PRÓXIMOS PASSOS</small><h3>'+(actions.length?'Fila de trabalho':'Tudo em dia por aqui')+'</h3></div>'+(actions.length?'<span>'+actions.length+' itens</span>':'')+'</div>'+
+      (actions.length?'<div class="c703-actions">'+actions.join('')+'</div>':'<div class="c703-clean-empty"><span>✓</span><div><b>Nenhuma pendência agora.</b><small>Novas demandas e conteúdos vão aparecer aqui quando precisarem de ação.</small></div></div>')+'</div></section>';
+  };
 })();
