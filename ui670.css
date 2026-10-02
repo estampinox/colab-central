@@ -7,3 +7,34 @@
 /* neutralize legacy decorative clutter on the new operational pages */
 .c7-page .daily-word,.c7-page .revenue-strip,.c7-page .goalstrip{display:none!important}
 @media(max-width:760px){.c7-page{padding:0 2px 24px}.c7-pagehead,.c7-homehead{align-items:flex-start;margin-bottom:16px}.c7-pagehead h2,.c7-homehead h2{font-size:25px}.c7-pagehead p{display:none}.c7-head-actions{display:grid;grid-template-columns:1fr 1fr;width:100%}.c7-homehead{display:grid}.c7-kpis{grid-template-columns:repeat(2,1fr);gap:6px;margin-bottom:18px}.c7-kpis button{min-height:50px}.c7-filterbar{overflow:auto}.c7-filterbar select{min-width:150px}.c7-idea{grid-template-columns:1fr;gap:11px;padding:12px}.c7-idea-actions{display:grid;grid-template-columns:1fr 1fr auto}.c7-workrow,.c7-task{grid-template-columns:3px minmax(0,1fr) 16px;gap:9px}.c7-workmeta{grid-column:2;justify-items:start;display:flex;gap:8px;margin-top:-5px}.c7-arrow{grid-column:3;grid-row:1/3}}
+
+/* 7.01 — cards de prioridade e ideias, corrigidos a partir da revisão visual */
+.c7-home .c7-worklist{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;border:0}
+.c7-home .c7-workrow{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-rows:auto 1fr auto;gap:8px 14px;min-height:132px;padding:16px 17px;border:1px solid #292929;border-radius:13px;background:#131313;box-shadow:0 8px 28px rgba(0,0,0,.18);overflow:hidden}
+.c7-home .c7-workrow:hover{border-color:#3a3a3a;background:#161616;transform:translateY(-1px)}
+.c7-home .c7-workrow .c7-mark{position:absolute;left:0;top:0;bottom:0;width:4px;height:auto;border-radius:0;background:#343434}
+.c7-home .c7-workrow .c7-mark.hot{background:var(--c7-orange)}
+.c7-home .c7-workcopy{grid-column:1/-1;display:block;padding-left:2px}
+.c7-home .c7-workcopy small{display:block;margin-bottom:9px;color:#8e8e89;font-size:9px;line-height:1.25;letter-spacing:.06em}
+.c7-home .c7-workcopy b{display:block;white-space:normal;overflow:visible;font-size:15px;line-height:1.3;letter-spacing:-.012em}
+.c7-home .c7-workmeta{grid-column:1;grid-row:3;display:flex;align-items:center;justify-content:flex-start;gap:9px;color:#aaa;font-size:9px}
+.c7-home .c7-workmeta>span:first-child{display:inline-flex;align-items:center;gap:6px}
+.c7-home .c7-workmeta>span:first-child:before{content:"";width:20px;height:20px;border-radius:50%;background:#242424;border:1px solid #393939}
+.c7-home .c7-workmeta .late{padding:4px 7px;border-radius:6px;background:#23150f;color:#ff8b4c}
+.c7-home .c7-arrow{grid-column:2;grid-row:3;align-self:center;justify-self:end;width:27px;height:27px;display:grid;place-items:center;border:1px solid #303030;border-radius:7px;color:#aaa}
+.c7-home .c7-workrow:has(.c7-mark.hot){background:linear-gradient(135deg,#ff6500 0%,#f25700 100%);border-color:#ff6500;color:#fff;box-shadow:0 12px 34px rgba(255,101,0,.14)}
+.c7-home .c7-workrow:has(.c7-mark.hot) .c7-mark{display:none}
+.c7-home .c7-workrow:has(.c7-mark.hot) .c7-workcopy small,.c7-home .c7-workrow:has(.c7-mark.hot) .c7-workmeta{color:rgba(255,255,255,.72)}
+.c7-home .c7-workrow:has(.c7-mark.hot) .c7-workmeta .late{background:rgba(0,0,0,.16);color:#fff}
+.c7-home .c7-workrow:has(.c7-mark.hot) .c7-workmeta>span:first-child:before{background:rgba(0,0,0,.16);border-color:rgba(255,255,255,.22)}
+.c7-home .c7-workrow:has(.c7-mark.hot) .c7-arrow{border-color:rgba(255,255,255,.28);color:#fff}
+
+/* ideias: cards horizontais, sem coluna estreita nem altura vazia */
+.c7-list{grid-template-columns:1fr!important;gap:9px!important}
+.c7-idea{width:100%;min-height:118px;grid-template-columns:minmax(0,1fr) auto!important;align-items:center!important;padding:16px 17px!important;border-radius:12px!important}
+.c7-idea-main{min-width:0}
+.c7-idea h3{max-width:760px;font-size:16px!important;line-height:1.25!important;white-space:normal!important;word-break:normal!important}
+.c7-idea p{max-width:760px;font-size:10px!important}
+.c7-idea-actions{align-self:center;white-space:nowrap}
+@media(max-width:900px){.c7-home .c7-worklist{grid-template-columns:1fr}.c7-idea{grid-template-columns:1fr!important}.c7-idea-actions{justify-self:stretch}}
+@media(max-width:760px){.c7-home .c7-workrow{min-height:124px;padding:14px;border-radius:12px}.c7-home .c7-workcopy b{font-size:14px}.c7-idea-actions{grid-template-columns:1fr 1fr auto}}
