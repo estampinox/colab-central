@@ -297,3 +297,16 @@ window.tasksPage=function(){
 if(!clientHubTabDefsV563.some(item=>item[0]==='overview')){
   clientHubTabDefsV563.unshift(['overview','Visão geral']);
 }
+
+// 7.20 — navegação do hub por delegação: não depende do ciclo de bind/render
+if(!window.__colabClientTabDelegation720){
+  window.__colabClientTabDelegation720=true;
+  document.addEventListener('click',function(e){
+    const button=e.target.closest('.v591-client-nav [data-client-tab],.c717-overview [data-client-tab]');
+    if(!button||!clientHubIdV5)return;
+    e.preventDefault();e.stopImmediatePropagation();
+    clientHubTabsV563[clientHubIdV5]=button.dataset.clientTab;
+    MD=null;
+    render();
+  },true);
+}
