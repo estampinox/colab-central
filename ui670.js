@@ -332,3 +332,18 @@ clientHubPageV5=function(cid){
   const grid='<div class="v5-hub-grid v563-client-panes">';
   return html.includes(grid)?html.replace(grid,overview+grid):html+overview;
 };
+
+// 7.23 — Visão geral usa exatamente as coleções oficiais de Ideias/Workflow
+c717Overview=function(cid){
+  const client=cl(cid)||{};
+  const all=(D.contents||[]).filter(x=>x.client_id===cid);
+  const live=all.filter(x=>x.status!=='published').sort((a,b)=>String(b.updated_at||b.created_at||'').localeCompare(String(a.updated_at||a.created_at||'')));
+  const ideaAll=typeof ideaRowsV591==='function'?ideaRowsV591(cid):(D.insights||[]).filter(i=>i.client_id===cid&&i.insight_type==='idea');
+  const ideas=ideaAll.filter(i=>i.status!=='converted'&&!i.converted_content_id);
+  const waiting=all.filter(x=>x.status==='approval').length;
+  const adjust=all.filter(x=>x.status==='changes_requested').length;
+  return '<section class="c717-overview" id="overview"><header class="c717-overhead"><div><small>VISÃO GERAL · '+E(client.name||'CLIENTE')+'</small><h2>Operação agora</h2></div><button class="btn pri" data-m="contentNew">＋ Conteúdo</button></header>'+
+  '<div class="c717-radar"><button data-client-tab="workflow"><b>'+live.length+'</b><span>em andamento</span></button><button data-client-tab="workflow"><b>'+waiting+'</b><span>com cliente</span></button><button data-client-tab="workflow"><b>'+adjust+'</b><span>ajustes</span></button><button data-client-tab="ideas"><b>'+ideas.length+'</b><span>ideias</span></button></div>'+
+  '<section class="c717-block"><div class="c717-title"><div><small>CONTEÚDOS</small><h3>Em andamento</h3></div><button data-client-tab="workflow">Ver todos →</button></div><div class="c717-content-grid">'+(live.slice(0,4).map(c704Card).join('')||'<div class="c704-empty">Nenhum conteúdo em andamento.</div>')+'</div></section>'+
+  '<section class="c717-block ideas"><div class="c717-title"><div><small>BANCO DE IDEIAS</small><h3>Ideias para produzir</h3></div><button data-client-tab="ideas">Ver banco →</button></div><div class="c717-idea-grid">'+(ideas.slice(0,3).map(ideaCardV591).join('')||'<div class="c704-empty">Nenhuma ideia aguardando produção.</div>')+'</div></section></section>';
+};
