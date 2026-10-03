@@ -347,3 +347,19 @@ c717Overview=function(cid){
   '<section class="c717-block"><div class="c717-title"><div><small>CONTEÚDOS</small><h3>Em andamento</h3></div><button data-client-tab="workflow">Ver todos →</button></div><div class="c717-content-grid">'+(live.slice(0,4).map(c704Card).join('')||'<div class="c704-empty">Nenhum conteúdo em andamento.</div>')+'</div></section>'+
   '<section class="c717-block ideas"><div class="c717-title"><div><small>BANCO DE IDEIAS</small><h3>Ideias para produzir</h3></div><button data-client-tab="ideas">Ver banco →</button></div><div class="c717-idea-grid">'+(ideas.slice(0,3).map(ideaCardV591).join('')||'<div class="c704-empty">Nenhuma ideia aguardando produção.</div>')+'</div></section></section>';
 };
+
+// 7.25 — abrir cliente sempre na primeira aba: Visão geral
+const bindBefore725=bind;
+bind=function(){
+  bindBefore725();
+  document.querySelectorAll('[data-clienthub]').forEach(function(button){
+    button.onclick=function(e){
+      e?.preventDefault?.();
+      const cid=button.dataset.clienthub;
+      clientHubIdV5=cid;
+      clientHubTabsV563[cid]='overview';
+      contentClient=cid;
+      V='clientHub';MD=null;render();
+    };
+  });
+};
