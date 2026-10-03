@@ -363,3 +363,15 @@ bind=function(){
     };
   });
 };
+
+// 7.26 — Home sem atalhos redundantes: remove Próximas ações e Agenda
+const homePageBefore726=homePage;
+homePage=function(){
+  let html=homePageBefore726();
+  // bloco inserido pela camada V6.04/V6.05 ("Próximas ações")
+  html=html.replace(/<section class="v604-home-turn">[\s\S]*?<\/section>/,'');
+  // card-resumo de Agenda da Home; a Agenda já existe na navegação principal
+  html=html.replace(/<section class="[^"]*c7[^"]*"[^>]*>[\s\S]*?<h3>Agenda<\/h3>[\s\S]*?<\/section>/,'');
+  html=html.replace(/<article class="[^"]*"[^>]*>[\s\S]*?<h3>Agenda<\/h3>[\s\S]*?<\/article>/,'');
+  return html;
+};
