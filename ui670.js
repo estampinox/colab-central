@@ -261,8 +261,14 @@
     let html=clientHubBefore717(cid);
     if(clientHubTabsV563[cid]!=='overview')return html;
     html=html.split(' data-v563-active').join('');
-    const marker='<div class="v5-hub-grid v563-client-panes">';
-    if(html.includes(marker))html=html.replace(marker,marker+c717Overview(cid));
+    const overview=c717Overview(cid).replace(' data-v563-active','');
+    const nav=/(<nav class="v591-client-nav"[\\s\\S]*?<\\/nav>)/;
+    if(nav.test(html)){
+      html=html.replace(nav,'$1'+overview);
+    }else{
+      const marker='<div class="v5-hub-grid v563-client-panes">';
+      if(html.includes(marker))html=html.replace(marker,overview+marker);
+    }
     return html;
   };
 
