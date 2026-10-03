@@ -87,6 +87,14 @@
       '<div class="c701-actions"><button class="btn ghost small" data-v591-idea-edit="'+idea.id+'">Revisar / editar</button>'+(converted?'<button class="btn ghost small" data-v591-open-content="'+E(idea.converted_content_id||'')+'">Abrir produção →</button>':'<button class="btn pri small" data-v591-send-production="'+idea.id+'">Enviar para produção →</button>')+'<button type="button" class="c709-delete" data-v626-delete-idea="'+idea.id+'" aria-label="Excluir ideia" title="Excluir ideia">×</button></div></article>';
   };
 
+  // 7.11 — cards de ideias mobile-first, sem ações espremidas
+  window.ideaCardV591=function(idea){
+    const b=ideaBriefV591(idea),converted=idea.status==='converted'||!!idea.converted_content_id,p=productionInfo(idea),summary=String(b.narrative||b.objective||idea.notes||'').trim();
+    return '<article class="c711-idea"><header><div class="c711-kind '+(p.kind==='CAPTAÇÃO'?'capture':'')+'"><span>'+p.icon+'</span><b>'+E(p.format)+'</b><small>'+E(p.kind)+(p.detail?' · '+p.detail:'')+'</small></div><button type="button" class="c711-x" data-v626-delete-idea="'+idea.id+'" aria-label="Excluir ideia">×</button></header>'+
+      '<div class="c711-copy"><small>'+E(pillar(b.editorial_pillar_id)?.name||'SEM LINHA EDITORIAL')+'</small><h3>'+E(idea.title||'Ideia sem título')+'</h3>'+(summary?'<p>'+E(summary.slice(0,115))+(summary.length>115?'…':'')+'</p>':'')+'<em>'+E(ownerName(idea.created_by))+'</em></div>'+
+      '<footer><button class="c711-edit" data-v591-idea-edit="'+idea.id+'">Editar</button>'+(converted?'<button class="c711-send done" data-v591-open-content="'+E(idea.converted_content_id||'')+'">Abrir produção →</button>':'<button class="c711-send" data-v591-send-production="'+idea.id+'">Enviar para produção →</button>')+'</footer></article>';
+  };
+
   window.clientIdeasPaneV591=function(cid){
     const rows=ideaRowsV591(cid), active=rows.filter(r=>r.status!=='converted'&&!r.converted_content_id), sent=rows.filter(r=>r.status==='converted'||r.converted_content_id), selected=clientHubTabsV563[cid]==='ideas';
     const capture=active.filter(i=>['reel','video'].includes(String(ideaBriefV591(i).format||'').toLowerCase())).length;
