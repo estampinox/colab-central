@@ -114,4 +114,43 @@
       '<div class="c703-main"><div class="c703-title"><div><small>PRÓXIMOS PASSOS</small><h3>'+(actions.length?'Fila de trabalho':'Tudo em dia por aqui')+'</h3></div>'+(actions.length?'<span>'+actions.length+' itens</span>':'')+'</div>'+
       (actions.length?'<div class="c703-actions">'+actions.join('')+'</div>':'<div class="c703-clean-empty"><span>✓</span><div><b>Nenhuma pendência agora.</b><small>Novas demandas e conteúdos vão aparecer aqui quando precisarem de ação.</small></div></div>')+'</div></section>';
   };
+
+  const c704Status=c=>{const s=String(c.status||'editing');return ({idea:'Ideia',script:'Roteiro',production:'Produção',editing:'Produção',approval:'Aguardando cliente',changes_requested:'Ajustes',approved:'Aprovado',scheduled:'Programado',published:'Publicado'})[s]||s};
+  const c704Kind=c=>{const f=String(c.format||'static_post');return ['reel','video'].includes(f)?'VÍDEO':f==='carousel'?'CARROSSEL':f==='story'?'STORY':'POST'};
+  const c704Thumb=c=>socialAssetV550(c,true);
+  const c704Card=c=>'<button class="c704-piece" data-contentopen="'+E(c.id)+'">'+c704Thumb(c)+'<span class="c704-piececopy"><small>'+E(c704Kind(c))+(c.publication_time?' · '+E(String(c.publication_time).slice(0,5)):'')+'</small><b>'+E(c.title||'Conteúdo')+'</b><em class="s-'+E(String(c.status||'editing'))+'">'+E(c704Status(c))+'</em></span></button>';
+
+  function c704Calendar(items,month){
+    const [y,m]=month.split('-').map(Number),days=new Date(y,m,0).getDate(),offset=(new Date(y,m-1,1).getDay()+6)%7,cells=[];
+    for(let i=0;i<offset;i++)cells.push('<div class="c704-day blank"></div>');
+    for(let d=1;d<=days;d++){const date=month+'-'+String(d).padStart(2,'0'),rows=items.filter(x=>x.publication_date===date);cells.push('<div class="c704-day '+(rows.length?'filled':'')+'"><strong>'+d+'</strong><div>'+rows.map(c704Card).join('')+'</div></div>')}
+    return '<div class="c704-calwrap"><div class="c704-calendar"><div class="c704-week">'+['SEG','TER','QUA','QUI','SEX','SÁB','DOM'].map(x=>'<b>'+x+'</b>').join('')+'</div><div class="c704-days">'+cells.join('')+'</div></div></div>';
+  }
+  function c704Production(items){
+    const groups=[['production','Em produção',['idea','script','production','editing']],['review','Revisão / cliente',['approval','changes_requested']],['ready','Prontos',['approved','scheduled']],['done','Publicados',['published']]];
+    return '<div class="c704-board">'+groups.map(g=>{const rows=items.filter(x=>g[2].includes(x.status));return '<section><header><b>'+g[1]+'</b><span>'+rows.length+'</span></header><div>'+rows.map(c704Card).join('')+(rows.length?'':'<p>Nenhum conteúdo</p>')+'</div></section>'}).join('')+'</div>';
+  }
+  function c704Approvals(items){
+    const rows=(D.approvals||[]).filter(a=>items.some(c=>c.id===a.content_id)),active=items.filter(c=>['approval','changes_requested'].includes(c.status)),history=rows.filter(a=>a.status!=='pending').sort((a,b)=>String(b.decided_at||b.created_at||'').localeCompare(String(a.decided_at||a.created_at||''))).slice(0,8);
+    return '<div class="c704-approvalgrid"><section><div class="c704-sectionhead"><div><small>AGORA</small><h3>Para revisar</h3></div><span>'+active.length+'</span></div><div class="c704-reviewlist">'+(active.map(c=>{const a=rows.find(x=>x.content_id===c.id&&x.status==='pending');return '<article>'+c704Thumb(c)+'<div><small>'+E(c704Kind(c))+'</small><h3>'+E(c.title||'Conteúdo')+'</h3><span class="c704-status">'+E(c704Status(c))+'</span></div><button class="btn pri small" '+(a?'data-ap="'+E(a.id)+'"':'data-contentopen="'+E(c.id)+'"')+'>Revisar →</button></article>'}).join('')||'<div class="c704-empty">Nenhum conteúdo aguardando revisão.</div>')+'</div></section><aside><div class="c704-sectionhead"><div><small>HISTÓRICO</small><h3>Decisões</h3></div></div>'+history.map(a=>{const c=items.find(x=>x.id===a.content_id)||a.contents||{};return '<button class="c704-history" data-contentopen="'+E(c.id||'')+'"><span class="'+(a.status==='approved'?'ok':'change')+'"></span><div><b>'+E(c.title||'Conteúdo')+'</b><small>'+(a.status==='approved'?'Aprovado':'Ajuste solicitado')+'</small></div></button>'}).join('')+'</aside></div>';
+  }
+  function c704Feed(items){const rows=items.filter(c=>!['story','stories'].includes(c.format)&&['approved','scheduled','published'].includes(c.status)).slice().sort((a,b)=>String(a.publication_date||'9999').localeCompare(String(b.publication_date||'9999')));return '<div class="c704-feedhead"><div><small>PRÉVIA</small><h3>Feed do mês</h3></div><span>'+rows.length+' peças</span></div><div class="c704-feed">'+rows.map(c=>'<button data-contentopen="'+E(c.id)+'">'+c704Thumb(c)+'<span>'+E(c.title||'Conteúdo')+'</span></button>').join('')+'</div>'}
+
+  window.contentPage=function(){
+    const clients=(D.clients||[]).filter(c=>c.active&&hasClientService(c.id,'social_media'));if(!clients.some(c=>c.id===contentClient)&&clients[0])contentClient=clients[0].id;
+    if(!['calendar','production','approvals','feed'].includes(contentMode))contentMode='calendar';
+    const items=socialMonthItemsV550(contentClient,contentMonth),client=cl(contentClient)||{},dated=items.filter(c=>c.publication_date).length,review=items.filter(c=>['approval','changes_requested'].includes(c.status)).length,ready=items.filter(c=>['approved','scheduled'].includes(c.status)).length;
+    let body=contentMode==='calendar'?c704Calendar(items,contentMonth):contentMode==='production'?c704Production(items):contentMode==='approvals'?c704Approvals(items):c704Feed(items);
+    const undated=items.filter(c=>!c.publication_date);
+    if(contentMode==='calendar'&&undated.length)body+='<details class="c704-undated"><summary>Sem data definida <span>'+undated.length+'</span></summary><div>'+undated.map(c704Card).join('')+'</div></details>';
+    return '<section class="c704-shell"><header class="c704-head"><div><small>SOCIAL MEDIA · '+E(client.name||'CLIENTE')+'</small><h2>Conteúdos</h2><p>Planeje, produza, revise e publique olhando para as peças.</p></div><button class="btn pri" data-m="contentNew">＋ Novo conteúdo</button></header><div class="c704-controls"><div><select id="contentClient">'+clients.map(c=>'<option value="'+c.id+'" '+(c.id===contentClient?'selected':'')+'>'+E(c.name)+'</option>').join('')+'</select><input id="contentMonth" type="month" value="'+E(contentMonth)+'"></div><nav><button data-cmode="calendar" class="'+(contentMode==='calendar'?'on':'')+'">Calendário <span>'+dated+'</span></button><button data-cmode="production" class="'+(contentMode==='production'?'on':'')+'">Produção <span>'+items.length+'</span></button><button data-cmode="approvals" class="'+(contentMode==='approvals'?'on':'')+'">Aprovações <span>'+review+'</span></button><button data-cmode="feed" class="'+(contentMode==='feed'?'on':'')+'">Feed <span>'+ready+'</span></button></nav></div><main class="c704-main">'+body+'</main></section>';
+  };
+
+  const oldClientWorkflow704=window.clientWorkflowPaneV586;
+  window.clientWorkflowPaneV586=function(cid){
+    const services=typeof clientActiveServicesV582==='function'?clientActiveServicesV582(cid):[];if(!services.includes('social_media'))return oldClientWorkflow704(cid);
+    const active=clientHubTabsV563[cid]==='workflow',items=clientWorkflowItemsV586(cid),client=cl(cid)||{},monthItems=items.filter(c=>String(c.publication_date||c.created_at||'').slice(0,7)===contentMonth||!c.publication_date);
+    const focus=monthItems.filter(c=>!['published'].includes(c.status)).slice(0,6);
+    return '<section class="c704-client" id="workflow" '+(active?'data-v563-active':'')+'><header><div><small>SOCIAL MEDIA</small><h2>'+E(client.name||'Cliente')+'</h2><p>Conteúdo e calendário no centro da operação.</p></div><button class="btn pri" data-clientmodule="social_media" data-client="'+E(cid)+'">Abrir Conteúdos →</button></header><div class="c704-clientpieces">'+focus.map(c704Card).join('')+(focus.length?'':'<div class="c704-empty">Nenhum conteúdo em andamento agora.</div>')+'</div></section>';
+  };
 })();
