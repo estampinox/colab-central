@@ -292,3 +292,8 @@ window.tasksPage=function(){
   '<section class="c718-open"><div class="c718-sectionhead"><div><small>AGORA</small><h3>Em andamento</h3></div><span>'+open.length+'</span></div><div class="c718-list">'+(open.map(card).join('')||'<div class="c718-empty"><b>✓</b><span>Nenhuma demanda aberta.</span></div>')+'</div></section>'+
   (done.length?'<details class="c718-done"><summary><span>Concluídas</span><b>'+done.length+'</b></summary><div class="c718-list">'+done.slice(0,20).map(card).join('')+'</div></details>':'')+'</section>';
 };
+
+// 7.19 — hotfix estrutural: Visão geral é uma aba real do hub
+if(!clientHubTabDefsV563.some(item=>item[0]==='overview')){
+  clientHubTabDefsV563.unshift(['overview','Visão geral']);
+}
