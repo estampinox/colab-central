@@ -124,3 +124,38 @@
 /* 7.18 — Demandas consolidada */
 .c718-tasks{max-width:1080px}.c718-head{display:flex;align-items:end;justify-content:space-between;gap:18px;margin-bottom:14px}.c718-head small,.c718-sectionhead small{color:#ff6a00;font-size:8px;font-weight:900;letter-spacing:.14em}.c718-head h2{margin:4px 0 3px;font-size:28px;letter-spacing:-.04em}.c718-head p{margin:0;color:#777;font-size:10px}.c718-head>.btn{height:40px!important;min-height:40px!important}.c718-stats{display:flex;gap:6px;margin-bottom:9px}.c718-stats>span{display:flex;align-items:baseline;gap:5px;min-height:38px;padding:9px 11px;border:1px solid #292929;border-radius:9px;background:#101010;color:#858581;font-size:9px}.c718-stats b{color:#eee;font-size:15px}.c718-stats .hot{border-color:#54301d;background:#18110d;color:#d88b61}.c718-stats .hot b{color:#ff6a00}.c718-filters{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:16px}.c718-filters select{height:40px;padding:0 11px;border:1px solid #303030;border-radius:9px;background:#101010;color:#bdbdb8;font-size:10px}.c718-open{padding:15px;border:1px solid #292929;border-radius:13px;background:#0e0e0e}.c718-sectionhead{display:flex;align-items:end;justify-content:space-between;margin-bottom:10px}.c718-sectionhead h3{margin:4px 0 0;font-size:18px}.c718-sectionhead>span{display:grid;place-items:center;min-width:28px;height:25px;border:1px solid #303030;border-radius:7px;color:#999;font-size:9px}.c718-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.c718-task{position:relative;display:grid;grid-template-rows:auto 1fr auto;gap:9px;min-height:128px;padding:13px 42px 13px 14px;border:1px solid #292929;border-radius:11px;background:#131313;color:#eee;text-align:left;overflow:hidden}.c718-task:before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:#343434}.c718-task:hover{border-color:#3a3a3a;background:#161616}.c718-task.urgent:before{background:#ff6a00}.c718-task.urgent{border-color:#3b2b22;background:linear-gradient(135deg,#17120f,#131313)}.c718-tasktop{display:flex;align-items:center;gap:6px;min-width:0}.c718-tasktop small{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#9a9a95;font-size:8px;font-weight:850;letter-spacing:.07em;text-transform:uppercase}.c718-tasktop em{flex:0 0 auto;padding:3px 6px;border-radius:5px;background:#202020;color:#777;font-size:7px;font-style:normal;font-weight:800}.c718-task>b{align-self:center;font-size:15px;line-height:1.25;letter-spacing:-.015em}.c718-taskmeta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.c718-taskmeta i{color:#858581;font-size:9px;font-style:normal}.c718-taskmeta .person:before{content:'';display:inline-block;width:16px;height:16px;margin-right:5px;vertical-align:-4px;border:1px solid #3b3b3b;border-radius:50%;background:#242424}.c718-taskmeta .late{padding:3px 6px;border-radius:5px;background:#25160f;color:#ff8a4b}.c718-go{position:absolute;right:12px;bottom:12px;display:grid;place-items:center;width:25px;height:25px;border:1px solid #303030;border-radius:7px;color:#888;font-size:13px}.c718-empty{grid-column:1/-1;display:flex;align-items:center;gap:8px;padding:16px;color:#777;font-size:10px}.c718-empty b{color:#777}.c718-done{margin-top:10px;border:1px solid #252525;border-radius:11px;background:#0d0d0d}.c718-done>summary{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;color:#777;font-size:10px;font-weight:800;cursor:pointer}.c718-done>summary b{display:grid;place-items:center;min-width:25px;height:22px;border-radius:6px;background:#191919;color:#888;font-size:9px}.c718-done>.c718-list{padding:0 12px 12px}
 @media(max-width:760px){.c718-head{align-items:center;margin-bottom:12px}.c718-head h2{font-size:25px}.c718-head p{display:none}.c718-head>.btn{height:38px!important;min-height:38px!important;width:auto!important;padding:0 11px!important;font-size:9px!important}.c718-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}.c718-stats>span{display:grid;gap:1px;min-height:52px;padding:9px;border-radius:8px}.c718-stats b{font-size:17px}.c718-stats span{font-size:8px}.c718-filters{gap:5px;margin-bottom:11px}.c718-filters select{width:100%;min-width:0!important;height:38px;font-size:9px}.c718-open{padding:11px;border-radius:11px}.c718-sectionhead{margin-bottom:8px}.c718-sectionhead h3{font-size:16px}.c718-list{grid-template-columns:1fr;gap:7px}.c718-task{min-height:112px;padding:12px 39px 11px 12px;border-radius:10px}.c718-task>b{font-size:15px}.c718-tasktop small{font-size:8px}.c718-taskmeta i{font-size:9px}.c718-go{right:10px;bottom:10px}.c718-done{margin-top:8px}}
+
+/* 7.20 — legibilidade + régua editorial horizontal no mobile */
+@media(max-width:760px){
+  .v591-client-nav button{font-size:11px!important;font-weight:800!important}
+  .c710-head small,.c701-head small,.c717-overhead small,.c717-title small,.c718-head small,.c718-sectionhead small{font-size:10px!important}
+  .c710-toolbar nav{
+    display:flex!important;
+    grid-template-columns:none!important;
+    flex-wrap:nowrap!important;
+    gap:5px!important;
+    width:100%!important;
+    overflow-x:auto!important;
+    scrollbar-width:none!important;
+    padding:0 0 5px!important;
+  }
+  .c710-toolbar nav::-webkit-scrollbar{display:none}
+  .c710-toolbar nav button{
+    flex:0 0 auto!important;
+    width:auto!important;
+    min-width:max-content!important;
+    height:42px!important;
+    padding:0 13px!important;
+    font-size:11px!important;
+    white-space:nowrap!important;
+  }
+  .c710-toolbar nav button span{display:inline!important;margin-left:5px!important;font-size:10px!important}
+  .c717-radar{display:flex!important;grid-template-columns:none!important;overflow-x:auto!important;gap:6px!important;scrollbar-width:none!important}
+  .c717-radar::-webkit-scrollbar{display:none}
+  .c717-radar button{flex:0 0 auto!important;min-width:112px!important}
+  .c717-radar span{font-size:10px!important}
+  .c711-kind small,.c711-copy>small{font-size:9.5px!important}
+  .c711-copy p,.c710-head p{font-size:11px!important}
+  .c711-copy em,.c718-taskmeta i,.c718-tasktop small{font-size:10px!important}
+  .c718-filters select{font-size:11px!important}
+}
