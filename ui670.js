@@ -375,3 +375,21 @@ homePage=function(){
   html=html.replace(/<article class="[^"]*"[^>]*>[\s\S]*?<h3>Agenda<\/h3>[\s\S]*?<\/article>/,'');
   return html;
 };
+
+// 7.27 — limpeza final da Home após todas as camadas legadas renderizarem
+function cleanupHome727(){
+  if(V!=='home')return;
+  document.querySelectorAll('.main section,.main article').forEach(function(block){
+    const title=Array.from(block.querySelectorAll('h1,h2,h3,h4')).find(function(h){
+      const t=(h.textContent||'').trim().toLowerCase();
+      return t==='próximas ações'||t==='proximas ações'||t==='agenda';
+    });
+    if(title)block.remove();
+  });
+}
+const bindBefore727=bind;
+bind=function(){
+  bindBefore727();
+  cleanupHome727();
+  requestAnimationFrame(cleanupHome727);
+};
