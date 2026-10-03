@@ -316,3 +316,19 @@ if(!window.__colabClientTabDelegation720){
     render();
   },true);
 }
+
+// 7.22 — camada final do hub: overview só é inserido depois de TODOS os wrappers legados
+const clientHubFinalBefore722=clientHubPageV5;
+clientHubPageV5=function(cid){
+  let html=clientHubFinalBefore722(cid);
+  if(clientHubTabsV563[cid]!=='overview')return html;
+  // esconde qualquer painel legado ativo; a visão geral fica fora do grid legado
+  html=html.replace(/ data-v563-active/g,'');
+  const overview=c717Overview(cid).replace(' data-v563-active','');
+  if(html.includes('class="c717-overview"'))return html;
+  const navEnd=/<nav class="v591-client-nav"[\s\S]*?<\/nav>/;
+  if(navEnd.test(html))return html.replace(navEnd,m=>m+overview);
+  // fallback seguro caso outro wrapper troque a tag nav
+  const grid='<div class="v5-hub-grid v563-client-panes">';
+  return html.includes(grid)?html.replace(grid,overview+grid):html+overview;
+};
