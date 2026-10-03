@@ -168,6 +168,46 @@
     });
   };
 
+
+  // 7.10 — central de conteúdo dentro da cliente: uma única arquitetura operacional
+  const c710Mode={};
+  function c710Approvals(items){
+    const rows=items.filter(c=>c.status==='approval');
+    return '<section class="c710-stage"><div class="c704-sectionhead"><div><small>COM A CLIENTE</small><h3>Aguardando aprovação</h3></div><span>'+rows.length+'</span></div><div class="c710-grid">'+(rows.map(c704Card).join('')||'<div class="c704-empty">Nenhum conteúdo aguardando aprovação.</div>')+'</div></section>';
+  }
+  function c710Adjustments(items){
+    const rows=items.filter(c=>c.status==='changes_requested');
+    return '<section class="c710-stage"><div class="c704-sectionhead"><div><small>AJUSTES</small><h3>Alterações solicitadas</h3></div><span>'+rows.length+'</span></div><div class="c710-grid">'+(rows.map(c704Card).join('')||'<div class="c704-empty">Nenhum ajuste pendente.</div>')+'</div></section>';
+  }
+  window.clientWorkflowPaneV586=function(cid){
+    const services=typeof clientActiveServicesV582==='function'?clientActiveServicesV582(cid):[];
+    if(!services.includes('social_media'))return oldClientWorkflow704(cid);
+    const active=clientHubTabsV563[cid]==='workflow',client=cl(cid)||{},mode=c710Mode[cid]||'calendar';
+    const items=(D.contents||[]).filter(x=>x.client_id===cid),monthItems=items.filter(x=>!x.publication_date||String(x.publication_date).slice(0,7)===contentMonth);
+    const scheduled=monthItems.filter(x=>['scheduled','published'].includes(x.status)&&x.publication_date).length;
+    const production=monthItems.filter(x=>['editing','production','script'].includes(x.status)).length;
+    const approvals=monthItems.filter(x=>x.status==='approval').length;
+    const adjustments=monthItems.filter(x=>x.status==='changes_requested').length;
+    const approved=monthItems.filter(x=>x.status==='approved').length;
+    let body=mode==='calendar'?c704Calendar(monthItems,contentMonth):mode==='production'?c704Production(monthItems):mode==='approvals'?c710Approvals(monthItems):mode==='adjustments'?c710Adjustments(monthItems):c704Feed(monthItems);
+    if(mode==='calendar'){const ready=monthItems.filter(x=>x.status==='approved');if(ready.length)body=c708ReadyPanel(monthItems)+body}
+    return '<section class="c710-client-content" id="workflow" '+(active?'data-v563-active':'')+'><header class="c710-head"><div><small>SOCIAL MEDIA · '+E(client.name||'CLIENTE')+'</small><h2>Conteúdos</h2><p>Da produção à publicação, cada peça no seu lugar.</p></div><button class="btn pri" data-m="contentNew">＋ Novo conteúdo</button></header>'+
+      '<div class="c710-toolbar"><input class="c710-month" data-c710-month="'+E(cid)+'" type="month" value="'+E(contentMonth)+'"><nav>'+
+      '<button data-c710-mode="calendar" data-cid="'+E(cid)+'" class="'+(mode==='calendar'?'on':'')+'">Calendário <span>'+scheduled+'</span></button>'+
+      '<button data-c710-mode="production" data-cid="'+E(cid)+'" class="'+(mode==='production'?'on':'')+'">Produção <span>'+production+'</span></button>'+
+      '<button data-c710-mode="approvals" data-cid="'+E(cid)+'" class="'+(mode==='approvals'?'on':'')+'">Aprovações <span>'+approvals+'</span></button>'+
+      '<button data-c710-mode="adjustments" data-cid="'+E(cid)+'" class="'+(mode==='adjustments'?'on':'')+'">Ajustes <span>'+adjustments+'</span></button>'+
+      '<button data-c710-mode="feed" data-cid="'+E(cid)+'" class="'+(mode==='feed'?'on':'')+'">Feed <span>'+approved+'</span></button></nav></div>'+
+      '<main class="c710-body">'+body+'</main></section>';
+  };
+  const bindBefore710=bind;
+  bind=function(){
+    bindBefore710();
+    document.querySelectorAll('[data-c710-mode]').forEach(b=>b.onclick=()=>{c710Mode[b.dataset.cid]=b.dataset.c710Mode;render()});
+    document.querySelectorAll('[data-c710-month]').forEach(input=>input.onchange=()=>{contentMonth=input.value;render()});
+    document.querySelectorAll('.c710-client-content [data-contentopen]').forEach(node=>node.onclick=e=>{if(e.target.closest('select,a'))return;e.preventDefault();MD={type:'contentDetail',id:node.dataset.contentopen};render()});
+  };
+
   const oldClientWorkflow704=window.clientWorkflowPaneV586;
   window.clientWorkflowPaneV586=function(cid){
     const services=typeof clientActiveServicesV582==='function'?clientActiveServicesV582(cid):[];if(!services.includes('social_media'))return oldClientWorkflow704(cid);
