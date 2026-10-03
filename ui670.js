@@ -127,7 +127,7 @@
     return '<div class="c704-calwrap"><div class="c704-calendar"><div class="c704-week">'+['SEG','TER','QUA','QUI','SEX','SÁB','DOM'].map(x=>'<b>'+x+'</b>').join('')+'</div><div class="c704-days">'+cells.join('')+'</div></div></div>';
   }
   function c704Production(items){
-    const groups=[['production','Em produção',['idea','script','production','editing']],['review','Revisão / cliente',['approval','changes_requested']],['ready','Prontos',['approved','scheduled']],['done','Publicados',['published']]];
+    const groups=[['production','Em produção',['idea','script','production','editing']],['review','Revisão / cliente',['approval','changes_requested']],['ready','Prontos para programar',['approved']],['scheduled','Programados',['scheduled']],['done','Publicados',['published']]];
     return '<div class="c704-board">'+groups.map(g=>{const rows=items.filter(x=>g[2].includes(x.status));return '<section><header><b>'+g[1]+'</b><span>'+rows.length+'</span></header><div>'+rows.map(c704Card).join('')+(rows.length?'':'<p>Nenhum conteúdo</p>')+'</div></section>'}).join('')+'</div>';
   }
   function c704Approvals(items){
@@ -153,6 +153,12 @@
     return '<section class="c704-shell"><header class="c704-head"><div><small>SOCIAL MEDIA · '+E(client.name||'CLIENTE')+'</small><h2>Conteúdos</h2><p>Planeje, produza, revise e publique olhando para as peças.</p></div><button class="btn pri" data-m="contentNew">＋ Novo conteúdo</button></header><div class="c704-controls"><div><select id="contentClient">'+clients.map(c=>'<option value="'+c.id+'" '+(c.id===contentClient?'selected':'')+'>'+E(c.name)+'</option>').join('')+'</select><input id="contentMonth" type="month" value="'+E(contentMonth)+'"></div><nav><button data-cmode="calendar" class="'+(contentMode==='calendar'?'on':'')+'">Calendário <span>'+dated+'</span></button><button data-cmode="production" class="'+(contentMode==='production'?'on':'')+'">Produção <span>'+items.length+'</span></button><button data-cmode="approvals" class="'+(contentMode==='approvals'?'on':'')+'">Aprovações <span>'+review+'</span></button><button data-cmode="feed" class="'+(contentMode==='feed'?'on':'')+'">Feed <span>'+ready+'</span></button></nav></div><main class="c704-main">'+body+'</main></section>';
   };
 
+  // 7.08 — programação editorial: aprovado só entra no calendário após data + horário
+  const c704StatusBefore708=c704Status;
+  function c708ReadyPanel(items){
+    const rows=items.filter(c=>c.status==='approved');
+    return rows.length?'<section class="c708-ready"><header><div><small>PRONTOS PARA PROGRAMAR</small><h3>Aprovados pela cliente</h3><p>Defina data e horário para levar a publicação ao calendário.</p></div><b>'+rows.length+'</b></header><div>'+rows.map(c704Card).join('')+'</div></section>':'';
+  }
   const bindBefore704=bind;
   bind=function(){
     bindBefore704();
