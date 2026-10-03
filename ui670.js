@@ -245,3 +245,23 @@
     }
     return result;
   };
+
+  // 7.17 — painel operacional da Visão geral
+  function c717Overview(cid){
+    const client=cl(cid)||{};
+    const all=(D.contents||[]).filter(x=>x.client_id===cid);
+    const live=all.filter(x=>x.status!=='published').sort((a,b)=>String(b.updated_at||b.created_at||'').localeCompare(String(a.updated_at||a.created_at||''))).slice(0,4);
+    const ideas=(D.insights||[]).filter(i=>i.client_id===cid&&i.status!=='converted'&&!i.converted_content_id).slice(0,3);
+    const waiting=all.filter(x=>x.status==='approval').length;
+    const adjust=all.filter(x=>x.status==='changes_requested').length;
+    return '<section class="c717-overview" id="overview" data-v563-active><header class="c717-overhead"><div><small>VISÃO GERAL · '+E(client.name||'CLIENTE')+'</small><h2>Operação agora</h2></div><button class="btn pri" data-m="contentNew">＋ Conteúdo</button></header><div class="c717-radar"><button data-client-tab="workflow"><b>'+live.length+'</b><span>em andamento</span></button><button data-client-tab="workflow"><b>'+waiting+'</b><span>com cliente</span></button><button data-client-tab="workflow"><b>'+adjust+'</b><span>ajustes</span></button><button data-client-tab="ideas"><b>'+ideas.length+'</b><span>ideias</span></button></div><section class="c717-block"><div class="c717-title"><div><small>CONTEÚDOS</small><h3>Em andamento</h3></div><button data-client-tab="workflow">Ver todos →</button></div><div class="c717-content-grid">'+(live.map(c704Card).join('')||'<div class="c704-empty">Nenhum conteúdo em andamento.</div>')+'</div></section><section class="c717-block ideas"><div class="c717-title"><div><small>BANCO DE IDEIAS</small><h3>Ideias para produzir</h3></div><button data-client-tab="ideas">Ver banco →</button></div><div class="c717-idea-grid">'+(ideas.map(ideaCardV591).join('')||'<div class="c704-empty">Nenhuma ideia aguardando produção.</div>')+'</div></section></section>';
+  }
+  const clientHubBefore717=clientHubPageV5;
+  clientHubPageV5=function(cid){
+    let html=clientHubBefore717(cid);
+    if(clientHubTabsV563[cid]!=='overview')return html;
+    html=html.split(' data-v563-active').join('');
+    const marker='<div class="v5-hub-grid v563-client-panes">';
+    if(html.includes(marker))html=html.replace(marker,marker+c717Overview(cid));
+    return html;
+  };
