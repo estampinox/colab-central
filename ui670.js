@@ -265,3 +265,30 @@
     if(html.includes(marker))html=html.replace(marker,marker+c717Overview(cid));
     return html;
   };
+
+// 7.18 — auditoria: navegação consolidada + Demandas visual final
+const bindBefore718=bind;
+bind=function(){
+  bindBefore718();
+  document.querySelectorAll('.v591-client-nav [data-client-tab],.c717-overview [data-client-tab]').forEach(button=>{
+    button.onclick=function(e){
+      e.preventDefault();e.stopPropagation();
+      if(!clientHubIdV5)return;
+      clientHubTabsV563[clientHubIdV5]=button.dataset.clientTab;
+      MD=null;render();
+    };
+  });
+};
+
+window.tasksPage=function(){
+  const rows=(D.tasks||[]).filter(t=>(taskClientFilter==='all'||t.client_id===taskClientFilter)&&(taskOwnerFilter==='all'||t.assigned_to===taskOwnerFilter)&&(taskServiceFilter==='all'||t.service===taskServiceFilter));
+  const open=rows.filter(t=>t.status!=='done'),done=rows.filter(t=>t.status==='done');
+  const urgent=open.filter(t=>t.priority==='urgent'||(t.due_date&&t.due_date<today()));
+  const mine=open.filter(t=>t.assigned_to===S.user?.id);
+  const card=t=>{const late=t.due_date&&t.due_date<today()&&t.status!=='done',urgent=t.priority==='urgent',client=cl(t.client_id)?.name||'Colab',owner=ownerName(t.assigned_to);return '<button class="c718-task '+(urgent?'urgent ':'')+(late?'overdue':'')+'" data-op="task-edit" data-id="'+E(t.id)+'"><span class="c718-tasktop"><small>'+E(client)+'</small><em>'+E(taskLabel(t.status))+'</em></span><b>'+E(t.title||'Demanda')+'</b><span class="c718-taskmeta"><i class="person">'+E(owner)+'</i><i class="'+(late?'late':'')+'">'+(t.due_date?(late?'Atrasada · ':'')+fmtDate(t.due_date):'Prazo a definir')+'</i></span><span class="c718-go">→</span></button>'};
+  return '<section class="c7-page c718-tasks"><header class="c718-head"><div><small>OPERAÇÃO</small><h2>Demandas</h2><p>O que a equipe precisa resolver fora do fluxo editorial.</p></div><button class="btn pri" data-m="taskQuickV5">＋ Nova demanda</button></header>'+
+  '<div class="c718-stats"><span><b>'+open.length+'</b> abertas</span><span><b>'+mine.length+'</b> comigo</span><span class="'+(urgent.length?'hot':'')+'"><b>'+urgent.length+'</b> prioridade'+(urgent.length===1?'':'s')+'</span></div>'+
+  '<div class="c718-filters"><select id="taskClientFilter"><option value="all">Todos os clientes</option>'+D.clients.filter(c=>c.active).map(c=>'<option value="'+c.id+'" '+(taskClientFilter===c.id?'selected':'')+'>'+E(c.name)+'</option>').join('')+'</select><select id="taskOwnerFilter"><option value="all">Toda a equipe</option>'+(D.profiles||[]).map(p=>'<option value="'+p.user_id+'" '+(taskOwnerFilter===p.user_id?'selected':'')+'>'+E(p.display_name)+'</option>').join('')+'</select></div>'+
+  '<section class="c718-open"><div class="c718-sectionhead"><div><small>AGORA</small><h3>Em andamento</h3></div><span>'+open.length+'</span></div><div class="c718-list">'+(open.map(card).join('')||'<div class="c718-empty"><b>✓</b><span>Nenhuma demanda aberta.</span></div>')+'</div></section>'+
+  (done.length?'<details class="c718-done"><summary><span>Concluídas</span><b>'+done.length+'</b></summary><div class="c718-list">'+done.slice(0,20).map(card).join('')+'</div></details>':'')+'</section>';
+};
