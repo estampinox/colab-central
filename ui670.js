@@ -136,6 +136,13 @@
   }
   function c704Feed(items){const rows=items.filter(c=>!['story','stories'].includes(c.format)&&['approved','scheduled','published'].includes(c.status)).slice().sort((a,b)=>String(a.publication_date||'9999').localeCompare(String(b.publication_date||'9999')));return '<div class="c704-feedhead"><div><small>PRÉVIA</small><h3>Feed do mês</h3></div><span>'+rows.length+' peças</span></div><div class="c704-feed">'+rows.map(c=>'<article role="button" tabindex="0" data-contentopen="'+E(c.id)+'">'+c704Thumb(c)+'<span>'+E(c.title||'Conteúdo')+'</span></article>').join('')+'</div>'}
 
+  const socialMonthItemsBefore707=socialMonthItemsV550;
+  socialMonthItemsV550=function(cid,month){
+    const base=socialMonthItemsBefore707(cid,month), ids=new Set(base.map(x=>x.id));
+    const loose=(D.contents||[]).filter(x=>x.client_id===cid&&!x.publication_date&&!ids.has(x.id)&&!['published'].includes(x.status));
+    return [...base,...loose].sort((a,b)=>String(a.publication_date||'9999').localeCompare(String(b.publication_date||'9999')));
+  };
+
   window.contentPage=function(){
     const clients=(D.clients||[]).filter(c=>c.active&&hasClientService(c.id,'social_media'));if(!clients.some(c=>c.id===contentClient)&&clients[0])contentClient=clients[0].id;
     if(!['calendar','production','approvals','feed'].includes(contentMode))contentMode='calendar';
