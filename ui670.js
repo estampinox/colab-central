@@ -163,3 +163,24 @@
     return '<section class="c704-client" id="workflow" '+(active?'data-v563-active':'')+'><header><div><small>SOCIAL MEDIA</small><h2>'+E(client.name||'Cliente')+'</h2><p>Conteúdo e calendário no centro da operação.</p></div><button class="btn pri" data-clientmodule="social_media" data-client="'+E(cid)+'">Abrir Conteúdos →</button></header><div class="c704-clientpieces">'+focus.map(c704Card).join('')+(focus.length?'':'<div class="c704-empty">Nenhum conteúdo em andamento agora.</div>')+'</div></section>';
   };
 })();
+  // 7.06 — topbar enxuta: sino + menu; remove vitrine/refresh da rotina
+  const shellBefore706=shell;
+  shell=function(body,client=false){
+    const result=shellBefore706(body,client);
+    if(client||showcaseV5)return result;
+    document.getElementById('showcaseV5')?.remove();
+    document.getElementById('ref')?.remove();
+    const central=document.getElementById('centralV5');
+    if(central){
+      central.classList.add('c706-menu');
+      central.setAttribute('title','Menu / Central');
+      central.setAttribute('aria-label','Abrir menu e Central');
+      central.innerHTML='<span></span><span></span><span></span>';
+    }
+    const actions=document.querySelector('.topactions');
+    if(actions&&central&&document.getElementById('bell')){
+      actions.append(document.getElementById('bell'));
+      actions.append(central);
+    }
+    return result;
+  };
