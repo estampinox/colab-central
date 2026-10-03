@@ -118,7 +118,7 @@
   const c704Status=c=>{const s=String(c.status||'editing');return ({idea:'Ideia',script:'Roteiro',production:'Produção',editing:'Produção',approval:'Aguardando cliente',changes_requested:'Ajustes',approved:'Aprovado',scheduled:'Programado',published:'Publicado'})[s]||s};
   const c704Kind=c=>{const f=String(c.format||'static_post');return ['reel','video'].includes(f)?'VÍDEO':f==='carousel'?'CARROSSEL':f==='story'?'STORY':'POST'};
   const c704Thumb=c=>socialAssetV550(c,true);
-  const c704Card=c=>'<button class="c704-piece" data-contentopen="'+E(c.id)+'">'+c704Thumb(c)+'<span class="c704-piececopy"><small>'+E(c704Kind(c))+(c.publication_time?' · '+E(String(c.publication_time).slice(0,5)):'')+'</small><b>'+E(c.title||'Conteúdo')+'</b><em class="s-'+E(String(c.status||'editing'))+'">'+E(c704Status(c))+'</em></span></button>';
+  const c704Card=c=>'<article class="c704-piece" role="button" tabindex="0" data-contentopen="'+E(c.id)+'">'+c704Thumb(c)+'<span class="c704-piececopy"><small>'+E(c704Kind(c))+(c.publication_time?' · '+E(String(c.publication_time).slice(0,5)):'')+'</small><b>'+E(c.title||'Conteúdo')+'</b><em class="s-'+E(String(c.status||'editing'))+'">'+E(c704Status(c))+'</em></span><i class="c704-arrow">→</i></article>';
 
   function c704Calendar(items,month){
     const [y,m]=month.split('-').map(Number),days=new Date(y,m,0).getDate(),offset=(new Date(y,m-1,1).getDay()+6)%7,cells=[];
@@ -134,7 +134,7 @@
     const rows=(D.approvals||[]).filter(a=>items.some(c=>c.id===a.content_id)),active=items.filter(c=>['approval','changes_requested'].includes(c.status)),history=rows.filter(a=>a.status!=='pending').sort((a,b)=>String(b.decided_at||b.created_at||'').localeCompare(String(a.decided_at||a.created_at||''))).slice(0,8);
     return '<div class="c704-approvalgrid"><section><div class="c704-sectionhead"><div><small>AGORA</small><h3>Para revisar</h3></div><span>'+active.length+'</span></div><div class="c704-reviewlist">'+(active.map(c=>{const a=rows.find(x=>x.content_id===c.id&&x.status==='pending');return '<article>'+c704Thumb(c)+'<div><small>'+E(c704Kind(c))+'</small><h3>'+E(c.title||'Conteúdo')+'</h3><span class="c704-status">'+E(c704Status(c))+'</span></div><button class="btn pri small" '+(a?'data-ap="'+E(a.id)+'"':'data-contentopen="'+E(c.id)+'"')+'>Revisar →</button></article>'}).join('')||'<div class="c704-empty">Nenhum conteúdo aguardando revisão.</div>')+'</div></section><aside><div class="c704-sectionhead"><div><small>HISTÓRICO</small><h3>Decisões</h3></div></div>'+history.map(a=>{const c=items.find(x=>x.id===a.content_id)||a.contents||{};return '<button class="c704-history" data-contentopen="'+E(c.id||'')+'"><span class="'+(a.status==='approved'?'ok':'change')+'"></span><div><b>'+E(c.title||'Conteúdo')+'</b><small>'+(a.status==='approved'?'Aprovado':'Ajuste solicitado')+'</small></div></button>'}).join('')+'</aside></div>';
   }
-  function c704Feed(items){const rows=items.filter(c=>!['story','stories'].includes(c.format)&&['approved','scheduled','published'].includes(c.status)).slice().sort((a,b)=>String(a.publication_date||'9999').localeCompare(String(b.publication_date||'9999')));return '<div class="c704-feedhead"><div><small>PRÉVIA</small><h3>Feed do mês</h3></div><span>'+rows.length+' peças</span></div><div class="c704-feed">'+rows.map(c=>'<button data-contentopen="'+E(c.id)+'">'+c704Thumb(c)+'<span>'+E(c.title||'Conteúdo')+'</span></button>').join('')+'</div>'}
+  function c704Feed(items){const rows=items.filter(c=>!['story','stories'].includes(c.format)&&['approved','scheduled','published'].includes(c.status)).slice().sort((a,b)=>String(a.publication_date||'9999').localeCompare(String(b.publication_date||'9999')));return '<div class="c704-feedhead"><div><small>PRÉVIA</small><h3>Feed do mês</h3></div><span>'+rows.length+' peças</span></div><div class="c704-feed">'+rows.map(c=>'<article role="button" tabindex="0" data-contentopen="'+E(c.id)+'">'+c704Thumb(c)+'<span>'+E(c.title||'Conteúdo')+'</span></article>').join('')+'</div>'}
 
   window.contentPage=function(){
     const clients=(D.clients||[]).filter(c=>c.active&&hasClientService(c.id,'social_media'));if(!clients.some(c=>c.id===contentClient)&&clients[0])contentClient=clients[0].id;
@@ -144,6 +144,15 @@
     const undated=items.filter(c=>!c.publication_date);
     if(contentMode==='calendar'&&undated.length)body+='<details class="c704-undated"><summary>Sem data definida <span>'+undated.length+'</span></summary><div>'+undated.map(c704Card).join('')+'</div></details>';
     return '<section class="c704-shell"><header class="c704-head"><div><small>SOCIAL MEDIA · '+E(client.name||'CLIENTE')+'</small><h2>Conteúdos</h2><p>Planeje, produza, revise e publique olhando para as peças.</p></div><button class="btn pri" data-m="contentNew">＋ Novo conteúdo</button></header><div class="c704-controls"><div><select id="contentClient">'+clients.map(c=>'<option value="'+c.id+'" '+(c.id===contentClient?'selected':'')+'>'+E(c.name)+'</option>').join('')+'</select><input id="contentMonth" type="month" value="'+E(contentMonth)+'"></div><nav><button data-cmode="calendar" class="'+(contentMode==='calendar'?'on':'')+'">Calendário <span>'+dated+'</span></button><button data-cmode="production" class="'+(contentMode==='production'?'on':'')+'">Produção <span>'+items.length+'</span></button><button data-cmode="approvals" class="'+(contentMode==='approvals'?'on':'')+'">Aprovações <span>'+review+'</span></button><button data-cmode="feed" class="'+(contentMode==='feed'?'on':'')+'">Feed <span>'+ready+'</span></button></nav></div><main class="c704-main">'+body+'</main></section>';
+  };
+
+  const bindBefore704=bind;
+  bind=function(){
+    bindBefore704();
+    document.querySelectorAll('.c704-shell [data-contentopen],.c704-client [data-contentopen]').forEach(node=>{
+      node.onclick=e=>{if(e.target.closest('select,a'))return;e.preventDefault();e.stopPropagation();MD={type:'contentDetail',id:node.dataset.contentopen};render()};
+      node.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();MD={type:'contentDetail',id:node.dataset.contentopen};render()}};
+    });
   };
 
   const oldClientWorkflow704=window.clientWorkflowPaneV586;
