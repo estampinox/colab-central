@@ -209,7 +209,7 @@
   };
 
   const oldClientWorkflow704=window.clientWorkflowPaneV586;
-  window.clientWorkflowPaneV586=function(cid){
+  window.clientWorkflowPaneLegacy704=function(cid){
     const services=typeof clientActiveServicesV582==='function'?clientActiveServicesV582(cid):[];if(!services.includes('social_media'))return oldClientWorkflow704(cid);
     const active=clientHubTabsV563[cid]==='workflow',items=clientWorkflowItemsV586(cid),client=cl(cid)||{},monthItems=items.filter(c=>String(c.publication_date||c.created_at||'').slice(0,7)===contentMonth||!c.publication_date);
     const focus=monthItems.filter(c=>!['published'].includes(c.status)).slice(0,6);
