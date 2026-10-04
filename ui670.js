@@ -393,3 +393,33 @@ bind=function(){
   cleanupHome727();
   requestAnimationFrame(cleanupHome727);
 };
+
+/* 7.28 — navegação final do cliente: Ideias e Conteúdos são áreas distintas */
+(function(){
+  const oldPage728=clientHubPageV5;
+  clientHubPageV5=function(cid){
+    let html=oldPage728(cid);
+    const active=clientHubTabsV563[cid]||'overview';
+    const nav='<nav class="v591-client-nav c728-nav">'+
+      '<button class="'+(active==='overview'?'on':'')+'" data-client-tab="overview">Visão geral</button>'+
+      '<button class="'+(active==='ideas'?'on':'')+'" data-client-tab="ideas">Ideias</button>'+
+      '<button class="'+(active==='workflow'?'on':'')+'" data-client-tab="workflow">Conteúdos</button>'+
+      '<button class="'+(active==='tasks'?'on':'')+'" data-client-tab="tasks">Demandas</button>'+
+      '<button class="'+(active==='agenda'?'on':'')+'" data-client-tab="agenda">Agenda</button>'+
+      '<button class="'+(active==='files'?'on':'')+'" data-client-tab="files">Arquivos</button>'+
+      '<button class="'+(['services','contact','forms','finance','history','more'].includes(active)?'on':'')+'" data-client-tab="more">Mais</button>'+
+    '</nav>';
+    html=html.replace(/<nav class="v591-client-nav[^"]*"[sS]*?<\/nav>/,nav);
+    if(active==='ideas'&&!html.includes('c701-ideas-pane')){
+      const pane=clientIdeasPaneV591(cid);
+      const grid='<div class="v5-hub-grid v563-client-panes">';
+      html=html.includes(grid)?html.replace(grid,pane+grid):html+pane;
+    }
+    if(active==='workflow'&&!html.includes('c710-client-content')){
+      const pane=clientWorkflowPaneV586(cid);
+      const grid='<div class="v5-hub-grid v563-client-panes">';
+      html=html.includes(grid)?html.replace(grid,pane+grid):html+pane;
+    }
+    return html;
+  };
+})();
