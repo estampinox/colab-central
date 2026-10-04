@@ -330,6 +330,180 @@ footer{background:#090909;color:#a9a29c;padding:18px 0}
   *{scroll-behavior:auto!important;animation:none!important;transition:none!important}
   .reveal{opacity:1!important;transform:none!important}
 }
+
+/* FINAL LAYOUT REFINEMENT */
+.moment-rail{display:none!important}
+.moment-grid{
+  margin-top:38px;
+  display:grid;
+  grid-template-columns:1.6fr .7fr .7fr 1.4fr;
+  gap:10px;
+}
+.moment-grid .moment{
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:16px 18px;
+  font-family:var(--serif);
+  font-size:18px;
+  line-height:1.25;
+  background:var(--paper);
+  min-height:78px;
+  display:flex;
+  align-items:center;
+}
+.discovery-note{
+  margin-top:26px;
+}
+
+.final{
+  min-height:auto;
+  padding:66px 0;
+}
+.final-grid{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:42px;
+  align-items:end;
+}
+.final h2{
+  font-size:clamp(46px,5.3vw,72px);
+  max-width:780px;
+}
+.final-cta{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:48px;
+  padding:0 22px;
+  border-radius:999px;
+  background:var(--orange);
+  color:#fff;
+  font-size:12px;
+  letter-spacing:.11em;
+  text-transform:uppercase;
+  font-weight:800;
+  white-space:nowrap;
+  transition:transform .2s ease,box-shadow .2s ease;
+}
+.final-cta:hover{
+  transform:translateY(-2px);
+  box-shadow:0 12px 30px rgba(255,90,31,.22);
+}
+
+footer{
+  padding:14px 0;
+}
+.footer{
+  font-size:11px;
+  opacity:.72;
+}
+
+@media(max-width:850px){
+  .moment-grid{
+    margin-top:26px;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+  }
+  .moment-grid .moment{
+    min-height:64px;
+    font-size:15.5px;
+    padding:13px 14px;
+    border-radius:14px;
+  }
+  .moment-grid .moment:first-child,
+  .moment-grid .moment:last-child{
+    grid-column:1/-1;
+  }
+
+  .plan-track{
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    overflow:visible!important;
+    gap:14px!important;
+    padding:0!important;
+    margin:0!important;
+    scroll-snap-type:none!important;
+  }
+  .plan{
+    width:100%!important;
+    flex:none!important;
+    min-height:0!important;
+    scroll-snap-align:none!important;
+  }
+  .plan-main{
+    padding:22px 22px 18px;
+  }
+  .plan .lead{
+    margin:18px 0 14px;
+  }
+  .plan .body{
+    margin-bottom:0;
+  }
+  .plan-bottom{
+    margin-top:22px;
+    padding:16px 22px 19px;
+  }
+
+  .extra-track{
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    overflow:visible!important;
+    gap:12px!important;
+    padding:0!important;
+    margin:0!important;
+    scroll-snap-type:none!important;
+  }
+  .extra-card{
+    width:100%!important;
+    flex:none!important;
+    min-height:0!important;
+    scroll-snap-align:none!important;
+    padding:18px;
+  }
+  .extra-card p{
+    margin-bottom:0;
+  }
+  .extra-price{
+    margin-top:18px;
+    padding-top:16px;
+    border-top:1px solid var(--line);
+  }
+
+  .final{
+    padding:46px 0 48px;
+  }
+  .final-grid{
+    grid-template-columns:1fr;
+    gap:24px;
+    align-items:start;
+  }
+  .final h2{
+    font-size:32px;
+    line-height:1.03;
+    max-width:92%;
+  }
+  .final-cta{
+    min-height:46px;
+    width:max-content;
+    padding:0 20px;
+  }
+
+  footer{padding:12px 0 14px}
+  .footer{
+    flex-direction:row;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    font-size:10.5px;
+  }
+}
+@media(max-width:390px){
+  .moment-grid{grid-template-columns:1fr}
+  .moment-grid .moment:first-child,
+  .moment-grid .moment:last-child{grid-column:auto}
+  .final h2{font-size:30px}
+}
+
 </style>
 </head>
 <body>
@@ -375,7 +549,7 @@ footer{background:#090909;color:#a9a29c;padding:18px 0}
       </div>
     </div>
 
-    <div class="moment-rail reveal" aria-label="Momentos">
+    <div class="moment-grid reveal" aria-label="Momentos">
       <div class="moment">A reação de quem esperava pela sua entrada.</div>
       <div class="moment">Um olhar.</div>
       <div class="moment">Um abraço.</div>
@@ -554,8 +728,9 @@ footer{background:#090909;color:#a9a29c;padding:18px 0}
 </section>
 
 <section class="final">
-  <div class="container">
+  <div class="container final-grid">
     <h2 class="reveal">VAMOS FAZER UMA COLAB COM A SUA <em>HISTÓRIA?</em></h2>
+    <a class="final-cta reveal" href="https://wa.me/5549991070654?text=Oi%21%20Quero%20conversar%20sobre%20a%20Colab%20Wedding." target="_blank" rel="noopener">Falar com a Colab</a>
   </div>
 </section>
 
@@ -563,8 +738,8 @@ footer{background:#090909;color:#a9a29c;padding:18px 0}
 
 <footer>
   <div class="container footer">
-    <span>Colab Wedding</span>
-    <span>StoryMaker</span>
+    <span>COLAB Wedding</span>
+    <span>StoryMaker para casamentos</span>
   </div>
 </footer>
 
