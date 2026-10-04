@@ -409,7 +409,7 @@ bind=function(){
       '<button class="'+(active==='files'?'on':'')+'" data-client-tab="files">Arquivos</button>'+
       '<button class="'+(['services','contact','forms','finance','history','more'].includes(active)?'on':'')+'" data-client-tab="more">Mais</button>'+
     '</nav>';
-    html=html.replace(/<nav class="v591-client-nav[^"]*"[sS]*?<\/nav>/,nav);
+    html=html.replace(/<nav class="v591-client-nav[^"]*"[\\s\\S]*?<\\/nav>/,nav);
     if(active==='ideas'&&!html.includes('c701-ideas-pane')){
       const pane=clientIdeasPaneV591(cid);
       const grid='<div class="v5-hub-grid v563-client-panes">';
