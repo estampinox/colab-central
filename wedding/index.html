@@ -915,6 +915,172 @@ header.scrolled{
   }
 }
 
+
+/* REFINEMENT: remove artificial decorative components */
+.editorial-stroke,
+.where-visual,
+.story-visual,
+.story-panel,
+.story-orbit{display:none!important}
+
+.discovery{
+  padding:64px 0!important;
+}
+.discovery .section-head{
+  grid-template-columns:.9fr 1.1fr!important;
+  gap:64px!important;
+  align-items:start!important;
+}
+.discovery .section-copy{
+  padding-top:5px;
+}
+
+.where{
+  padding:64px 0 70px!important;
+}
+.where-grid{
+  grid-template-columns:1fr!important;
+  gap:32px!important;
+}
+.where-copy{
+  max-width:760px!important;
+}
+.where-ribbon{
+  width:100vw;
+  margin-left:calc(50% - 50vw);
+  overflow:hidden;
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  background:rgba(255,255,255,.24);
+}
+.where-ribbon-track{
+  width:max-content;
+  display:flex;
+  align-items:center;
+  gap:28px;
+  padding:19px 0;
+  animation:whereMarquee 24s linear infinite;
+}
+.where-ribbon-track span{
+  font-family:var(--serif);
+  font-size:clamp(30px,3.4vw,46px);
+  letter-spacing:-.025em;
+  white-space:nowrap;
+  color:#302923;
+}
+.where-ribbon-track i{
+  font-style:normal;
+  color:var(--orange);
+  font-size:16px;
+}
+@keyframes whereMarquee{
+  from{transform:translateX(0)}
+  to{transform:translateX(-50%)}
+}
+
+.storymaker{
+  padding:72px 0 78px!important;
+}
+.story-grid{
+  grid-template-columns:minmax(0,1.2fr) minmax(280px,.8fr)!important;
+  gap:72px!important;
+  align-items:center!important;
+}
+.story-step{
+  grid-template-columns:1fr!important;
+  gap:0!important;
+  padding:0 0 18px!important;
+  margin-bottom:18px!important;
+}
+.story-step p{
+  max-width:640px;
+}
+.story-highlight{
+  margin:28px 0 0!important;
+  max-width:560px!important;
+}
+.story-flow{
+  min-height:360px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:0;
+  transition:transform .18s linear;
+}
+.story-flow-line{
+  display:flex;
+  align-items:center;
+  gap:18px;
+  min-height:62px;
+  border-top:1px solid rgba(255,255,255,.12);
+}
+.story-flow-line:last-child{
+  border-bottom:1px solid rgba(255,255,255,.12);
+}
+.story-flow-line span{
+  font-size:13px;
+  font-weight:800;
+  letter-spacing:.18em;
+  color:#fff;
+  white-space:nowrap;
+}
+.story-flow-line i{
+  flex:1;
+  height:1px;
+  background:linear-gradient(90deg,rgba(255,90,31,.6),rgba(255,255,255,.05));
+}
+.story-flow-line:nth-child(2){padding-left:24px}
+.story-flow-line:nth-child(3){padding-left:48px}
+.story-flow-line:nth-child(4){padding-left:72px}
+.story-flow-line:nth-child(5){padding-left:96px}
+
+@media(max-width:850px){
+  .discovery{
+    padding:46px 0 48px!important;
+  }
+  .discovery .section-head{
+    grid-template-columns:1fr!important;
+    gap:16px!important;
+  }
+
+  .where{
+    padding:48px 0 50px!important;
+  }
+  .where-grid{
+    gap:24px!important;
+  }
+  .where-ribbon-track{
+    gap:22px!important;
+    padding:15px 0!important;
+    animation-duration:20s!important;
+  }
+  .where-ribbon-track span{
+    font-size:27px!important;
+  }
+
+  .storymaker{
+    padding:50px 0 54px!important;
+  }
+  .story-grid{
+    grid-template-columns:1fr!important;
+    gap:28px!important;
+  }
+  .story-flow{
+    min-height:0!important;
+  }
+  .story-flow-line{
+    min-height:48px!important;
+  }
+  .story-flow-line span{
+    font-size:11px!important;
+    letter-spacing:.15em!important;
+  }
+  .story-flow-line:nth-child(2){padding-left:12px!important}
+  .story-flow-line:nth-child(3){padding-left:24px!important}
+  .story-flow-line:nth-child(4){padding-left:36px!important}
+  .story-flow-line:nth-child(5){padding-left:48px!important}
+}
+
 </style>
 </head>
 <body>
@@ -960,7 +1126,7 @@ header.scrolled{
       </div>
     </div>
 
-    <div class="editorial-stroke reveal" aria-hidden="true"><span></span></div>
+
   </div>
 </section>
 
@@ -973,11 +1139,11 @@ header.scrolled{
       <p>Dos bastidores aos encontros, dos detalhes às reações, acompanhamos o que faz aquele dia ser só de vocês.</p>
     </div>
 
-    <div class="where-visual reveal" aria-hidden="true">
-      <span>Bastidores</span>
-      <span>Encontros</span>
-      <span>Detalhes</span>
-      <span>Reações</span>
+    <div class="where-ribbon reveal" aria-hidden="true">
+      <div class="where-ribbon-track">
+        <span>Bastidores</span><i>•</i><span>Encontros</span><i>•</i><span>Detalhes</span><i>•</i><span>Reações</span><i>•</i>
+        <span>Bastidores</span><i>•</i><span>Encontros</span><i>•</i><span>Detalhes</span><i>•</i><span>Reações</span><i>•</i>
+      </div>
     </div>
   </div>
 </section>
@@ -989,32 +1155,31 @@ header.scrolled{
       <h2 class="story-title reveal">UM OUTRO OLHAR SOBRE O MESMO DIA</h2>
 
       <div class="story-step reveal">
-        <b>01</b>
+        
         <p>O StoryMaker não substitui a fotografia ou o filme.</p>
       </div>
       <div class="story-step reveal">
-        <b>02</b>
+        
         <p>É a camada mais espontânea da história. Aquela que faz vocês lembrarem não só de como o dia parecia, mas de como ele foi vivido.</p>
       </div>
       <div class="story-step reveal">
-        <b>03</b>
+        
         <p>Enquanto o casamento acontece, a Colab registra, seleciona, edita, legenda e publica os stories acompanhando a sequência dos acontecimentos.</p>
       </div>
       <div class="story-step reveal">
-        <b>04</b>
+        
         <p>Tudo vai ganhando forma enquanto o dia acontece, construindo uma narrativa do início ao fim.</p>
       </div>
 
       <p class="story-highlight reveal">É real time, mas com sensibilidade para entender o timing de cada momento.</p>
     </div>
 
-    <div class="story-visual reveal" aria-hidden="true">
-      <div class="story-orbit"></div>
-      <div class="story-panel story-panel-a"><small>01</small><strong>REGISTRA</strong></div>
-      <div class="story-panel story-panel-b"><small>02</small><strong>SELECIONA</strong></div>
-      <div class="story-panel story-panel-c"><small>03</small><strong>EDITA</strong></div>
-      <div class="story-panel story-panel-d"><small>04</small><strong>LEGENDA</strong></div>
-      <div class="story-panel story-panel-e"><small>05</small><strong>PUBLICA</strong></div>
+    <div class="story-flow reveal" aria-hidden="true">
+      <div class="story-flow-line"><span>REGISTRA</span><i></i></div>
+      <div class="story-flow-line"><span>SELECIONA</span><i></i></div>
+      <div class="story-flow-line"><span>EDITA</span><i></i></div>
+      <div class="story-flow-line"><span>LEGENDA</span><i></i></div>
+      <div class="story-flow-line"><span>PUBLICA</span></div>
     </div>
   </div>
 </section>
@@ -1150,7 +1315,7 @@ const mobile=document.querySelector('.mobile-nav');
 
 const onScroll=()=>{
   header.classList.toggle('scrolled',window.scrollY>60);
-  const visual=document.querySelector('.story-visual');
+  const visual=document.querySelector('.story-flow');
   const story=document.querySelector('.storymaker');
   if(visual&&story){
     const r=story.getBoundingClientRect();
