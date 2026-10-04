@@ -504,6 +504,171 @@ footer{
   .final h2{font-size:30px}
 }
 
+
+/* CLEANER MODERN DIRECTION */
+.hero{
+  min-height:70svh;
+  background:
+    linear-gradient(112deg,#090909 0%,#11100e 54%,#2a1712 100%);
+}
+.hero-inner{
+  padding:126px 0 58px;
+}
+.hero h1{
+  max-width:760px;
+  font-size:clamp(54px,6.3vw,84px);
+}
+.hero-accent{display:none!important}
+
+.moment-grid,.moment-rail,.discovery-note{display:none!important}
+.moment-sequence{
+  margin-top:42px;
+  border-top:1px solid var(--line);
+}
+.moment-line{
+  display:grid;
+  grid-template-columns:46px 1fr;
+  gap:18px;
+  align-items:center;
+  padding:19px 0;
+  border-bottom:1px solid var(--line);
+}
+.moment-line span{
+  font-family:var(--serif);
+  color:var(--orange);
+  font-size:15px;
+}
+.moment-line strong{
+  font-family:var(--serif);
+  font-weight:400;
+  font-size:24px;
+  line-height:1.2;
+  max-width:760px;
+}
+
+.storymaker{
+  padding:90px 0 96px;
+}
+.story-grid{
+  grid-template-columns:minmax(0,1.08fr) minmax(300px,.92fr);
+  gap:64px;
+  align-items:center;
+}
+.story-visual{
+  min-height:560px;
+  position:relative;
+  transition:transform .18s linear;
+}
+.story-orbit{
+  position:absolute;
+  width:330px;height:330px;
+  border-radius:50%;
+  right:2%;top:50%;
+  transform:translateY(-50%);
+  background:radial-gradient(circle,rgba(255,90,31,.14),rgba(255,90,31,0) 68%);
+  filter:blur(8px);
+}
+.story-panel{
+  position:absolute;
+  width:72%;
+  max-width:300px;
+  height:108px;
+  border:1px solid rgba(255,255,255,.15);
+  background:rgba(255,255,255,.035);
+  backdrop-filter:blur(10px);
+  padding:18px 20px;
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  box-shadow:0 20px 50px rgba(0,0,0,.18);
+}
+.story-panel small{
+  font-family:var(--serif);
+  color:var(--orange);
+  font-size:13px;
+}
+.story-panel strong{
+  font-size:16px;
+  letter-spacing:.15em;
+  font-weight:800;
+}
+.story-panel-a{right:8%;top:6%;transform:rotate(2deg)}
+.story-panel-b{left:6%;top:24%;transform:rotate(-2deg)}
+.story-panel-c{right:2%;top:42%;transform:rotate(1deg)}
+.story-panel-d{left:12%;top:60%;transform:rotate(-1deg)}
+.story-panel-e{right:10%;top:78%;transform:rotate(2deg)}
+
+.phone-wrap,.phone,.phone-screen,.progress,.phone-copy,.phone-meta{display:none!important}
+
+@media(max-width:850px){
+  .hero{
+    min-height:60svh;
+  }
+  .hero-inner{
+    padding:86px 0 38px;
+  }
+  .hero h1{
+    font-size:36px;
+    line-height:1;
+    max-width:92%;
+    margin:16px 0 18px;
+  }
+  .hero p{
+    font-size:15.5px;
+    line-height:1.48;
+    max-width:94%;
+  }
+
+  .moment-sequence{
+    margin-top:26px;
+  }
+  .moment-line{
+    grid-template-columns:34px 1fr;
+    gap:10px;
+    padding:15px 0;
+  }
+  .moment-line strong{
+    font-size:19px;
+  }
+  .moment-line span{
+    font-size:13px;
+  }
+
+  .storymaker{
+    padding:56px 0 58px;
+  }
+  .story-grid{
+    grid-template-columns:1fr;
+    gap:30px;
+  }
+  .story-visual{
+    min-height:350px;
+  }
+  .story-orbit{
+    width:220px;height:220px;right:8%;
+  }
+  .story-panel{
+    width:72%;
+    max-width:none;
+    height:66px;
+    padding:12px 14px;
+  }
+  .story-panel strong{
+    font-size:12px;
+    letter-spacing:.13em;
+  }
+  .story-panel small{font-size:11px}
+  .story-panel-a{right:4%;top:2%}
+  .story-panel-b{left:2%;top:20%}
+  .story-panel-c{right:1%;top:38%}
+  .story-panel-d{left:8%;top:56%}
+  .story-panel-e{right:5%;top:74%}
+}
+@media(max-width:390px){
+  .hero h1{font-size:34px}
+  .moment-line strong{font-size:18px}
+}
+
 </style>
 </head>
 <body>
@@ -549,14 +714,12 @@ footer{
       </div>
     </div>
 
-    <div class="moment-grid reveal" aria-label="Momentos">
-      <div class="moment">A reação de quem esperava pela sua entrada.</div>
-      <div class="moment">Um olhar.</div>
-      <div class="moment">Um abraço.</div>
-      <div class="moment">Alguém tentando segurar o choro.</div>
+    <div class="moment-sequence reveal" aria-label="Momentos">
+      <div class="moment-line"><span>01</span><strong>A reação de quem esperava pela sua entrada.</strong></div>
+      <div class="moment-line"><span>02</span><strong>Um olhar.</strong></div>
+      <div class="moment-line"><span>03</span><strong>Um abraço.</strong></div>
+      <div class="moment-line"><span>04</span><strong>Alguém tentando segurar o choro.</strong></div>
     </div>
-
-    <div class="discovery-note reveal">Tem coisa que só aparece quando alguém está atento ao que acontece ao redor.</div>
   </div>
 </section>
 
@@ -604,17 +767,13 @@ footer{
       <p class="story-highlight reveal">É real time, mas com sensibilidade para entender o timing de cada momento.</p>
     </div>
 
-    <div class="phone-wrap" aria-hidden="true">
-      <div class="phone">
-        <div class="phone-screen">
-          <div class="progress"><i class="active"></i><i></i><i></i><i></i></div>
-          <div class="phone-copy">
-            <small>COLAB WEDDING</small>
-            <strong>histórias sendo contadas enquanto acontecem.</strong>
-          </div>
-          <div class="phone-meta"><span>REAL TIME</span><span>STORYMAKER</span></div>
-        </div>
-      </div>
+    <div class="story-visual reveal" aria-hidden="true">
+      <div class="story-orbit"></div>
+      <div class="story-panel story-panel-a"><small>01</small><strong>REGISTRA</strong></div>
+      <div class="story-panel story-panel-b"><small>02</small><strong>SELECIONA</strong></div>
+      <div class="story-panel story-panel-c"><small>03</small><strong>EDITA</strong></div>
+      <div class="story-panel story-panel-d"><small>04</small><strong>LEGENDA</strong></div>
+      <div class="story-panel story-panel-e"><small>05</small><strong>PUBLICA</strong></div>
     </div>
   </div>
 </section>
@@ -750,15 +909,12 @@ const mobile=document.querySelector('.mobile-nav');
 
 const onScroll=()=>{
   header.classList.toggle('scrolled',window.scrollY>60);
-  const s=document.querySelector('.storymaker');
-  const phone=document.querySelector('.phone');
-  const bars=[...document.querySelectorAll('.progress i')];
-  if(s&&phone){
-    const r=s.getBoundingClientRect();
+  const visual=document.querySelector('.story-visual');
+  const story=document.querySelector('.storymaker');
+  if(visual&&story){
+    const r=story.getBoundingClientRect();
     const p=Math.max(0,Math.min(1,(innerHeight-r.top)/(r.height+innerHeight)));
-    if(innerWidth>850) phone.style.translate='0 '+((p-.5)*24)+'px';
-    const active=Math.min(bars.length-1,Math.floor(p*bars.length));
-    bars.forEach((b,i)=>b.classList.toggle('active',i<=active));
+    visual.style.transform='translateY('+((p-.5)*18)+'px)';
   }
 };
 addEventListener('scroll',onScroll,{passive:true});
