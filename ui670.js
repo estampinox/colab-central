@@ -423,3 +423,28 @@ bind=function(){
     return html;
   };
 })();
+
+/* 7.30 — correção estrutural final do hub da cliente */
+(function(){
+  const before730=clientHubPageV5;
+  clientHubPageV5=function(cid){
+    let html=before730(cid), active=clientHubTabsV563[cid]||'overview';
+    const nav='<nav class="v591-client-nav c730-nav">'+[
+      ['overview','Visão geral'],['ideas','Ideias'],['workflow','Conteúdos'],['tasks','Demandas'],['agenda','Agenda'],['files','Arquivos'],['more','Mais']
+    ].map(function(x){const on=x[0]==='more'?['services','contact','forms','finance','history','more'].includes(active):active===x[0];return '<button class="'+(on?'on':'')+'" data-client-tab="'+x[0]+'">'+x[1]+'</button>'}).join('')+'</nav>';
+    html=html.replace(/<nav class="v591-client-nav[^"]*"[^>]*>[\s\S]*?<\/nav>/,nav);
+    return html;
+  };
+  const bind730=bind;
+  bind=function(){
+    bind730();
+    if(V!=='clientHub'||!clientHubIdV5)return;
+    const root=document.querySelector('.main');
+    const nav=root?.querySelector('.v591-client-nav');
+    if(nav&&!nav.classList.contains('c730-nav')){
+      const active=clientHubTabsV563[clientHubIdV5]||'overview';
+      nav.className='v591-client-nav c730-nav';
+      nav.innerHTML=[['overview','Visão geral'],['ideas','Ideias'],['workflow','Conteúdos'],['tasks','Demandas'],['agenda','Agenda'],['files','Arquivos'],['more','Mais']].map(x=>'<button class="'+((x[0]==='more'?['services','contact','forms','finance','history','more'].includes(active):active===x[0])?'on':'')+'" data-client-tab="'+x[0]+'">'+x[1]+'</button>').join('');
+    }
+  };
+})();
