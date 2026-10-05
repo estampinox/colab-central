@@ -192,3 +192,7 @@
  .c7-home .c7-workmeta .late{padding:3px 6px!important}
  .c7-home .c7-arrow{width:25px!important;height:25px!important}
 }
+
+/* 7.30 — hub mobile limpo */
+.c730-nav{display:flex!important;align-items:center;gap:4px!important;overflow-x:auto!important;scrollbar-width:none;padding:5px!important;border:1px solid #262626!important;border-radius:11px!important;background:#0d0d0d!important}.c730-nav::-webkit-scrollbar{display:none}.c730-nav button{flex:0 0 auto!important;min-width:auto!important;padding:10px 13px!important;border:0!important;border-radius:7px!important;background:transparent!important;color:#777!important;font:650 9px Inter,system-ui,sans-serif!important;white-space:nowrap!important}.c730-nav button.on{background:#19130f!important;color:#fff!important;box-shadow:inset 0 -2px #ff6a00!important}
+@media(max-width:700px){.c730-nav{margin:8px 0 12px!important;padding:4px!important}.c730-nav button{padding:9px 11px!important;font-size:9px!important}.c717-radar:has(b:first-child){grid-template-columns:repeat(2,1fr)!important}.c717-overview .c704-empty{min-height:64px!important}.c717-overview{padding:0!important;border:0!important;background:transparent!important}.c717-block:has(.c704-empty){display:none!important}}
