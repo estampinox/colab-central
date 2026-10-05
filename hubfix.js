@@ -127,3 +127,100 @@
     e.preventDefault();openContent734(card.dataset.contentopen);
   },true);
 })();
+
+/* COLAB 7.35 — remove visual noise from Home + Demandas */
+(function(){
+  const esc=v=>typeof E==='function'?E(v==null?'':String(v)):String(v==null?'':v);
+  const who=id=>{try{return (typeof profile==='function'&&profile(id)?.display_name)||'Sem responsável'}catch(_){return 'Sem responsável'}};
+  const clientName=id=>{try{return (typeof cl==='function'&&cl(id)?.name)||'Colab'}catch(_){return 'Colab'}};
+  const dateShort=v=>{try{return v&&typeof fmtDate==='function'?fmtDate(v):''}catch(_){return ''}};
+  const tdy=()=>{try{return typeof today==='function'?today():new Date().toISOString().slice(0,10)}catch(_){return new Date().toISOString().slice(0,10)}};
+  const taskState=s=>({todo:'A fazer',doing:'Em andamento',approval:'Aguardando',done:'Concluída'})[s]||'A fazer';
+
+  window.homePage=function(){
+    const tasks=(D.tasks||[]).filter(t=>t.status!=='done');
+    const overdue=tasks.filter(t=>t.due_date&&t.due_date<tdy()).length;
+    const urgent=tasks.filter(t=>t.priority==='urgent').length;
+    const waiting=(D.contents||[]).filter(c=>c.status==='approval').length;
+    let rows=[];
+    try{rows=(typeof methodActionRowsV647==='function'?methodActionRowsV647():[]).filter(r=>r&&!r.done)}catch(_){rows=[]}
+    if(!rows.length) rows=tasks.map(t=>({kind:'task',id:t.id,title:t.title,clientId:t.client_id,owner:t.assigned_to,due:t.due_date,urgent:t.priority==='urgent',next:taskState(t.status)}));
+    rows=rows.slice().sort((a,b)=>(b.urgent?1:0)-(a.urgent?1:0)||String(a.due||'9999').localeCompare(String(b.due||'9999'))).slice(0,5);
+    const first=((typeof profile==='function'&&profile(S.user?.id)?.display_name)||'Equipe').split(' ')[0];
+    const now=new Date(),dias=['domingo','segunda-feira','terça-feira','quarta-feira','quinta-feira','sexta-feira','sábado'],meses=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+    const dateLabel=dias[now.getDay()]+', '+now.getDate()+' de '+meses[now.getMonth()];
+    const verse=[['Tudo tem o seu tempo determinado.','Eclesiastes 3:1'],['Consagre ao Senhor tudo o que você faz.','Provérbios 16:3'],['A sabedoria é a coisa principal.','Provérbios 4:7'],['Seja forte e corajosa.','Josué 1:9'],['Que tudo seja feito com amor.','1 Coríntios 16:14'],['Os planos bem elaborados levam à fartura.','Provérbios 21:5'],['Há tempo para todo propósito.','Eclesiastes 3:1']][now.getDay()];
+    const card=r=>{
+      const isTask=r.kind==='task';
+      const attrs=isTask?'data-op="task-edit" data-id="'+esc(r.id)+'"':'data-method-work="'+esc(r.id)+'"';
+      const late=!!(r.due&&r.due<tdy());
+      return '<button class="c735-priority '+(r.urgent?'urgent':'')+'" '+attrs+'>'+
+        '<div class="c735-priority-top"><span>'+esc(clientName(r.clientId))+'</span><em>'+esc(String(r.next||'Em andamento'))+'</em></div>'+
+        '<h3>'+esc(r.title||'Item')+'</h3>'+
+        '<div class="c735-priority-foot"><span>'+esc(who(r.owner))+'</span><b class="'+(late?'late':'')+'">'+(r.due?(late?'Atrasada · ':'')+esc(dateShort(r.due)):'')+'</b></div>'+
+      '</button>'
+    };
+    return '<section class="c735-home">'+
+      '<header class="c735-homehead"><div><small>'+esc(dateLabel.toUpperCase())+'</small><h1>Olá, '+esc(first)+'.</h1><p>'+esc(verse[0])+' <span>'+esc(verse[1])+'</span></p></div><div class="c735-quick"><button class="btn pri" data-m="taskQuickV5">＋ Demanda</button><button class="btn ghost" data-m="ideaQuickV633">＋ Conteúdo</button></div></header>'+
+      '<div class="c735-signals">'+
+        (urgent?'<button data-v="tasks"><b>'+urgent+'</b><span>Urgentes</span></button>':'')+
+        (overdue?'<button data-v="tasks"><b>'+overdue+'</b><span>Atrasadas</span></button>':'')+
+        (waiting?'<button data-v="content"><b>'+waiting+'</b><span>Com cliente</span></button>':'')+
+      '</div>'+
+      '<section class="c735-section"><header><div><small>TRABALHO AGORA</small><h2>Prioridades</h2></div><span>'+rows.length+'</span></header><div class="c735-priority-grid">'+(rows.map(card).join('')||'<div class="c735-empty">Tudo em dia por aqui.</div>')+'</div></section>'+
+    '</section>'
+  };
+
+  window.tasksPage=function(){
+    const mode=typeof taskViewV604!=='undefined'?taskViewV604:'mine';
+    const all=(D.tasks||[]);
+    const open=all.filter(t=>t.status!=='done');
+    const mine=open.filter(t=>t.assigned_to===S.user?.id);
+    const team=open;
+    const done=all.filter(t=>t.status==='done');
+    const rows=mode==='done'?done:mode==='team'?team:mine;
+    const card=t=>{
+      const late=t.due_date&&t.due_date<tdy()&&t.status!=='done';
+      return '<button class="c735-task '+(t.priority==='urgent'?'urgent':'')+'" data-op="task-edit" data-id="'+esc(t.id)+'">'+
+        '<div class="c735-task-top"><span>'+esc(clientName(t.client_id))+'</span><em>'+esc(taskState(t.status))+'</em></div>'+
+        '<h3>'+esc(t.title||'Demanda')+'</h3>'+
+        '<div class="c735-task-foot"><span>'+esc(who(t.assigned_to))+'</span><b class="'+(late?'late':'')+'">'+(t.due_date?(late?'Atrasada · ':'')+esc(dateShort(t.due_date)):'Prazo a definir')+'</b></div>'+
+      '</button>'
+    };
+    return '<section class="c735-tasks"><header class="c735-taskhead"><div><small>OPERAÇÃO</small><h1>Demandas</h1><p>Tarefas da equipe fora do fluxo editorial.</p></div><button class="btn pri" data-m="taskQuickV5">＋ Nova demanda</button></header>'+
+      '<nav class="c735-tasktabs">'+
+        '<button class="'+(mode==='mine'?'on':'')+'" data-v604-taskview="mine">Minhas <span>'+mine.length+'</span></button>'+
+        '<button class="'+(mode==='team'?'on':'')+'" data-v604-taskview="team">Equipe <span>'+team.length+'</span></button>'+
+        '<button class="'+(mode==='done'?'on':'')+'" data-v604-taskview="done">Concluídas <span>'+done.length+'</span></button>'+
+      '</nav>'+
+      '<div class="c735-tasklist">'+(rows.map(card).join('')||'<div class="c735-empty">Nenhuma demanda nesta fila.</div>')+'</div>'+
+    '</section>'
+  };
+
+  const style=document.createElement('style');
+  style.id='c735-clean-ui';
+  style.textContent=`
+  .c735-home,.c735-tasks{max-width:1180px;margin:0 auto;padding:4px 0 34px;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;color:#f3f2ef}
+  .c735-homehead,.c735-taskhead{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:18px}
+  .c735-homehead small,.c735-taskhead small,.c735-section>header small{color:#ff6a00;font-size:9px;font-weight:800;letter-spacing:.13em}
+  .c735-homehead h1,.c735-taskhead h1{margin:5px 0 5px;font-size:31px;line-height:1.05;letter-spacing:-.035em}
+  .c735-homehead p,.c735-taskhead p{margin:0;color:#898985;font-size:11px}.c735-homehead p span{display:block;margin-top:3px;color:#666}
+  .c735-quick{display:flex;gap:7px}.c735-quick .btn,.c735-taskhead .btn{min-height:38px!important;border-radius:8px!important;font-size:10px!important}
+  .c735-signals{display:flex;gap:7px;margin:0 0 20px}.c735-signals:empty{display:none}.c735-signals button{display:flex;align-items:baseline;gap:7px;padding:8px 11px;border:1px solid #2a2a2a;border-radius:8px;background:#111;color:#aaa}.c735-signals b{color:#ff6a00;font-size:16px}.c735-signals span{font-size:9px}
+  .c735-section>header{display:flex;align-items:end;justify-content:space-between;margin-bottom:9px}.c735-section>header h2{margin:3px 0 0;font-size:19px}.c735-section>header>span{color:#666;font-size:9px}
+  .c735-priority-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+  .c735-priority,.c735-task{display:grid;gap:9px;min-height:112px;padding:15px;border:1px solid #292929;border-radius:13px;background:#121212;color:#f3f2ef;text-align:left;box-shadow:none}
+  .c735-priority:hover,.c735-task:hover{border-color:#393939;background:#151515}.c735-priority.urgent,.c735-task.urgent{border-color:#5a2e18;box-shadow:inset 3px 0 #ff6a00}
+  .c735-priority-top,.c735-task-top,.c735-priority-foot,.c735-task-foot{display:flex;align-items:center;justify-content:space-between;gap:10px}.c735-priority-top span,.c735-task-top span{color:#ff7b2a;font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:.05em}.c735-priority-top em,.c735-task-top em{padding:4px 6px;border-radius:999px;background:#1c1c1c;color:#8b8b87;font-size:8px;font-style:normal}
+  .c735-priority h3,.c735-task h3{margin:0;font-size:14px;line-height:1.28;font-weight:680;letter-spacing:-.01em}.c735-priority-foot span,.c735-task-foot span{color:#777;font-size:9px}.c735-priority-foot b,.c735-task-foot b{color:#777;font-size:9px;font-weight:600}.c735-priority-foot b.late,.c735-task-foot b.late{color:#ff7b2a}
+  .c735-taskhead{margin-bottom:12px}.c735-tasktabs{display:flex;gap:5px;margin-bottom:12px;padding:4px;border:1px solid #282828;border-radius:10px;background:#0e0e0e}.c735-tasktabs button{flex:0 0 auto;padding:9px 12px;border:0;border-radius:7px;background:transparent;color:#777;font-size:10px;font-weight:650}.c735-tasktabs button span{margin-left:5px;color:#666}.c735-tasktabs button.on{background:#1a130f;color:#fff;box-shadow:inset 0 -2px #ff6a00}.c735-tasktabs button.on span{color:#ff7b2a}
+  .c735-tasklist{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.c735-empty{padding:24px;border:1px dashed #292929;border-radius:10px;color:#777;font-size:10px;text-align:center;grid-column:1/-1}
+  @media(max-width:760px){
+    .c735-home,.c735-tasks{padding:0 0 90px}.c735-homehead,.c735-taskhead{display:grid;gap:12px;align-items:start;margin-bottom:14px}.c735-homehead h1,.c735-taskhead h1{font-size:28px}.c735-homehead p{font-size:12px}
+    .c735-quick{display:grid;grid-template-columns:1fr 1fr}.c735-quick .btn{min-height:42px!important}
+    .c735-signals{overflow-x:auto;scrollbar-width:none;margin-bottom:16px}.c735-signals::-webkit-scrollbar{display:none}.c735-signals button{flex:0 0 auto}
+    .c735-priority-grid,.c735-tasklist{grid-template-columns:1fr;gap:8px}.c735-priority,.c735-task{min-height:0;padding:14px;border-radius:12px}.c735-priority h3,.c735-task h3{font-size:15px}
+    .c735-taskhead .btn{width:100%;min-height:42px!important}.c735-tasktabs{overflow-x:auto;scrollbar-width:none}.c735-tasktabs::-webkit-scrollbar{display:none}.c735-tasktabs button{white-space:nowrap}
+  }`;
+  document.head.appendChild(style);
+})();
