@@ -224,3 +224,55 @@
   }`;
   document.head.appendChild(style);
 })();
+
+/* COLAB 7.36 — delete menu on client content cards */
+(function(){
+  function injectDeleteMenus(){
+    if(typeof V==='undefined'||V!=='clientHub')return;
+    const root=document.querySelector('.c717-overview')||document.querySelector('.main');
+    if(!root)return;
+    root.querySelectorAll('[data-contentopen]').forEach(card=>{
+      const id=card.dataset.contentopen;
+      if(!id||card.querySelector('.c736-content-more'))return;
+      card.classList.add('c736-has-menu');
+      const wrap=document.createElement('div');
+      wrap.className='c736-content-more';
+      wrap.innerHTML='<button type="button" aria-label="Mais opções" class="c736-more-btn">•••</button><div class="c736-menu"><button type="button" class="c736-delete" data-c736-delete="'+String(id).replace(/"/g,'&quot;')+'">Excluir conteúdo</button></div>';
+      card.appendChild(wrap);
+    });
+  }
+  document.addEventListener('click',function(e){
+    const more=e.target.closest('.c736-more-btn');
+    if(more){
+      e.preventDefault();e.stopImmediatePropagation();
+      const wrap=more.closest('.c736-content-more');
+      document.querySelectorAll('.c736-content-more.open').forEach(x=>{if(x!==wrap)x.classList.remove('open')});
+      wrap.classList.toggle('open');return;
+    }
+    const del=e.target.closest('[data-c736-delete]');
+    if(del){
+      e.preventDefault();e.stopImmediatePropagation();
+      const id=del.dataset.c736Delete;
+      del.closest('.c736-content-more')?.classList.remove('open');
+      if(typeof deleteContent==='function')deleteContent(id);
+      return;
+    }
+    document.querySelectorAll('.c736-content-more.open').forEach(x=>x.classList.remove('open'));
+  },true);
+  const prior=typeof bind==='function'?bind:null;
+  if(prior)bind=function(){prior();injectDeleteMenus();requestAnimationFrame(injectDeleteMenus)};
+  document.addEventListener('DOMContentLoaded',injectDeleteMenus);
+  const style=document.createElement('style');
+  style.id='c736-delete-style';
+  style.textContent=`
+    .c736-has-menu{position:relative!important;padding-right:50px!important}
+    .c736-content-more{position:absolute!important;right:12px!important;top:12px!important;z-index:25!important}
+    .c736-more-btn{width:32px!important;height:32px!important;display:grid!important;place-items:center!important;border:1px solid #303030!important;border-radius:9px!important;background:#171717!important;color:#888!important;font-size:13px!important;letter-spacing:1px!important}
+    .c736-menu{display:none!important;position:absolute!important;right:0!important;top:38px!important;width:145px!important;padding:5px!important;border:1px solid #333!important;border-radius:10px!important;background:#171717!important;box-shadow:0 12px 30px #000b!important}
+    .c736-content-more.open .c736-menu{display:block!important}
+    .c736-delete{width:100%!important;padding:10px!important;border:0!important;border-radius:7px!important;background:transparent!important;color:#d88984!important;font-size:10px!important;text-align:left!important}
+    .c736-delete:hover{background:#241616!important}
+    @media(max-width:760px){.c736-has-menu{padding-right:48px!important}.c736-content-more{right:11px!important;top:11px!important}.c736-more-btn{width:30px!important;height:30px!important}}
+  `;
+  document.head.appendChild(style);
+})();
