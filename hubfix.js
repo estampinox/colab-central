@@ -276,3 +276,49 @@
   `;
   document.head.appendChild(style);
 })();
+/* COLAB 7.36 — cliente abre em Visão geral + excluir conteúdo */
+(function(){
+  function forceOverviewOpen(){
+    document.querySelectorAll('[data-clienthub]').forEach(function(btn){
+      btn.addEventListener('click',function(e){
+        const cid=btn.dataset.clienthub;if(!cid)return;
+        e.preventDefault();e.stopImmediatePropagation();
+        clientHubIdV5=cid;clientHubTabsV563[cid]='overview';contentClient=cid;V='clientHub';MD=null;render();
+      },true);
+    });
+  }
+  const b736=typeof bind==='function'?bind:null;
+  if(b736)bind=function(){b736();forceOverviewOpen()};
+
+  const oldC704=typeof c704Card==='function'?c704Card:null;
+  if(oldC704){
+    window.c704Card=function(c){
+      let html=oldC704(c);
+      return html.replace('</article>','<details class="c736-content-more"><summary aria-label="Mais opções">•••</summary><div><button type="button" data-c736-delete-content="'+E(c.id)+'">Excluir conteúdo</button></div></details></article>');
+    };
+  }
+
+  document.addEventListener('click',async function(e){
+    const del=e.target.closest('[data-c736-delete-content]');
+    if(!del)return;
+    e.preventDefault();e.stopImmediatePropagation();
+    const id=del.dataset.c736DeleteContent;
+    const content=(D.contents||[]).find(x=>String(x.id)===String(id));
+    if(!content)return;
+    if(!confirm('Excluir o conteúdo “'+(content.title||'sem título')+'”? Esta ação não pode ser desfeita.'))return;
+    try{
+      del.disabled=true;
+      await api('/rest/v1/contents?id=eq.'+encodeURIComponent(id),{method:'DELETE',headers:{Prefer:'return=minimal'}});
+      await load();MD=null;render();toast('Conteúdo excluído');
+    }catch(err){del.disabled=false;toast(err.message||'Não foi possível excluir o conteúdo')}
+  },true);
+
+  const css=document.createElement('style');css.id='c736-content-actions';css.textContent=`
+    .c704-piece{position:relative!important;padding-right:46px!important}
+    .c736-content-more{position:absolute!important;right:9px!important;top:9px!important;z-index:6!important}
+    .c736-content-more>summary{display:grid!important;place-items:center!important;width:30px!important;height:30px!important;border:1px solid #303030!important;border-radius:8px!important;background:#151515!important;color:#888!important;list-style:none!important;cursor:pointer!important;font-style:normal!important}
+    .c736-content-more>summary::-webkit-details-marker{display:none!important}
+    .c736-content-more>div{position:absolute!important;right:0!important;top:35px!important;width:145px!important;padding:5px!important;border:1px solid #333!important;border-radius:9px!important;background:#171717!important;box-shadow:0 12px 28px #000a!important}
+    .c736-content-more button{width:100%!important;padding:9px!important;border:0!important;border-radius:6px!important;background:transparent!important;color:#df8b87!important;text-align:left!important;font-size:10px!important}
+  `;document.head.appendChild(css);
+})();
