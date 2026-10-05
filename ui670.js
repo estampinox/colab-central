@@ -448,3 +448,40 @@ bind=function(){
     }
   };
 })();
+
+/* 7.31 — DOM final do hub: remove camadas legadas que sobrevivem aos renderers */
+(function(){
+  function finalClientHub731(){
+    if(V!=='clientHub'||!clientHubIdV5)return;
+    const main=document.querySelector('.main'); if(!main)return;
+    const active=clientHubTabsV563[clientHubIdV5]||'overview';
+    const nav=main.querySelector('.v591-client-nav');
+    if(nav){
+      nav.className='v591-client-nav c730-nav';
+      nav.innerHTML=[['overview','Visão geral'],['ideas','Ideias'],['workflow','Conteúdos'],['tasks','Demandas'],['agenda','Agenda'],['files','Arquivos'],['more','Mais']].map(function(x){
+        const on=x[0]==='more'?['services','contact','forms','finance','history','more'].includes(active):active===x[0];
+        return '<button class="'+(on?'on':'')+'" data-client-tab="'+x[0]+'">'+x[1]+'</button>';
+      }).join('');
+    }
+    if(active==='overview'){
+      main.querySelectorAll('.v5-hub-grid,.v582-services-overview,.v604-client-overview,.v662-client-overview').forEach(function(el){el.style.display='none'});
+      main.querySelectorAll('section,article,div').forEach(function(el){
+        if(el.closest('.c717-overview'))return;
+        const txt=(el.textContent||'').replace(/\s+/g,' ').trim();
+        if((txt.includes('SERVIÇOS ATIVOS')&&txt.includes('Operação por cliente'))||
+           (txt.includes('com você')&&txt.includes('urgentes')&&txt.includes('atrasadas')&&txt.includes('com a cliente')&&txt.includes('+ Demanda'))){
+          if(el.parentElement&&el.parentElement!==main)el.style.display='none';
+        }
+      });
+      let ov=main.querySelector('.c717-overview');
+      if(!ov){
+        const host=nav?.parentElement||main;
+        host.insertAdjacentHTML('afterend',c717Overview(clientHubIdV5));
+        ov=main.querySelector('.c717-overview');
+      }
+      if(ov){ov.style.display='block';ov.setAttribute('data-v563-active','');}
+    }
+  }
+  const b731=bind;
+  bind=function(){b731();finalClientHub731();requestAnimationFrame(finalClientHub731);setTimeout(finalClientHub731,60)};
+})();
