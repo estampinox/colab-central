@@ -108,7 +108,7 @@
     if(typeof V!=='undefined'&&V!=='clientHub')return;
     const card=e.target.closest('[data-contentopen]');
     if(card){
-      if(e.target.closest('a,select,input,textarea,label,[data-ap]'))return;
+      if(e.target.closest('a,select,input,textarea,label,[data-ap],.c736-content-more,[data-contentdelete],[data-c736-delete],[data-c736-delete-content]'))return;
       e.preventDefault();e.stopImmediatePropagation();
       openContent734(card.dataset.contentopen);
       return;
