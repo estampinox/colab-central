@@ -94,3 +94,36 @@
   `;
   document.head.appendChild(css);
 })();
+
+/* COLAB 7.34 — content cards always open from client overview */
+(function(){
+  function openContent734(id){
+    if(!id)return;
+    const content=(D.contents||[]).find(row=>String(row.id)===String(id));
+    if(!content){if(typeof toast==='function')toast('Conteúdo não encontrado.');return}
+    MD={type:'contentDetail',id:content.id};
+    render();
+  }
+  document.addEventListener('click',function(e){
+    if(typeof V!=='undefined'&&V!=='clientHub')return;
+    const card=e.target.closest('[data-contentopen]');
+    if(card){
+      if(e.target.closest('a,select,input,textarea,label,[data-ap]'))return;
+      e.preventDefault();e.stopImmediatePropagation();
+      openContent734(card.dataset.contentopen);
+      return;
+    }
+    const workflow=e.target.closest('[data-v604-workflow]');
+    if(workflow){
+      e.preventDefault();e.stopImmediatePropagation();
+      openContent734(workflow.dataset.v604Workflow);
+    }
+  },true);
+  document.addEventListener('keydown',function(e){
+    if(typeof V!=='undefined'&&V!=='clientHub')return;
+    if(e.key!=='Enter'&&e.key!==' ')return;
+    const card=e.target.closest('[data-contentopen]');
+    if(!card)return;
+    e.preventDefault();openContent734(card.dataset.contentopen);
+  },true);
+})();
