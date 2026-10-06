@@ -3,476 +3,424 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0f0f0f">
-<title>Colab Wedding — Proposta</title>
-<meta name="description" content="Proposta digital Colab Wedding — StoryMaker para casamentos.">
+<meta name="theme-color" content="#0c0c0c">
+<title>Colab Wedding</title>
+<meta name="description" content="Colab Wedding — StoryMaker para casamentos em tempo real.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#f7f6f2;
-  --ink:#111111;
-  --muted:#6d6a64;
-  --soft:#ece9e2;
-  --line:#d9d5cc;
+  --black:#0c0c0c;
+  --black2:#141414;
+  --white:#f8f7f3;
+  --paper:#f3f0ea;
+  --ink:#121212;
+  --muted:#6b6a66;
+  --line:rgba(18,18,18,.16);
   --orange:#ff5a1f;
-  --white:#fff;
-  --radius:18px;
-  --max:1180px;
-  --gutter:clamp(20px,4vw,56px);
-  --font:"Manrope",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
+  --orange2:#ff7c4c;
+  --max:1220px;
+  --gutter:clamp(20px,4vw,58px);
+  --sans:"Inter Tight",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
+  --serif:"Instrument Serif",Georgia,serif;
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth;background:var(--bg)}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);overflow-x:hidden}
+html{scroll-behavior:smooth;background:var(--black)}
+body{margin:0;font-family:var(--sans);background:var(--black);color:var(--white);overflow-x:hidden}
 a{color:inherit;text-decoration:none}
 button{font:inherit}
 .wrap{width:min(var(--max),calc(100% - 2*var(--gutter)));margin:auto}
-.smallcaps{font-size:10px;line-height:1;text-transform:uppercase;letter-spacing:.18em;font-weight:800}
-.muted{color:var(--muted)}
-.orange{color:var(--orange)}
-.reveal{opacity:0;transform:translateY(16px);transition:opacity .65s ease,transform .65s cubic-bezier(.2,.75,.2,1)}
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.75,.2,1)}
 .reveal.show{opacity:1;transform:none}
+.kicker{font-size:9px;text-transform:uppercase;letter-spacing:.19em;font-weight:800;color:var(--orange)}
+.cursor-glow{position:fixed;width:420px;height:420px;border-radius:50%;pointer-events:none;background:radial-gradient(circle,rgba(255,90,31,.17),rgba(255,90,31,0) 68%);transform:translate(-50%,-50%);z-index:0;opacity:.85;mix-blend-mode:screen}
+.progress{position:fixed;left:0;top:0;height:2px;background:var(--orange);z-index:120;width:0}
 
-/* header */
-header{
-  position:sticky;top:0;z-index:80;background:rgba(247,246,242,.93);
-  backdrop-filter:blur(16px);border-bottom:1px solid rgba(17,17,17,.08)
-}
-.nav{height:64px;display:flex;align-items:center;justify-content:space-between;gap:20px}
-.brand{font-size:20px;font-weight:800;letter-spacing:-.05em}
-.brand span{font-weight:500;margin-left:5px}
-.nav-mid{font-size:9px;text-transform:uppercase;letter-spacing:.16em;color:var(--muted);font-weight:800}
-.nav-cta{
-  display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:#fff;
-  padding:11px 14px;border-radius:999px;font-size:9px;text-transform:uppercase;
-  letter-spacing:.12em;font-weight:800
-}
-.nav-cta i{font-style:normal;color:var(--orange);font-size:14px}
+/* HEADER */
+header{position:fixed;inset:0 0 auto;z-index:100;transition:.3s ease}
+header.scrolled{background:rgba(12,12,12,.78);backdrop-filter:blur(18px);border-bottom:1px solid rgba(255,255,255,.08)}
+.nav{height:68px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand{font-size:20px;font-weight:800;letter-spacing:-.045em}
+.brand em{font-family:var(--serif);font-size:23px;font-weight:400;margin-left:6px;color:var(--orange2)}
+.nav-links{display:flex;gap:24px;align-items:center}
+.nav-links a{font-size:9px;text-transform:uppercase;letter-spacing:.16em;font-weight:800;color:rgba(255,255,255,.72)}
+.nav-cta{border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:10px 14px!important;color:#fff!important}
+.menu{display:none;border:0;background:transparent;color:#fff;width:42px;height:42px}
+.menu:before,.menu:after,.menu span{content:"";display:block;width:22px;height:1px;background:currentColor;margin:5px auto}
+.mobile-nav{display:none;position:fixed;inset:0;z-index:95;background:var(--black);padding:104px var(--gutter) 30px}
+.mobile-nav.open{display:flex;flex-direction:column}
+.mobile-nav a{font-size:30px;font-weight:700;letter-spacing:-.04em;padding:16px 0;border-bottom:1px solid rgba(255,255,255,.12)}
 
-/* hero */
-.hero{background:var(--ink);color:#fff;padding:34px 0 44px}
-.hero-grid{
-  display:grid;grid-template-columns:minmax(0,1.3fr) minmax(310px,.7fr);
-  gap:72px;align-items:stretch
+/* HERO */
+.hero{
+  min-height:100svh;position:relative;overflow:hidden;display:flex;align-items:flex-end;
+  background:
+    radial-gradient(circle at 74% 34%,rgba(255,90,31,.20),transparent 28%),
+    linear-gradient(180deg,#0b0b0b 0%,#111 100%);
 }
-.hero-main{padding:42px 0 20px}
-.hero-kicker{display:flex;align-items:center;gap:10px;color:#ff7a4d}
-.hero-kicker:before{content:"";width:24px;height:2px;background:var(--orange)}
+.hero-orbit{position:absolute;right:-7vw;top:9vh;width:min(60vw,760px);aspect-ratio:1;pointer-events:none;opacity:.92}
+.hero-orbit .ring{position:absolute;border:1px solid rgba(255,255,255,.18);border-radius:50%;inset:0;animation:spin 22s linear infinite}
+.hero-orbit .ring.r2{inset:14%;border-color:rgba(255,90,31,.62);animation-duration:16s;animation-direction:reverse}
+.hero-orbit .ring.r3{inset:31%;border-color:rgba(255,255,255,.10);animation-duration:28s}
+.hero-orbit .dot{position:absolute;width:10px;height:10px;border-radius:50%;background:var(--orange);top:14%;left:52%;box-shadow:0 0 36px rgba(255,90,31,.75)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.hero-inner{position:relative;z-index:2;padding:130px 0 64px;width:100%}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(280px,.48fr);gap:80px;align-items:end}
+.hero-copy{max-width:780px}
+.hero-kicker{display:flex;align-items:center;gap:12px;margin-bottom:24px}
+.hero-kicker:before{content:"";width:36px;height:2px;background:var(--orange)}
 .hero h1{
-  font-size:clamp(48px,6.3vw,86px);line-height:.94;letter-spacing:-.055em;
-  margin:22px 0 24px;max-width:820px;font-weight:700
+  font-size:clamp(58px,7.2vw,104px);line-height:.88;letter-spacing:-.065em;
+  margin:0;font-weight:700;max-width:900px
 }
-.hero h1 em{font-style:normal;color:var(--orange)}
-.hero-copy{font-size:17px;line-height:1.6;color:rgba(255,255,255,.72);max-width:600px;margin:0}
-.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}
+.hero h1 span{display:block}
+.hero h1 .accent{font-family:var(--serif);font-weight:400;font-style:italic;color:var(--orange2);letter-spacing:-.035em}
+.hero-copy p{font-size:17px;line-height:1.6;color:rgba(255,255,255,.66);max-width:610px;margin:28px 0 0}
+.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:30px}
 .btn{
-  display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:44px;
-  padding:0 18px;border-radius:999px;font-size:10px;letter-spacing:.11em;
-  text-transform:uppercase;font-weight:800;border:1px solid rgba(255,255,255,.22)
+  min-height:46px;display:inline-flex;align-items:center;justify-content:center;gap:9px;
+  padding:0 18px;border-radius:999px;font-size:9px;letter-spacing:.13em;
+  text-transform:uppercase;font-weight:800
 }
-.btn.primary{background:#fff;color:var(--ink);border-color:#fff}
-.btn.primary b{color:var(--orange);font-size:15px}
-.btn.ghost{color:#fff}
-.hero-panel{
-  border-left:1px solid rgba(255,255,255,.16);
-  padding-left:28px;display:flex;flex-direction:column;justify-content:space-between
-}
-.proposal-head{padding-top:10px}
-.proposal-id{color:#ff7a4d;margin-bottom:28px}
-.proposal-person{
-  font-size:13px;text-transform:uppercase;letter-spacing:.08em;
-  color:rgba(255,255,255,.5);margin-bottom:8px
-}
-.proposal-name{
-  font-size:30px;font-weight:700;letter-spacing:-.035em;line-height:1.05;
-  min-height:34px
-}
-.meta-list{margin-top:32px;border-top:1px solid rgba(255,255,255,.16)}
-.meta-row{
-  display:flex;justify-content:space-between;gap:18px;padding:13px 0;
-  border-bottom:1px solid rgba(255,255,255,.16);font-size:11px
-}
-.meta-row span:first-child{color:rgba(255,255,255,.46)}
-.meta-row span:last-child{text-align:right;font-weight:700}
-.hero-sign{
-  margin-top:34px;font-size:12px;line-height:1.5;color:rgba(255,255,255,.54)
-}
-.hero-sign strong{display:block;color:#fff;font-size:14px;margin-top:4px}
+.btn.orange{background:var(--orange);color:#111}
+.btn.line{border:1px solid rgba(255,255,255,.22);color:#fff}
+.hero-side{padding-bottom:6px}
+.hero-side-line{border-top:1px solid rgba(255,255,255,.16);padding-top:16px}
+.hero-side strong{font-size:13px;line-height:1.35;display:block;max-width:260px}
+.hero-side p{font-size:11px;line-height:1.55;color:rgba(255,255,255,.46);margin:12px 0 0}
+.hero-signature{margin-top:34px;font-family:var(--serif);font-size:34px;line-height:.98;color:var(--orange2);max-width:220px}
 
-/* quick summary */
-.quick{background:#fff;border-bottom:1px solid var(--line)}
-.quick-grid{
-  display:grid;grid-template-columns:1.1fr repeat(3,.55fr);align-items:stretch
-}
-.quick-intro{padding:22px 24px 22px 0}
-.quick-intro strong{display:block;font-size:14px}
-.quick-intro span{display:block;font-size:12px;color:var(--muted);margin-top:3px}
-.quick-item{border-left:1px solid var(--line);padding:18px 22px}
-.quick-item small{display:block;font-size:9px;text-transform:uppercase;letter-spacing:.13em;color:var(--muted);font-weight:800}
-.quick-item b{display:block;font-size:22px;letter-spacing:-.04em;margin-top:5px}
-.quick-item em{display:block;font-style:normal;font-size:11px;color:var(--orange);font-weight:800;margin-top:2px}
+/* MARQUEE */
+.marquee{overflow:hidden;background:var(--orange);color:#111;border-top:1px solid rgba(0,0,0,.08);border-bottom:1px solid rgba(0,0,0,.08)}
+.marquee-track{display:flex;width:max-content;align-items:center;gap:25px;padding:12px 0;animation:move 18s linear infinite}
+.marquee span{font-size:12px;text-transform:uppercase;letter-spacing:.14em;font-weight:900;white-space:nowrap}
+.marquee i{font-style:normal;font-size:9px}
+@keyframes move{to{transform:translateX(-50%)}}
 
-/* sections */
-.section{padding:86px 0}
-.section + .section{border-top:1px solid var(--line)}
-.section-grid{display:grid;grid-template-columns:.75fr 1.25fr;gap:82px;align-items:start}
-.section-label{position:sticky;top:96px}
-.section-nr{font-size:10px;letter-spacing:.14em;color:var(--orange);font-weight:800}
-.section-label h2{
-  font-size:32px;line-height:1.02;letter-spacing:-.045em;margin:12px 0 0;
-  max-width:330px
+/* LIGHT WORLD */
+.light{background:var(--white);color:var(--ink)}
+.story-intro{padding:108px 0 96px}
+.story-grid{display:grid;grid-template-columns:.76fr 1.24fr;gap:100px;align-items:start}
+.story-title{position:sticky;top:104px}
+.story-title h2{font-size:clamp(42px,5vw,68px);line-height:.94;letter-spacing:-.06em;margin:14px 0 0;max-width:500px}
+.story-copy{max-width:700px}
+.story-copy .lead{font-size:22px;line-height:1.36;letter-spacing:-.025em;font-weight:650;margin:0 0 22px}
+.story-copy p{font-size:15px;line-height:1.75;color:var(--muted);margin:0 0 14px}
+.story-quote{
+  margin-top:30px;padding:24px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  font-size:18px;font-weight:700;letter-spacing:-.02em
 }
-.section-body{max-width:700px}
-.lead{font-size:22px;line-height:1.35;letter-spacing:-.025em;margin:0 0 18px;font-weight:650}
-.body{font-size:15px;line-height:1.75;color:var(--muted)}
-.body p{margin:0 0 15px}
-.brand-line{
-  margin-top:28px;padding:18px 0;border-top:1px solid var(--line);
-  font-size:14px;font-weight:700
+.story-quote span{color:var(--orange)}
+.word-cloud{display:flex;flex-wrap:wrap;gap:9px;margin-top:34px}
+.word{
+  border:1px solid var(--line);border-radius:999px;padding:11px 14px;font-size:11px;
+  text-transform:uppercase;letter-spacing:.1em;font-weight:800;background:#fff
 }
-.brand-line span{color:var(--orange)}
+.word:nth-child(2),.word:nth-child(4){background:var(--ink);color:#fff;border-color:var(--ink)}
 
-/* motion band */
-.band{
-  overflow:hidden;background:var(--orange);color:var(--ink);
-  border-top:1px solid rgba(0,0,0,.08);border-bottom:1px solid rgba(0,0,0,.08)
+/* PROCESS */
+.process-section{padding:0 0 108px}
+.process-shell{
+  background:var(--ink);color:#fff;border-radius:28px;padding:42px;
+  display:grid;grid-template-columns:.72fr 1.28fr;gap:70px;align-items:start
 }
-.band-track{
-  width:max-content;display:flex;align-items:center;gap:24px;padding:11px 0;
-  animation:band 20s linear infinite
+.process-shell h2{font-size:clamp(34px,4vw,56px);line-height:.96;letter-spacing:-.055em;margin:12px 0 0}
+.process-copy p{font-size:14px;line-height:1.7;color:rgba(255,255,255,.58);margin:0 0 14px}
+.process-steps{margin-top:28px}
+.step{display:grid;grid-template-columns:44px 1fr auto;gap:14px;padding:15px 0;border-top:1px solid rgba(255,255,255,.12);align-items:center}
+.step:last-child{border-bottom:1px solid rgba(255,255,255,.12)}
+.step-nr{font-size:9px;color:var(--orange);font-weight:800}
+.step-name{font-size:12px;text-transform:uppercase;letter-spacing:.12em;font-weight:800}
+.step-mark{font-size:13px;color:rgba(255,255,255,.34)}
+.realtime-note{
+  margin-top:28px;font-family:var(--serif);font-size:26px;line-height:1.15;
+  color:var(--orange2);max-width:560px
 }
-.band span{font-size:13px;text-transform:uppercase;letter-spacing:.12em;font-weight:800;white-space:nowrap}
-.band i{font-style:normal;font-size:10px}
-@keyframes band{to{transform:translateX(-50%)}}
 
-/* storymaker process */
-.process{
-  margin-top:32px;display:grid;grid-template-columns:repeat(5,1fr);
-  border-top:1px solid var(--line);border-bottom:1px solid var(--line)
-}
-.process-step{padding:16px 12px;border-right:1px solid var(--line)}
-.process-step:last-child{border-right:0}
-.process-step b{display:block;font-size:10px;color:var(--orange);margin-bottom:7px}
-.process-step span{font-size:10px;text-transform:uppercase;letter-spacing:.08em;font-weight:800}
-
-/* plans */
-.plans{padding:90px 0 100px;background:#fff}
-.plans-head{
-  display:flex;justify-content:space-between;gap:36px;align-items:end;margin-bottom:34px
-}
-.plans-head h2{
-  font-size:clamp(34px,4.6vw,58px);line-height:.96;letter-spacing:-.05em;
-  margin:0;max-width:700px
-}
-.plans-head p{font-size:14px;line-height:1.6;color:var(--muted);max-width:440px;margin:0}
-.plan-list{border-top:1px solid var(--ink)}
+/* PLAN EXPERIENCE */
+.plans{padding:110px 0 118px;background:var(--paper);color:var(--ink)}
+.plans-head{display:flex;align-items:flex-end;justify-content:space-between;gap:48px;margin-bottom:34px}
+.plans-head h2{font-size:clamp(40px,5vw,68px);line-height:.94;letter-spacing:-.06em;margin:0;max-width:730px}
+.plans-head p{font-size:13px;line-height:1.6;color:var(--muted);max-width:430px;margin:0}
+.plan-stack{border-top:1px solid var(--ink)}
 .plan{
-  position:relative;display:grid;grid-template-columns:180px minmax(0,1fr) 170px;
-  gap:32px;padding:30px 0;border-bottom:1px solid var(--line);align-items:start
+  position:relative;border-bottom:1px solid var(--line);padding:28px 0 30px;
+  display:grid;grid-template-columns:70px 260px minmax(0,1fr) 150px;gap:24px;align-items:start;
+  transition:.25s ease
 }
-.plan.featured{
-  margin-inline:-18px;padding-inline:18px;background:#f8f3ee;
-  border-left:3px solid var(--orange)
-}
-.plan-badge{
-  display:inline-flex;align-items:center;gap:7px;font-size:8px;text-transform:uppercase;
-  letter-spacing:.13em;color:var(--orange);font-weight:800;margin-bottom:8px
-}
-.plan-name{font-size:25px;line-height:1;letter-spacing:-.035em;font-weight:800}
-.plan-hours{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-top:8px;font-weight:700}
-.plan-copy strong{display:block;font-size:18px;line-height:1.35;letter-spacing:-.02em;margin-bottom:10px}
-.plan-copy p{font-size:13px;line-height:1.65;color:var(--muted);margin:0;max-width:650px}
+.plan:hover{padding-left:14px;padding-right:14px;background:#fff}
+.plan.featured{background:#fff}
+.plan.featured:before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--orange)}
+.plan-nr{font-size:10px;color:var(--orange);font-weight:800;padding-top:7px}
+.plan-name{font-size:29px;line-height:1;letter-spacing:-.05em;font-weight:800}
+.plan-hours{font-size:10px;text-transform:uppercase;letter-spacing:.11em;color:var(--muted);margin-top:9px;font-weight:700}
+.plan-badge{font-size:8px;text-transform:uppercase;letter-spacing:.13em;color:var(--orange);font-weight:900;margin-bottom:8px}
+.plan-copy strong{display:block;font-size:17px;line-height:1.35;letter-spacing:-.02em;margin-bottom:9px}
+.plan-copy p{font-size:12.8px;line-height:1.63;color:var(--muted);margin:0;max-width:650px}
 .plan-side{text-align:right}
-.plan-price{font-size:34px;line-height:1;letter-spacing:-.05em;font-weight:800}
-.plan-side small{display:block;font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-top:4px}
-.plan-btn{
-  display:inline-flex;align-items:center;gap:8px;margin-top:20px;font-size:9px;
-  text-transform:uppercase;letter-spacing:.12em;font-weight:800
-}
-.plan-btn b{color:var(--orange);font-size:15px}
+.plan-price{font-size:31px;letter-spacing:-.05em;font-weight:800;line-height:1}
+.plan-side small{display:block;font-size:8px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-top:5px}
+.plan-cta{display:inline-flex;align-items:center;gap:7px;margin-top:17px;font-size:9px;text-transform:uppercase;letter-spacing:.12em;font-weight:900}
+.plan-cta b{color:var(--orange);font-size:15px}
 
-/* included */
-.included-grid{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line);margin-top:26px}
-.included-item{
-  padding:15px 0;border-bottom:1px solid var(--line);display:flex;gap:10px;align-items:flex-start;
-  font-size:13px;line-height:1.45
+/* INCLUDED */
+.included{padding:106px 0 110px;background:var(--white);color:var(--ink)}
+.included-grid{display:grid;grid-template-columns:.7fr 1.3fr;gap:92px}
+.included h2{font-size:clamp(38px,4.6vw,62px);line-height:.96;letter-spacing:-.055em;margin:12px 0 0}
+.included-copy p{font-size:13px;line-height:1.65;color:var(--muted);max-width:430px;margin:18px 0 0}
+.included-list{border-top:1px solid var(--ink)}
+.inc{
+  display:grid;grid-template-columns:34px 1fr auto;gap:12px;padding:15px 0;border-bottom:1px solid var(--line);align-items:center
 }
-.included-item:nth-child(odd){padding-right:22px}
-.included-item:nth-child(even){padding-left:22px;border-left:1px solid var(--line)}
-.check{
-  width:18px;height:18px;border-radius:50%;background:var(--ink);color:#fff;display:grid;
-  place-items:center;font-size:10px;flex:0 0 18px;margin-top:1px
-}
+.inc b{font-size:9px;color:var(--orange)}
+.inc span{font-size:13px;font-weight:650}
+.inc i{font-style:normal;color:#aaa;font-size:12px}
 
-/* how */
-.timeline{margin-top:4px}
-.time-row{
-  display:grid;grid-template-columns:54px 150px 1fr;gap:18px;padding:18px 0;border-top:1px solid var(--line)
-}
-.time-row:last-child{border-bottom:1px solid var(--line)}
-.time-nr{font-size:10px;color:var(--orange);font-weight:800}
-.time-title{font-size:11px;text-transform:uppercase;letter-spacing:.11em;font-weight:800}
-.time-copy{font-size:13px;line-height:1.6;color:var(--muted)}
-
-/* extras */
-.extras-list{border-top:1px solid var(--ink);margin-top:8px}
-.extra{
-  display:grid;grid-template-columns:1fr 120px 120px;gap:20px;
-  align-items:center;padding:18px 0;border-bottom:1px solid var(--line)
-}
-.extra-name{font-size:18px;font-weight:750;letter-spacing:-.02em}
-.extra-hours{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
-.extra-price{font-size:22px;font-weight:800;text-align:right;letter-spacing:-.035em}
-.extra details{grid-column:1/-1;margin-top:3px}
+/* EXTRAS */
+.extras{padding:102px 0 112px;background:var(--black);color:#fff}
+.extras-grid{display:grid;grid-template-columns:.72fr 1.28fr;gap:88px}
+.extras h2{font-size:clamp(38px,4.6vw,62px);line-height:.96;letter-spacing:-.055em;margin:12px 0 0;max-width:520px}
+.extras-copy{font-size:13px;line-height:1.65;color:rgba(255,255,255,.53);max-width:480px;margin-top:18px}
+.extra-list{border-top:1px solid rgba(255,255,255,.18)}
+.extra{border-bottom:1px solid rgba(255,255,255,.14)}
 .extra summary{
-  list-style:none;cursor:pointer;font-size:10px;text-transform:uppercase;letter-spacing:.11em;
-  color:var(--orange);font-weight:800
+  list-style:none;cursor:pointer;display:grid;grid-template-columns:1fr auto auto;
+  gap:20px;align-items:center;padding:19px 0
 }
 .extra summary::-webkit-details-marker{display:none}
-.extra-body{font-size:12px;line-height:1.6;color:var(--muted);padding-top:10px;max-width:700px}
+.extra-name{font-size:19px;font-weight:700;letter-spacing:-.025em}
+.extra-hours{font-size:9px;text-transform:uppercase;letter-spacing:.11em;color:rgba(255,255,255,.45)}
+.extra-price{font-size:22px;font-weight:800}
+.extra-body{padding:0 0 18px;font-size:12px;line-height:1.6;color:rgba(255,255,255,.5);max-width:700px}
 
-/* terms */
-.terms{background:var(--soft);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.terms-box{display:grid;grid-template-columns:.75fr 1.25fr;gap:82px;padding:70px 0}
-.term-list{border-top:1px solid var(--line)}
-.term-row{
-  display:flex;justify-content:space-between;gap:26px;padding:14px 0;
-  border-bottom:1px solid var(--line);font-size:12px
+/* FINAL */
+.final{
+  background:
+    radial-gradient(circle at 78% 20%,rgba(255,90,31,.21),transparent 22%),
+    var(--black);
+  color:#fff;padding:94px 0 106px;border-top:1px solid rgba(255,255,255,.09)
 }
-.term-row span:first-child{color:var(--muted)}
-.term-row span:last-child{text-align:right;font-weight:700}
-
-/* final */
-.final{background:var(--ink);color:#fff;padding:86px 0 100px}
-.final-grid{display:grid;grid-template-columns:1fr auto;gap:50px;align-items:end}
-.final h2{
-  font-size:clamp(44px,6vw,78px);line-height:.94;letter-spacing:-.055em;
-  margin:0;max-width:900px
-}
-.final h2 span{color:var(--orange)}
-.final p{font-size:14px;line-height:1.6;color:rgba(255,255,255,.62);max-width:560px;margin:22px 0 0}
+.final-grid{display:grid;grid-template-columns:1fr auto;gap:60px;align-items:end}
+.final h2{font-size:clamp(48px,6.5vw,90px);line-height:.9;letter-spacing:-.065em;margin:0;max-width:900px}
+.final h2 .serif{font-family:var(--serif);font-weight:400;font-style:italic;color:var(--orange2)}
+.final p{font-size:14px;line-height:1.6;color:rgba(255,255,255,.56);max-width:560px;margin:24px 0 0}
 .final-btn{
-  display:inline-flex;align-items:center;gap:10px;background:var(--orange);color:var(--ink);
-  min-height:48px;padding:0 18px;border-radius:999px;font-size:9px;text-transform:uppercase;
-  letter-spacing:.12em;font-weight:900;white-space:nowrap
+  min-height:50px;display:inline-flex;align-items:center;gap:9px;background:var(--orange);color:#111;
+  padding:0 20px;border-radius:999px;font-size:9px;text-transform:uppercase;letter-spacing:.12em;font-weight:900;
+  white-space:nowrap
 }
-footer{background:#090909;color:rgba(255,255,255,.46);padding:14px 0}
+footer{background:#070707;border-top:1px solid rgba(255,255,255,.08);padding:14px 0;color:rgba(255,255,255,.42)}
 .footer{display:flex;justify-content:space-between;gap:18px;font-size:8px;text-transform:uppercase;letter-spacing:.12em}
+.mobile-cta{display:none}
 
-/* sticky mobile CTA */
-.mobile-cta{
-  display:none;position:fixed;left:14px;right:14px;bottom:calc(12px + env(safe-area-inset-bottom));
-  z-index:90;background:var(--ink);color:#fff;border:1px solid rgba(255,255,255,.09);
-  border-radius:999px;min-height:52px;padding:0 16px;align-items:center;justify-content:space-between;
-  box-shadow:0 12px 34px rgba(0,0,0,.26)
-}
-.mobile-cta span{font-size:10px;text-transform:uppercase;letter-spacing:.1em;font-weight:800}
-.mobile-cta b{color:var(--orange);font-size:17px}
-
-/* mobile */
-@media(max-width:820px){
+/* MOBILE */
+@media(max-width:840px){
   :root{--gutter:20px}
-  .nav{height:58px}
-  .brand{font-size:18px}
-  .brand span{font-size:18px}
-  .nav-mid,.nav-cta{display:none}
-  .hero{padding:20px 0 30px}
-  .hero-grid{grid-template-columns:1fr;gap:34px}
-  .hero-main{padding:22px 0 0}
-  .hero h1{font-size:39px;line-height:.98;margin:18px 0 20px;max-width:96%}
-  .hero-copy{font-size:14.5px;line-height:1.62;max-width:94%}
-  .hero-actions{margin-top:24px}
-  .btn{min-height:42px;padding:0 15px;font-size:9px}
-  .hero-panel{
-    border-left:0;border-top:1px solid rgba(255,255,255,.16);
-    padding:23px 0 0
-  }
-  .proposal-id{margin-bottom:20px}
-  .proposal-name{font-size:26px}
-  .meta-list{margin-top:24px}
-  .hero-sign{display:none}
+  .cursor-glow{display:none}
+  .nav{height:58px}.nav-links{display:none}.menu{display:block}
+  .brand{font-size:18px}.brand em{font-size:20px}
+  .hero{min-height:auto}
+  .hero-orbit{width:420px;right:-210px;top:75px;opacity:.58}
+  .hero-inner{padding:105px 0 46px}
+  .hero-grid{grid-template-columns:1fr;gap:44px}
+  .hero h1{font-size:42px;line-height:.92;max-width:95%}
+  .hero-copy p{font-size:14.5px;line-height:1.6;max-width:92%}
+  .hero-side{display:grid;grid-template-columns:1fr auto;gap:20px;align-items:end}
+  .hero-side-line{max-width:230px}
+  .hero-signature{font-size:27px;text-align:right;margin:0;max-width:150px}
+  .btn{min-height:43px;padding:0 15px;font-size:8px}
 
-  .quick-grid{grid-template-columns:1fr 1fr}
-  .quick-intro{grid-column:1/-1;padding:16px 0;border-bottom:1px solid var(--line)}
-  .quick-item{padding:14px 12px;border-left:0;border-right:1px solid var(--line)}
-  .quick-item:nth-child(3){border-right:0}
-  .quick-item:last-child{grid-column:1/-1;border-top:1px solid var(--line);border-right:0}
-  .quick-item b{font-size:20px}
+  .marquee-track{gap:18px;padding:10px 0;animation-duration:15s}
+  .marquee span{font-size:10px}
 
-  .section{padding:62px 0}
-  .section-grid{grid-template-columns:1fr;gap:26px}
-  .section-label{position:static}
-  .section-label h2{font-size:29px;max-width:100%}
-  .lead{font-size:19px}
-  .body{font-size:14px}
-  .brand-line{font-size:13px}
-  .band-track{gap:18px;padding:10px 0}
-  .band span{font-size:11px}
-  .process{grid-template-columns:1fr}
-  .process-step{display:grid;grid-template-columns:36px 1fr;gap:8px;border-right:0;border-bottom:1px solid var(--line);padding:12px 0}
-  .process-step:last-child{border-bottom:0}
-  .process-step b{margin:0}
-  
-  .plans{padding:66px 0 78px}
+  .story-intro{padding:70px 0 64px}
+  .story-grid{grid-template-columns:1fr;gap:26px}
+  .story-title{position:static}
+  .story-title h2{font-size:34px}
+  .story-copy .lead{font-size:18px}
+  .story-copy p{font-size:14px}
+  .story-quote{font-size:16px;padding:19px 0}
+  .word{font-size:9px;padding:9px 11px}
+
+  .process-section{padding:0 0 72px}
+  .process-shell{border-radius:22px;padding:26px 22px;grid-template-columns:1fr;gap:28px}
+  .process-shell h2{font-size:34px}
+  .process-copy p{font-size:13px}
+  .step{grid-template-columns:34px 1fr auto;padding:13px 0}
+  .realtime-note{font-size:22px}
+
+  .plans{padding:70px 0 78px}
   .plans-head{display:block;margin-bottom:26px}
-  .plans-head h2{font-size:34px}
-  .plans-head p{font-size:13px;margin-top:14px}
-  .plan{grid-template-columns:1fr auto;gap:20px 14px;padding:24px 0}
+  .plans-head h2{font-size:35px}
+  .plans-head p{font-size:12.8px;margin-top:13px}
+  .plan{grid-template-columns:34px 1fr auto;gap:12px;padding:23px 0}
+  .plan:hover{padding-left:0;padding-right:0;background:transparent}
   .plan.featured{margin-inline:-20px;padding-inline:20px}
-  .plan-copy{grid-column:1/-1;grid-row:2}
-  .plan-side{grid-column:2;grid-row:1;text-align:right}
-  .plan-name{font-size:23px}
-  .plan-price{font-size:29px}
-  .plan-copy strong{font-size:17px}
-  .plan-copy p{font-size:12.8px}
-  .plan-btn{margin-top:14px}
+  .plan-name{font-size:24px}
+  .plan-copy{grid-column:2/-1}
+  .plan-copy strong{font-size:16px}
+  .plan-copy p{font-size:12.6px}
+  .plan-side{grid-column:3;grid-row:1;text-align:right}
+  .plan-price{font-size:27px}
+  .plan-cta{margin-top:12px}
 
-  .included-grid{grid-template-columns:1fr}
-  .included-item:nth-child(odd),.included-item:nth-child(even){padding:13px 0;border-left:0}
+  .included{padding:70px 0 76px}
+  .included-grid{grid-template-columns:1fr;gap:30px}
+  .included h2{font-size:34px}
+  .inc{grid-template-columns:28px 1fr auto;padding:13px 0}
+  .inc span{font-size:12.5px}
 
-  .time-row{grid-template-columns:34px 1fr;gap:8px 12px}
-  .time-title{grid-column:2}
-  .time-copy{grid-column:2}
-
-  .extra{grid-template-columns:1fr auto;gap:8px 14px}
+  .extras{padding:70px 0 78px}
+  .extras-grid{grid-template-columns:1fr;gap:30px}
+  .extras h2{font-size:34px}
+  .extra summary{grid-template-columns:1fr auto;gap:6px 14px}
   .extra-hours{grid-column:1;grid-row:2}
   .extra-price{grid-column:2;grid-row:1/3;align-self:center}
-  .extra details{grid-column:1/-1}
+  .extra-body{font-size:12px}
 
-  .terms-box{grid-template-columns:1fr;gap:26px;padding:58px 0}
-  .final{padding:68px 0 92px}
-  .final-grid{grid-template-columns:1fr;gap:28px}
-  .final h2{font-size:39px}
+  .final{padding:72px 0 92px}
+  .final-grid{grid-template-columns:1fr;gap:30px}
+  .final h2{font-size:42px}
+  .final p{font-size:13px}
   .final-btn{width:max-content}
-  .mobile-cta{display:flex}
+
+  .mobile-cta{
+    position:fixed;z-index:90;left:14px;right:14px;bottom:calc(12px + env(safe-area-inset-bottom));
+    min-height:52px;border-radius:999px;background:var(--orange);color:#111;
+    display:flex;align-items:center;justify-content:space-between;padding:0 16px;
+    box-shadow:0 14px 36px rgba(0,0,0,.30);font-size:9px;text-transform:uppercase;letter-spacing:.12em;font-weight:900
+  }
   footer{padding-bottom:82px}
 }
 @media(max-width:380px){
-  .hero h1{font-size:36px}
-  .plan{grid-template-columns:1fr}
-  .plan-side{grid-column:1;grid-row:auto;text-align:left}
-  .plan-copy{grid-column:1;grid-row:auto}
+  .hero h1{font-size:38px}
+  .plan{grid-template-columns:30px 1fr}
+  .plan-side{grid-column:2;grid-row:auto;text-align:left}
+  .plan-copy{grid-column:2}
 }
 @media(prefers-reduced-motion:reduce){
-  *{scroll-behavior:auto!important;animation:none!important;transition:none!important}
+  *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
   .reveal{opacity:1!important;transform:none!important}
 }
 </style>
 </head>
 <body>
+<div class="progress"></div>
+<div class="cursor-glow" aria-hidden="true"></div>
 
 <header>
   <div class="wrap nav">
-    <a class="brand" href="#top">COLAB <span>Wedding</span></a>
-    <div class="nav-mid">Proposta digital · StoryMaker</div>
-    <a class="nav-cta" href="#contato">Consultar data <i>↗</i></a>
+    <a class="brand" href="#top">COLAB<em>Wedding</em></a>
+    <nav class="nav-links">
+      <a href="#experiencia">Experiência</a>
+      <a href="#storymaker">StoryMaker</a>
+      <a href="#planos">Planos</a>
+      <a class="nav-cta" href="#contato">Falar com a Colab</a>
+    </nav>
+    <button class="menu" aria-label="Abrir menu"><span></span></button>
   </div>
 </header>
+
+<div class="mobile-nav">
+  <a href="#experiencia">Experiência</a>
+  <a href="#storymaker">StoryMaker</a>
+  <a href="#planos">Planos</a>
+  <a href="#outros">Outros momentos</a>
+</div>
 
 <main id="top">
 
 <section class="hero">
-  <div class="wrap hero-grid">
-    <div class="hero-main reveal">
-      <div class="hero-kicker smallcaps">Colab Wedding · Proposta</div>
-      <h1>A EXPERIÊNCIA <em>COLAB</em> PARA O SEU CASAMENTO.</h1>
-      <p class="hero-copy">Enquanto vocês vivem cada segundo, a Colab registra tudo aquilo que merece ser revivido.</p>
-      <div class="hero-actions">
-        <a class="btn primary" href="#planos">Ver planos <b>↓</b></a>
-        <a class="btn ghost" href="#experiencia">Conhecer a experiência</a>
-      </div>
-    </div>
-
-    <aside class="hero-panel reveal" aria-label="Dados da proposta">
-      <div class="proposal-head">
-        <div class="proposal-id smallcaps">Proposta personalizada</div>
-        <div class="proposal-person">Preparado para</div>
-        <div class="proposal-name" data-proposal-name>Seu casamento</div>
-        <div class="meta-list">
-          <div class="meta-row"><span>Data</span><span data-proposal-date>A definir</span></div>
-          <div class="meta-row"><span>Local</span><span data-proposal-location>A definir</span></div>
-          <div class="meta-row"><span>Serviço</span><span>StoryMaker · Real Time</span></div>
+  <div class="hero-orbit" aria-hidden="true">
+    <div class="ring"></div><div class="ring r2"></div><div class="ring r3"></div><div class="dot"></div>
+  </div>
+  <div class="wrap hero-inner">
+    <div class="hero-grid">
+      <div class="hero-copy reveal">
+        <div class="hero-kicker kicker">StoryMaker · Real Time</div>
+        <h1><span>UM OLHAR ATENTO</span><span>PARA O <span class="accent">GRANDE DIA.</span></span></h1>
+        <p>Enquanto vocês vivem cada segundo, a Colab registra tudo aquilo que merece ser revivido.</p>
+        <div class="hero-actions">
+          <a class="btn orange" href="#planos">Conhecer os planos ↘</a>
+          <a class="btn line" href="#experiencia">Entender a experiência</a>
         </div>
       </div>
-      <div class="hero-sign">Uma proposta da <strong>Colab Wedding</strong></div>
-    </aside>
-  </div>
-</section>
-
-<section class="quick">
-  <div class="wrap quick-grid">
-    <div class="quick-intro">
-      <strong>Três formatos de cobertura.</strong>
-      <span>Escolha o tempo que mais combina com o ritmo do casamento.</span>
-    </div>
-    <div class="quick-item"><small>Moment</small><b>4h</b><em>R$ 890</em></div>
-    <div class="quick-item"><small>Experience</small><b>6h</b><em>R$ 1.490</em></div>
-    <div class="quick-item"><small>Full Day</small><b>10h</b><em>R$ 2.190</em></div>
-  </div>
-</section>
-
-<section class="section" id="experiencia">
-  <div class="wrap section-grid">
-    <div class="section-label reveal">
-      <div class="section-nr">01 · EXPERIÊNCIA</div>
-      <h2>TEM COISA QUE VOCÊ VAI VER SÓ DEPOIS.</h2>
-    </div>
-    <div class="section-body reveal">
-      <p class="lead">A reação de quem esperava pela sua entrada. Um olhar, uma reação, um abraço, alguém tentando segurar o choro.</p>
-      <div class="body">
-        <p>A Colab está ali para perceber, registrar e transformar esses pequenos acontecimentos em parte da história de vocês.</p>
-      </div>
-      <div class="brand-line">O casamento não acontece só onde todo mundo está olhando. <span>É aí que entra o nosso olhar.</span></div>
+      <aside class="hero-side reveal">
+        <div class="hero-side-line">
+          <strong>O casamento acontece uma vez. O que passa despercebido também faz parte da história.</strong>
+          <p>A Colab acompanha o dia de dentro da experiência, com atenção ao que acontece ao redor.</p>
+        </div>
+        <div class="hero-signature">Você vive. A gente não deixa passar.</div>
+      </aside>
     </div>
   </div>
 </section>
 
-<div class="band" aria-hidden="true">
-  <div class="band-track">
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
     <span>Bastidores</span><i>•</i><span>Encontros</span><i>•</i><span>Detalhes</span><i>•</i><span>Reações</span><i>•</i>
     <span>Bastidores</span><i>•</i><span>Encontros</span><i>•</i><span>Detalhes</span><i>•</i><span>Reações</span><i>•</i>
   </div>
 </div>
 
-<section class="section" id="storymaker">
-  <div class="wrap section-grid">
-    <div class="section-label reveal">
-      <div class="section-nr">02 · STORYMAKER</div>
-      <h2>UM OUTRO OLHAR SOBRE O MESMO DIA.</h2>
+<div class="light">
+
+<section class="story-intro" id="experiencia">
+  <div class="wrap story-grid">
+    <div class="story-title reveal">
+      <div class="kicker">O que a Colab percebe</div>
+      <h2>TEM COISA QUE VOCÊ VAI VER SÓ DEPOIS.</h2>
     </div>
-    <div class="section-body reveal">
-      <p class="lead">O StoryMaker não substitui a fotografia ou o filme.</p>
-      <div class="body">
-        <p>É a camada mais espontânea da história. Aquela que faz vocês lembrarem não só de como o dia parecia, mas de como ele foi vivido.</p>
-        <p>Enquanto o casamento acontece, a Colab registra, seleciona, edita, legenda e publica os stories acompanhando a sequência dos acontecimentos.</p>
-        <p>Tudo vai ganhando forma enquanto o dia acontece, construindo uma narrativa do início ao fim.</p>
-      </div>
-      <div class="brand-line">É real time, <span>mas com sensibilidade para entender o timing de cada momento.</span></div>
-      <div class="process" aria-label="Processo StoryMaker">
-        <div class="process-step"><b>01</b><span>Capta</span></div>
-        <div class="process-step"><b>02</b><span>Seleciona</span></div>
-        <div class="process-step"><b>03</b><span>Edita</span></div>
-        <div class="process-step"><b>04</b><span>Legenda</span></div>
-        <div class="process-step"><b>05</b><span>Publica</span></div>
+    <div class="story-copy reveal">
+      <p class="lead">A reação de quem esperava pela sua entrada. Um olhar, uma reação, um abraço, alguém tentando segurar o choro.</p>
+      <p>A Colab está ali para perceber, registrar e transformar esses pequenos acontecimentos em parte da história de vocês.</p>
+      <div class="story-quote">O casamento não acontece só onde todo mundo está olhando. <span>É por isso que o nosso olhar está ao redor.</span></div>
+      <div class="word-cloud">
+        <span class="word">Bastidores</span><span class="word">Encontros</span><span class="word">Detalhes</span><span class="word">Reações</span>
       </div>
     </div>
   </div>
 </section>
 
+<section class="process-section" id="storymaker">
+  <div class="wrap process-shell reveal">
+    <div>
+      <div class="kicker">StoryMaker</div>
+      <h2>UM OUTRO OLHAR SOBRE O MESMO DIA.</h2>
+    </div>
+    <div class="process-copy">
+      <p>O StoryMaker não substitui a fotografia ou o filme.</p>
+      <p>É a camada mais espontânea da história. Aquela que faz vocês lembrarem não só de como o dia parecia, mas de como ele foi vivido.</p>
+      <p>Enquanto o casamento acontece, a Colab registra, seleciona, edita, legenda e publica os stories acompanhando a sequência dos acontecimentos.</p>
+
+      <div class="process-steps">
+        <div class="step"><span class="step-nr">01</span><span class="step-name">Capta</span><span class="step-mark">→</span></div>
+        <div class="step"><span class="step-nr">02</span><span class="step-name">Seleciona</span><span class="step-mark">→</span></div>
+        <div class="step"><span class="step-nr">03</span><span class="step-name">Edita</span><span class="step-mark">→</span></div>
+        <div class="step"><span class="step-nr">04</span><span class="step-name">Legenda</span><span class="step-mark">→</span></div>
+        <div class="step"><span class="step-nr">05</span><span class="step-name">Publica</span><span class="step-mark">✓</span></div>
+      </div>
+      <div class="realtime-note">É real time, mas com sensibilidade para entender o timing de cada momento.</div>
+    </div>
+  </div>
+</section>
+
+</div>
+
 <section class="plans" id="planos">
   <div class="wrap">
     <div class="plans-head reveal">
-      <h2>ESCOLHA A EXPERIÊNCIA QUE MAIS COMBINA COM O SEU DIA.</h2>
-      <p>Três formatos de cobertura para acompanhar diferentes momentos do casamento. Todos carregam a experiência base da Colab.</p>
+      <h2>TRÊS FORMAS DE VIVER A EXPERIÊNCIA COLAB.</h2>
+      <p>O mesmo olhar, em diferentes tempos de cobertura. Escolha o formato que melhor acompanha o ritmo do casamento.</p>
     </div>
 
-    <div class="plan-list">
+    <div class="plan-stack">
       <article class="plan reveal">
+        <div class="plan-nr">01</div>
         <div>
           <div class="plan-name">Colab Moment</div>
-          <div class="plan-hours">4 horas de cobertura</div>
+          <div class="plan-hours">4 horas</div>
         </div>
         <div class="plan-copy">
           <strong>Para acompanhar os momentos que concentram a emoção do casamento.</strong>
@@ -481,15 +429,16 @@ footer{background:#090909;color:rgba(255,255,255,.46);padding:14px 0}
         <div class="plan-side">
           <div class="plan-price">R$ 890</div>
           <small>investimento</small>
-          <a class="plan-btn" href="https://wa.me/5549991070654?text=Oi%21%20Quero%20escolher%20o%20Colab%20Moment." target="_blank" rel="noopener">Escolher <b>→</b></a>
+          <a class="plan-cta" href="https://wa.me/5549991070654?text=Oi%21%20Quero%20escolher%20o%20Colab%20Moment." target="_blank" rel="noopener">Escolher <b>→</b></a>
         </div>
       </article>
 
       <article class="plan featured reveal">
+        <div class="plan-nr">02</div>
         <div>
           <div class="plan-badge">● Mais escolhido</div>
           <div class="plan-name">Colab Experience</div>
-          <div class="plan-hours">6 horas de cobertura</div>
+          <div class="plan-hours">6 horas</div>
         </div>
         <div class="plan-copy">
           <strong>Para acompanhar mais capítulos do casamento e deixar a história ganhar ainda mais forma.</strong>
@@ -498,14 +447,15 @@ footer{background:#090909;color:rgba(255,255,255,.46);padding:14px 0}
         <div class="plan-side">
           <div class="plan-price">R$ 1.490</div>
           <small>investimento</small>
-          <a class="plan-btn" href="https://wa.me/5549991070654?text=Oi%21%20Quero%20escolher%20o%20Colab%20Experience." target="_blank" rel="noopener">Escolher <b>→</b></a>
+          <a class="plan-cta" href="https://wa.me/5549991070654?text=Oi%21%20Quero%20escolher%20o%20Colab%20Experience." target="_blank" rel="noopener">Escolher <b>→</b></a>
         </div>
       </article>
 
       <article class="plan reveal">
+        <div class="plan-nr">03</div>
         <div>
           <div class="plan-name">Colab Full Day</div>
-          <div class="plan-hours">10 horas de cobertura</div>
+          <div class="plan-hours">10 horas</div>
         </div>
         <div class="plan-copy">
           <strong>Para contar a história por completo.</strong>
@@ -514,107 +464,56 @@ footer{background:#090909;color:rgba(255,255,255,.46);padding:14px 0}
         <div class="plan-side">
           <div class="plan-price">R$ 2.190</div>
           <small>investimento</small>
-          <a class="plan-btn" href="https://wa.me/5549991070654?text=Oi%21%20Quero%20escolher%20o%20Colab%20Full%20Day." target="_blank" rel="noopener">Escolher <b>→</b></a>
+          <a class="plan-cta" href="https://wa.me/5549991070654?text=Oi%21%20Quero%20escolher%20o%20Colab%20Full%20Day." target="_blank" rel="noopener">Escolher <b>→</b></a>
         </div>
       </article>
     </div>
   </div>
 </section>
 
-<section class="section" id="inclui">
-  <div class="wrap section-grid">
-    <div class="section-label reveal">
-      <div class="section-nr">03 · INCLUSO</div>
+<section class="included">
+  <div class="wrap included-grid">
+    <div class="reveal">
+      <div class="kicker">Em todos os planos</div>
       <h2>EM TODA EXPERIÊNCIA COLAB.</h2>
+      <div class="included-copy"><p>Independentemente do tempo de cobertura, alguns cuidados fazem parte de todos os planos.</p></div>
     </div>
-    <div class="section-body reveal">
-      <p class="lead">Independentemente do tempo de cobertura, alguns cuidados fazem parte de todos os planos.</p>
-      <div class="included-grid">
-        <div class="included-item"><span class="check">✓</span><span>Stories durante o evento</span></div>
-        <div class="included-item"><span class="check">✓</span><span>Captação em formato vertical</span></div>
-        <div class="included-item"><span class="check">✓</span><span>Edição e publicação em tempo real</span></div>
-        <div class="included-item"><span class="check">✓</span><span>Legendas e construção da narrativa</span></div>
-        <div class="included-item"><span class="check">✓</span><span>Registros espontâneos e bastidores</span></div>
-        <div class="included-item"><span class="check">✓</span><span>Material captado entregue via Drive</span></div>
-        <div class="included-item"><span class="check">✓</span><span>Alinhamento prévio do casamento</span></div>
-      </div>
+    <div class="included-list reveal">
+      <div class="inc"><b>01</b><span>Stories durante o evento</span><i>✓</i></div>
+      <div class="inc"><b>02</b><span>Captação em formato vertical</span><i>✓</i></div>
+      <div class="inc"><b>03</b><span>Edição e publicação em tempo real</span><i>✓</i></div>
+      <div class="inc"><b>04</b><span>Legendas e construção da narrativa</span><i>✓</i></div>
+      <div class="inc"><b>05</b><span>Registros espontâneos e bastidores</span><i>✓</i></div>
+      <div class="inc"><b>06</b><span>Material captado entregue via Drive</span><i>✓</i></div>
+      <div class="inc"><b>07</b><span>Alinhamento prévio do casamento</span><i>✓</i></div>
     </div>
   </div>
 </section>
 
-<section class="section" id="como">
-  <div class="wrap section-grid">
-    <div class="section-label reveal">
-      <div class="section-nr">04 · PROCESSO</div>
-      <h2>COMO FUNCIONA.</h2>
+<section class="extras" id="outros">
+  <div class="wrap extras-grid">
+    <div class="reveal">
+      <div class="kicker">Outros capítulos</div>
+      <h2>TEM MUITA HISTÓRIA ANTES DO “SIM”.</h2>
+      <p class="extras-copy">Civil, pré-wedding, Bride Shower e jantar de noivado também podem ter a experiência Colab.</p>
     </div>
-    <div class="section-body timeline reveal">
-      <div class="time-row">
-        <div class="time-nr">01</div>
-        <div class="time-title">Alinhamento</div>
-        <div class="time-copy">Antes do casamento, alinhamos horários, momentos importantes, referências e tudo o que precisamos saber para acompanhar o dia.</div>
-      </div>
-      <div class="time-row">
-        <div class="time-nr">02</div>
-        <div class="time-title">Cobertura</div>
-        <div class="time-copy">No casamento, acompanhamos os acontecimentos de forma próxima e espontânea.</div>
-      </div>
-      <div class="time-row">
-        <div class="time-nr">03</div>
-        <div class="time-title">Real time</div>
-        <div class="time-copy">Selecionamos, editamos, legendamos e publicamos enquanto o casamento acontece.</div>
-      </div>
-      <div class="time-row">
-        <div class="time-nr">04</div>
-        <div class="time-title">Entrega</div>
-        <div class="time-copy">O material captado também é entregue ao casal via Drive.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="extras">
-  <div class="wrap section-grid">
-    <div class="section-label reveal">
-      <div class="section-nr">05 · OUTROS MOMENTOS</div>
-      <h2>A COLAB TAMBÉM PODE ESTAR EM OUTROS CAPÍTULOS.</h2>
-    </div>
-    <div class="section-body reveal">
-      <div class="extras-list">
-        <div class="extra">
-          <div class="extra-name">Casamento Civil</div><div class="extra-hours">até 2h</div><div class="extra-price">R$ 450</div>
-          <details><summary>Ver o que inclui</summary><div class="extra-body">Stories durante o evento · 1 Reel editado · Material via Drive.</div></details>
-        </div>
-        <div class="extra">
-          <div class="extra-name">Pré-Wedding</div><div class="extra-hours">até 4h</div><div class="extra-price">R$ 650</div>
-          <details><summary>Ver o que inclui</summary><div class="extra-body">Stories/conteúdo vertical · 1 Reel editado · Registros espontâneos · Material via Drive.</div></details>
-        </div>
-        <div class="extra">
-          <div class="extra-name">Bride Shower</div><div class="extra-hours">até 4h</div><div class="extra-price">R$ 650</div>
-          <details><summary>Ver o que inclui</summary><div class="extra-body">Stories durante o evento · 2 Reels editados · Registros espontâneos/trends · Material via Drive.</div></details>
-        </div>
-        <div class="extra">
-          <div class="extra-name">Jantar de Noivado</div><div class="extra-hours">até 5h</div><div class="extra-price">R$ 890</div>
-          <details><summary>Ver o que inclui</summary><div class="extra-body">Stories durante o evento · 2 Reels editados · Registros espontâneos · Material via Drive.</div></details>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="terms">
-  <div class="wrap terms-box">
-    <div class="section-label reveal">
-      <div class="section-nr">06 · PROPOSTA</div>
-      <h2>INFORMAÇÕES COMERCIAIS.</h2>
-    </div>
-    <div class="term-list reveal">
-      <div class="term-row"><span>Validade da proposta</span><span>A preencher</span></div>
-      <div class="term-row"><span>Data do casamento</span><span data-proposal-date>A definir</span></div>
-      <div class="term-row"><span>Local</span><span data-proposal-location>A definir</span></div>
-      <div class="term-row"><span>Forma de pagamento</span><span>A preencher</span></div>
-      <div class="term-row"><span>Deslocamento</span><span>A preencher</span></div>
-      <div class="term-row"><span>Reserva da data</span><span>Mediante contrato e sinal</span></div>
+    <div class="extra-list reveal">
+      <details class="extra">
+        <summary><span class="extra-name">Casamento Civil</span><span class="extra-hours">até 2 horas</span><span class="extra-price">R$ 450</span></summary>
+        <div class="extra-body">Stories durante o evento · 1 Reel editado · Material via Drive.</div>
+      </details>
+      <details class="extra">
+        <summary><span class="extra-name">Pré-Wedding</span><span class="extra-hours">até 4 horas</span><span class="extra-price">R$ 650</span></summary>
+        <div class="extra-body">Stories/conteúdo vertical · 1 Reel editado · Registros espontâneos · Material via Drive.</div>
+      </details>
+      <details class="extra">
+        <summary><span class="extra-name">Bride Shower</span><span class="extra-hours">até 4 horas</span><span class="extra-price">R$ 650</span></summary>
+        <div class="extra-body">Stories durante o evento · 2 Reels editados · Registros espontâneos/trends · Material via Drive.</div>
+      </details>
+      <details class="extra">
+        <summary><span class="extra-name">Jantar de Noivado</span><span class="extra-hours">até 5 horas</span><span class="extra-price">R$ 890</span></summary>
+        <div class="extra-body">Stories durante o evento · 2 Reels editados · Registros espontâneos · Material via Drive.</div>
+      </details>
     </div>
   </div>
 </section>
@@ -622,7 +521,7 @@ footer{background:#090909;color:rgba(255,255,255,.46);padding:14px 0}
 <section class="final" id="contato">
   <div class="wrap final-grid">
     <div class="reveal">
-      <h2>VAMOS FAZER UMA COLAB COM A SUA <span>HISTÓRIA?</span></h2>
+      <h2>VAMOS FAZER UMA COLAB COM A SUA <span class="serif">HISTÓRIA?</span></h2>
       <p>Escolha a experiência que mais combina com o casamento de vocês e fale com a gente para confirmar a disponibilidade da data.</p>
     </div>
     <a class="final-btn reveal" href="https://wa.me/5549991070654?text=Oi%21%20Quero%20consultar%20a%20disponibilidade%20da%20Colab%20Wedding." target="_blank" rel="noopener">Consultar disponibilidade ↗</a>
@@ -640,21 +539,35 @@ footer{background:#090909;color:rgba(255,255,255,.46);padding:14px 0}
 </footer>
 
 <script>
-const params=new URLSearchParams(location.search);
-const values={
-  name:params.get('casal')||'Seu casamento',
-  date:params.get('data')||'A definir',
-  location:params.get('local')||'A definir'
-};
-document.querySelectorAll('[data-proposal-name]').forEach(el=>el.textContent=values.name);
-document.querySelectorAll('[data-proposal-date]').forEach(el=>el.textContent=values.date);
-document.querySelectorAll('[data-proposal-location]').forEach(el=>el.textContent=values.location);
+const header=document.querySelector('header');
+const menu=document.querySelector('.menu');
+const mobile=document.querySelector('.mobile-nav');
+const progress=document.querySelector('.progress');
+const glow=document.querySelector('.cursor-glow');
+
+menu?.addEventListener('click',()=>{
+  mobile.classList.toggle('open');
+  document.body.style.overflow=mobile.classList.contains('open')?'hidden':'';
+});
+mobile?.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{
+  mobile.classList.remove('open');document.body.style.overflow='';
+}));
+
+addEventListener('scroll',()=>{
+  header.classList.toggle('scrolled',scrollY>24);
+  const h=document.documentElement.scrollHeight-innerHeight;
+  progress.style.width=(h?scrollY/h*100:0)+'%';
+},{passive:true});
+
+addEventListener('pointermove',e=>{
+  if(glow){glow.style.left=e.clientX+'px';glow.style.top=e.clientY+'px'}
+},{passive:true});
 
 const io=new IntersectionObserver(entries=>{
   entries.forEach(e=>{
     if(e.isIntersecting){e.target.classList.add('show');io.unobserve(e.target)}
   })
-},{threshold:.08,rootMargin:'0px 0px -22px 0px'});
+},{threshold:.08,rootMargin:'0px 0px -24px 0px'});
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 </script>
 </body>
