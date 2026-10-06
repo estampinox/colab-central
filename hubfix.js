@@ -322,3 +322,61 @@
     .c736-content-more button{width:100%!important;padding:9px!important;border:0!important;border-radius:6px!important;background:transparent!important;color:#df8b87!important;text-align:left!important;font-size:10px!important}
   `;document.head.appendChild(css);
 })();
+/* COLAB 7.36 — auth resilience: never discard a valid login because Data API clock is late */
+(function(){
+  window.doAuth=async function(e){
+    e.preventDefault();
+    const form=e.currentTarget, button=form.querySelector('button[type="submit"],button:not([type])');
+    const fd=new FormData(form), email=String(fd.get('email')||'').trim().toLowerCase(), password=String(fd.get('password')||'');
+    if(button){button.disabled=true;button.textContent=MODE==='login'?'Entrando…':'Criando…'}
+    try{
+      const url=MODE==='login'?B+'/auth/v1/token?grant_type=password':B+'/auth/v1/signup?redirect_to='+encodeURIComponent(location.origin+'/');
+      const r=await tf(url,{method:'POST',headers:{apikey:K,'Content-Type':'application/json'},body:JSON.stringify({email,password})});
+      const x=await r.json().catch(()=>({}));
+      if(!r.ok){
+        const raw=String(x.error_description||x.msg||x.message||'');
+        if(/invalid login credentials|invalid_credentials/i.test(raw)){
+          MODE='login';
+          auth('E-mail ou senha não conferem. Você pode redefinir a senha em “Esqueci minha senha”.');
+          const input=document.querySelector('#af input[name="email"]'); if(input)input.value=email;
+          return;
+        }
+        throw Error(raw||'Não foi possível entrar.');
+      }
+      if(MODE==='signup'){MODE='login';return auth('Conta criada. Agora entre com seu e-mail e senha.')}
+      save(x);
+      try{
+        await wait(3500);
+        await hydrate();
+      }catch(err){
+        const m=String(err?.message||'');
+        if(/PGRST303|issued at future|sincronizar sua sessão|Failed to fetch|NetworkError|abort/i.test(m)){
+          /* Critical: keep S + refresh_token. The Auth login succeeded. */
+          R.innerHTML='<div class="load"><div><div class="logo">C<span>O</span>LAB</div><h2>Conectando sua sessão…</h2><p>Seu acesso foi confirmado. Estamos sincronizando os dados.</p><button id="retryAuth736" class="btn pri">Continuar</button></div></div>';
+          document.getElementById('retryAuth736')?.addEventListener('click',async()=>{try{await hydrate()}catch(_){boot()}});
+          setTimeout(async()=>{try{await hydrate()}catch(_){}},5000);
+          return;
+        }
+        throw err;
+      }
+    }catch(err){
+      console.error(err);
+      const m=String(err?.message||'');
+      if(/PGRST303|issued at future/i.test(m)){
+        return auth('O acesso foi confirmado, mas a sincronização demorou. Tente entrar novamente; sua senha não foi alterada.');
+      }
+      auth('Não foi possível entrar agora. Se a senha não for aceita, use “Esqueci minha senha”.');
+      const input=document.querySelector('#af input[name="email"]'); if(input)input.value=email;
+    }finally{
+      if(button&&document.body.contains(button)){button.disabled=false;button.textContent=MODE==='login'?'Entrar':'Criar conta'}
+    }
+  };
+  const oldAuth=window.auth;
+  if(typeof oldAuth==='function'){
+    window.auth=function(msg=''){
+      oldAuth(msg);
+      const form=document.getElementById('af');
+      if(form)form.onsubmit=window.doAuth;
+    };
+  }
+})();
