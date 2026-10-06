@@ -557,7 +557,26 @@ boot=async function(){
   let recovery=recoverySessionV548();
   if(recovery)return recoveryPasswordPageV548(recovery);
   S=read();if(!S)return setTimeout(()=>auth(),350);save(S);
-  try{if(S.expires_at&&S.expires_at*1000<Date.now()+30000&&!await refresh())return auth();await hydrate()}catch(error){console.error(error);clear();auth('Não consegui restaurar sua sessão. Entre novamente.');}
+  try{
+    if(S.expires_at&&S.expires_at*1000<Date.now()+30000){
+      const ok=await refresh();
+      if(!ok)return auth('Sua sessão expirou. Entre novamente.');
+    }
+    await hydrate();
+  }catch(error){
+    console.error(error);
+    const msg=String(error?.message||'');
+    // Falhas temporárias do Data API / relógio NÃO invalidam uma sessão Auth válida.
+    // Preserva refresh_token e permite nova tentativa sem expulsar a usuária.
+    if(/PGRST303|issued at future|sincronizar sua sessão|Failed to fetch|NetworkError|abort/i.test(msg)){
+      R.innerHTML='<div class="load"><div><div class="logo">C<span>O</span>LAB</div><h2>Reconectando…</h2><p>Estamos sincronizando sua sessão.</p><button id="retrySessionV737" class="btn pri">Tentar novamente</button></div></div>';
+      document.getElementById('retrySessionV737')?.addEventListener('click',()=>boot());
+      return;
+    }
+    // Só limpa a sessão quando o próprio Auth realmente a considera inválida.
+    if(/invalid refresh token|refresh_token_not_found|session.*not.*found|jwt.*expired/i.test(msg))clear();
+    auth('Não consegui carregar seus dados agora. Tente novamente.');
+  }
 };
 const v548Style=document.createElement('style');v548Style.textContent=`
 .v548-forgot,.v548-auth-link{background:transparent;color:#6f6f6f;margin-top:8px}.v548-forgot{color:#d75a12}.v548-forgot:hover,.v548-auth-link:hover{color:#111}.authcard .msg{margin:13px 0}.authcard button:disabled{opacity:.58}
