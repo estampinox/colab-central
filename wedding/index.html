@@ -273,6 +273,208 @@ footer{background:#0e0c0a;color:rgba(255,255,255,.56);padding:14px 0}
   *{scroll-behavior:auto!important;animation:none!important;transition:none!important}
   .reveal{opacity:1!important;transform:none!important}
 }
+
+/* 2026-10-05 — MEDIA + PLANS REWORK */
+header{
+  color:var(--ink)!important;
+  background:rgba(242,237,230,.92)!important;
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(17,16,15,.07);
+}
+
+/* hero now respects the native vertical footage */
+.hero-v2{
+  min-height:auto!important;
+  background:var(--paper)!important;
+  color:var(--ink)!important;
+  overflow:visible!important;
+  padding:62px 0 78px;
+}
+.hero-v2-grid{
+  min-height:calc(100svh - 62px);
+  display:grid;
+  grid-template-columns:minmax(0,1.08fr) minmax(330px,.72fr);
+  gap:72px;
+  align-items:center;
+}
+.hero-v2-copy{max-width:720px}
+.hero-v2 .eyebrow{color:var(--orange)!important;margin-bottom:18px}
+.hero-v2 h1{font-size:clamp(58px,6.4vw,86px);max-width:760px}
+.hero-v2 p{font-size:17px;line-height:1.62;color:var(--muted);max-width:600px;margin:24px 0 0}
+.hero-v2-cta{
+  display:inline-flex;align-items:center;gap:10px;margin-top:30px;
+  font-size:9px;text-transform:uppercase;letter-spacing:.15em;font-weight:800;
+  border-bottom:1px solid var(--ink);padding-bottom:5px
+}
+.hero-v2-cta span{color:var(--orange);font-size:16px}
+.hero-v2-media{justify-self:end;width:min(100%,430px)}
+.video-shell{
+  overflow:hidden;background:#d9cec4;position:relative;
+}
+.video-shell video{
+  width:100%;height:100%;display:block;object-fit:cover;
+}
+.bride-shell{aspect-ratio:9/16}
+.video-note{
+  margin-top:10px;font-size:8px;text-transform:uppercase;letter-spacing:.16em;
+  color:var(--muted);text-align:right
+}
+
+/* one real ceremony clip instead of a compressed collage */
+.film-story{padding:8px 0 92px}
+.film-story-grid{
+  display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:96px;align-items:center;
+}
+.film-story-copy{max-width:620px}
+.film-story-copy .display{font-size:clamp(42px,4.6vw,64px);margin:18px 0 24px}
+.film-story-copy .body{max-width:520px}
+.film-video{margin:0;justify-self:end;width:360px}
+.ceremony-shell{aspect-ratio:360/626}
+.film-video figcaption{
+  margin-top:10px;font-size:8px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--muted)
+}
+
+/* remove any remaining stretched source images */
+.where-visual,.where-photo,.storymaker-media,.manifesto-img,.final>img{display:none!important}
+.where-statement{
+  margin-top:48px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  padding:24px 0;display:flex;justify-content:space-between;gap:30px;align-items:baseline;
+  font-family:var(--serif);font-size:clamp(30px,3.3vw,45px)
+}
+.where-statement em{color:var(--orange);font-weight:400}
+.storymaker-end{
+  margin-top:48px;padding:26px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  font-family:var(--serif);font-size:clamp(29px,3.2vw,44px);
+  display:flex;justify-content:space-between;gap:32px
+}
+.storymaker-end em{color:var(--orange);font-weight:400}
+.manifesto-v2{
+  padding:72px 0 100px!important;
+}
+.manifesto-v2 p{
+  margin:0;font-family:var(--serif);font-size:clamp(58px,7.4vw,104px);
+  line-height:.87;letter-spacing:-.045em;max-width:980px
+}
+.manifesto-v2 em{color:var(--orange);font-weight:400}
+
+/* plans: editorial rows, not a 3-column price table */
+.plans-v2{padding:90px 0 104px!important}
+.plan-list{border-top:1px solid var(--line)}
+.plan-row{
+  position:relative;padding:32px 0 34px;border-bottom:1px solid var(--line);
+}
+.plan-row-featured{
+  margin-inline:calc(var(--gutter) * -1);
+  padding-inline:var(--gutter);
+  background:linear-gradient(90deg,rgba(255,90,31,.055),rgba(255,90,31,0) 76%);
+}
+.plan-row-featured:before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--orange)
+}
+.plan-row-top{
+  display:grid;grid-template-columns:58px minmax(0,1fr) auto;gap:18px;align-items:end;
+}
+.plan-nr{font-size:9px;letter-spacing:.15em;color:var(--orange);font-weight:800;padding-bottom:7px}
+.plan-row h3{
+  font-family:var(--serif);font-weight:400;font-size:clamp(34px,3.8vw,50px);
+  line-height:.95;margin:0 0 6px
+}
+.plan-row .plan-hours{
+  font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);font-weight:800
+}
+.plan-price{font-family:var(--serif);font-size:clamp(34px,3.6vw,48px);line-height:1}
+.plan-row-body{
+  display:grid;grid-template-columns:58px minmax(0,1fr) auto;gap:18px;
+  align-items:end;margin-top:22px
+}
+.plan-row-copy{max-width:760px}
+.plan-row-copy strong{
+  display:block;font-family:var(--serif);font-weight:400;font-size:22px;line-height:1.24;margin-bottom:10px
+}
+.plan-row-copy p{font-size:13.5px;line-height:1.65;color:var(--muted);margin:0}
+.choose-v2{
+  display:inline-flex;align-items:center;gap:9px;width:max-content;
+  font-size:9px;text-transform:uppercase;letter-spacing:.14em;font-weight:800;
+  border-bottom:1px solid var(--ink);padding-bottom:4px;white-space:nowrap
+}
+.choose-v2 span{color:var(--orange);font-size:15px}
+
+/* clean close, no enlarged low-res photo */
+.final-v2{
+  min-height:auto!important;background:var(--ink)!important;color:#fff!important;
+  padding:82px 0!important;
+}
+.final-v2:after{display:none!important}
+.final-v2-grid{
+  display:grid;grid-template-columns:minmax(0,1fr) auto;gap:50px;align-items:end
+}
+.final-v2 h2{font-size:clamp(54px,6.5vw,92px);max-width:900px}
+.final-v2 h2 em{color:#ff8052;font-weight:400}
+.final-v2-link{
+  display:inline-flex;align-items:center;gap:10px;font-size:9px;letter-spacing:.15em;
+  text-transform:uppercase;font-weight:800;border-bottom:1px solid rgba(255,255,255,.7);
+  padding-bottom:5px;white-space:nowrap
+}
+.final-v2-link span{color:#ff8052;font-size:15px}
+
+@media(max-width:850px){
+  .hero-v2{padding:56px 0 62px!important}
+  .hero-v2-grid{
+    min-height:auto;grid-template-columns:1fr;gap:30px;
+  }
+  .hero-v2-media{
+    order:1;justify-self:center;width:min(86vw,340px);
+    padding-top:18px
+  }
+  .hero-v2-copy{order:2;max-width:none}
+  .hero-v2 h1{font-size:38px!important;max-width:94%!important}
+  .hero-v2 p{font-size:14.5px!important;max-width:94%!important}
+  .video-note{text-align:left}
+
+  .film-story{padding:0 0 68px}
+  .film-story-grid{grid-template-columns:1fr;gap:30px}
+  .film-story-copy .display{font-size:31px}
+  .film-video{justify-self:center;width:min(82vw,320px)}
+
+  .where-statement{
+    margin-top:32px;display:block;font-size:27px;padding:19px 0
+  }
+  .where-statement span,.where-statement em{display:block}
+  .where-statement em{margin-top:6px}
+  .storymaker-end{
+    margin-top:32px;display:block;font-size:26px;padding:20px 0
+  }
+  .storymaker-end span,.storymaker-end em{display:block}
+  .storymaker-end em{margin-top:5px}
+  .manifesto-v2{padding:54px 0 70px!important}
+  .manifesto-v2 p{font-size:47px!important}
+
+  .plans-v2{padding:66px 0 76px!important}
+  .plan-row{padding:24px 0 27px}
+  .plan-row-featured{
+    margin-inline:-20px;padding-inline:20px
+  }
+  .plan-row-top{
+    grid-template-columns:34px minmax(0,1fr) auto;gap:10px
+  }
+  .plan-nr{font-size:8px;padding-bottom:5px}
+  .plan-row h3{font-size:29px}
+  .plan-price{font-size:30px}
+  .plan-row-body{
+    grid-template-columns:34px 1fr;gap:10px;margin-top:19px
+  }
+  .plan-row-copy{grid-column:2}
+  .plan-row-copy strong{font-size:19px}
+  .plan-row-copy p{font-size:13px}
+  .choose-v2{grid-column:2;margin-top:18px}
+
+  .final-v2{padding:60px 0!important}
+  .final-v2-grid{grid-template-columns:1fr;gap:24px}
+  .final-v2 h2{font-size:39px!important}
+  .final-v2-link{width:max-content}
+}
+
 </style>
 </head>
 <body>
@@ -297,17 +499,23 @@ footer{background:#0e0c0a;color:rgba(255,255,255,.56);padding:14px 0}
 </div>
 
 <main id="top">
-<section class="hero">
-  <div class="hero-bg"><img src="assets/hero-real.jpg" alt="Noiva com buquê branco"></div>
-  <div class="container hero-inner">
-    <div class="hero-copy reveal">
+<section class="hero hero-v2">
+  <div class="container hero-v2-grid">
+    <div class="hero-v2-copy reveal">
       <div class="eyebrow">StoryMaker · Real Time</div>
       <h1 class="display">UM OLHAR ATENTO PARA O GRANDE DIA.</h1>
       <p>Enquanto vocês vivem cada segundo, a Colab registra tudo aquilo que merece ser revivido.</p>
-      <a class="hero-cta" href="#experiencia">Conhecer a experiência <span>↘</span></a>
+      <a class="hero-v2-cta" href="#experiencia">Conhecer a experiência <span>↘</span></a>
+    </div>
+    <div class="hero-v2-media reveal">
+      <div class="video-shell bride-shell">
+        <video autoplay muted loop playsinline preload="auto" aria-label="Noiva com buquê antes da cerimônia">
+          <source src="assets/bride-loop.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="video-note">registro real · Colab Wedding</div>
     </div>
   </div>
-  <div class="hero-corner">Conteúdo real, criado enquanto a história acontece.</div>
 </section>
 
 <section class="opening" id="experiencia">
@@ -323,19 +531,21 @@ footer{background:#0e0c0a;color:rgba(255,255,255,.56);padding:14px 0}
   </div>
 </section>
 
-<section class="spread">
-  <div class="container spread-grid">
-    <figure class="spread-main reveal">
-      <img src="assets/ceremony-real.jpg" alt="Momentos reais registrados durante uma cerimônia de casamento">
-      <figcaption class="spread-caption">Registros reais · Colab Wedding</figcaption>
-    </figure>
-    <div class="spread-side">
-      <div class="spread-card reveal">
-        <small>Nos intervalos</small>
-        <p>É ali que aparecem as coisas que ninguém planejou.</p>
-      </div>
-      <figure class="spread-thumb reveal"><img src="assets/closing-real.jpg" alt="Noiva com buquê"></figure>
+<section class="film-story">
+  <div class="container film-story-grid">
+    <div class="film-story-copy reveal">
+      <div class="eyebrow">O que acontece ao redor</div>
+      <p class="display">O casamento não acontece só onde todo mundo está olhando.</p>
+      <div class="body">É nos intervalos, nas reações e nos encontros que aparecem as coisas que ninguém planejou.</div>
     </div>
+    <figure class="film-video reveal">
+      <div class="video-shell ceremony-shell">
+        <video autoplay muted loop playsinline preload="auto" aria-label="Trecho real de uma cerimônia de casamento">
+          <source src="assets/ceremony-loop.mp4" type="video/mp4">
+        </video>
+      </div>
+      <figcaption>registro real · durante a cerimônia</figcaption>
+    </figure>
   </div>
 </section>
 
@@ -356,9 +566,9 @@ footer{background:#0e0c0a;color:rgba(255,255,255,.56);padding:14px 0}
         <p>Dos bastidores aos encontros, dos detalhes às reações, acompanhamos o que faz aquele dia ser só de vocês.</p>
       </div>
     </div>
-    <div class="where-visual">
-      <figure class="where-photo reveal"><img src="assets/hero-real.jpg" alt="Noiva antes da cerimônia"></figure>
-      <div class="where-quote reveal"><p>De dentro da experiência. <em>Perto o suficiente para perceber.</em></p></div>
+    <div class="where-statement reveal">
+      <span>De dentro da experiência.</span>
+      <em>Perto o suficiente para perceber.</em>
     </div>
   </div>
 </section>
@@ -380,62 +590,80 @@ footer{background:#0e0c0a;color:rgba(255,255,255,.56);padding:14px 0}
       <div class="process"><span>Registra</span><i>→</i><span>Seleciona</span><i>→</i><span>Edita</span><i>→</i><span>Legenda</span><i>→</i><span>Publica</span></div>
     </div>
   </div>
+  <div class="container storymaker-end reveal">
+    <span>A história já está sendo contada</span>
+    <em>enquanto vocês vivem.</em>
+  </div>
+</section>
+
+<section class="manifesto manifesto-v2">
   <div class="container">
-    <figure class="storymaker-media reveal">
-      <img src="assets/ceremony-real.jpg" alt="Narrativa real de uma cerimônia">
-      <div class="overlay-copy">A história já está sendo contada enquanto vocês vivem.</div>
-    </figure>
+    <p class="reveal">VOCÊ VIVE.<br>A GENTE NÃO <em>DEIXA PASSAR.</em></p>
   </div>
 </section>
 
-<section class="manifesto">
-  <div class="container manifesto-inner">
-    <figure class="manifesto-img reveal"><img src="assets/closing-real.jpg" alt="Noiva com buquê"></figure>
-    <div class="manifesto-copy reveal"><p>VOCÊ VIVE.<br>A GENTE NÃO <em>DEIXA PASSAR.</em></p></div>
-  </div>
-</section>
-
-<section class="plans" id="planos">
+<section class="plans plans-v2" id="planos">
   <div class="container">
     <div class="plans-head">
       <h2 class="display reveal">TRÊS FORMAS DE VIVER ESSA EXPERIÊNCIA</h2>
       <p class="reveal">Cada casamento tem um ritmo. Por isso, criamos três formatos de cobertura para acompanhar diferentes momentos do dia.</p>
     </div>
 
-    <div class="plan-grid">
-      <article class="plan reveal">
-        <div class="plan-index">01 · Moment</div>
-        <h3>Colab Moment</h3>
-        <div class="plan-hours">4 horas</div>
-        <div class="plan-lead">Para acompanhar os momentos que concentram a emoção do casamento.</div>
-        <p class="plan-copy">Quatro horas de cobertura com o olhar da Colab para registrar bastidores, cerimônia, encontros e tudo aquilo que acontece ao redor.</p>
-        <div class="plan-bottom">
-          <div class="price">R$ 890</div>
-          <a class="choose" href="https://wa.me/5549991070654?text=Oi%21%20Quero%20escolher%20o%20Colab%20Moment." target="_blank" rel="noopener">Escolher <span>→</span></a>
+    <div class="plan-list">
+      <article class="plan-row reveal">
+        <div class="plan-row-top">
+          <span class="plan-nr">01</span>
+          <div>
+            <h3>Colab Moment</h3>
+            <span class="plan-hours">4 horas</span>
+          </div>
+          <div class="plan-price">R$ 890</div>
+        </div>
+        <div class="plan-row-body">
+          <div></div>
+          <div class="plan-row-copy">
+            <strong>Para acompanhar os momentos que concentram a emoção do casamento.</strong>
+            <p>Quatro horas de cobertura com o olhar da Colab para registrar bastidores, cerimônia, encontros e tudo aquilo que acontece ao redor.</p>
+          </div>
+          <a class="choose-v2" href="https://wa.me/5549991070654?text=Oi%21%20Quero%20escolher%20o%20Colab%20Moment." target="_blank" rel="noopener">Escolher <span>→</span></a>
         </div>
       </article>
 
-      <article class="plan reveal">
-        <div class="plan-index">02 · Experience</div>
-        <h3>Colab Experience</h3>
-        <div class="plan-hours">6 horas</div>
-        <div class="plan-lead">Para acompanhar mais capítulos do casamento e deixar a história ganhar ainda mais forma.</div>
-        <p class="plan-copy">6 horas de cobertura para estar presente nos bastidores, cerimônia, recepção e em tudo o que acontece entre um momento e outro.</p>
-        <div class="plan-bottom">
-          <div class="price">R$ 1.490</div>
-          <a class="choose" href="https://wa.me/5549991070654?text=Oi%21%20Quero%20escolher%20o%20Colab%20Experience." target="_blank" rel="noopener">Escolher <span>→</span></a>
+      <article class="plan-row plan-row-featured reveal">
+        <div class="plan-row-top">
+          <span class="plan-nr">02</span>
+          <div>
+            <h3>Colab Experience</h3>
+            <span class="plan-hours">6 horas</span>
+          </div>
+          <div class="plan-price">R$ 1.490</div>
+        </div>
+        <div class="plan-row-body">
+          <div></div>
+          <div class="plan-row-copy">
+            <strong>Para acompanhar mais capítulos do casamento e deixar a história ganhar ainda mais forma.</strong>
+            <p>6 horas de cobertura para estar presente nos bastidores, cerimônia, recepção e em tudo o que acontece entre um momento e outro.</p>
+          </div>
+          <a class="choose-v2" href="https://wa.me/5549991070654?text=Oi%21%20Quero%20escolher%20o%20Colab%20Experience." target="_blank" rel="noopener">Escolher <span>→</span></a>
         </div>
       </article>
 
-      <article class="plan reveal">
-        <div class="plan-index">03 · Full Day</div>
-        <h3>Colab Full Day</h3>
-        <div class="plan-hours">10 horas</div>
-        <div class="plan-lead">Para contar a história por completo.</div>
-        <p class="plan-copy">10 horas de cobertura acompanhando o casamento desde o making of, os preparativos e a expectativa antes da cerimônia, até a chegada dos convidados, decoração, cerimônia, recepção, jantar e festa.<br><br>Assim, quando vocês voltarem a esse dia, não vão lembrar só do que aconteceu. Vão reviver tudo o que sentiram ao longo dele.</p>
-        <div class="plan-bottom">
-          <div class="price">R$ 2.190</div>
-          <a class="choose" href="https://wa.me/5549991070654?text=Oi%21%20Quero%20escolher%20o%20Colab%20Full%20Day." target="_blank" rel="noopener">Escolher <span>→</span></a>
+      <article class="plan-row reveal">
+        <div class="plan-row-top">
+          <span class="plan-nr">03</span>
+          <div>
+            <h3>Colab Full Day</h3>
+            <span class="plan-hours">10 horas</span>
+          </div>
+          <div class="plan-price">R$ 2.190</div>
+        </div>
+        <div class="plan-row-body">
+          <div></div>
+          <div class="plan-row-copy">
+            <strong>Para contar a história por completo.</strong>
+            <p>10 horas de cobertura acompanhando o casamento desde o making of, os preparativos e a expectativa antes da cerimônia, até a chegada dos convidados, decoração, cerimônia, recepção, jantar e festa.<br><br>Assim, quando vocês voltarem a esse dia, não vão lembrar só do que aconteceu. Vão reviver tudo o que sentiram ao longo dele.</p>
+          </div>
+          <a class="choose-v2" href="https://wa.me/5549991070654?text=Oi%21%20Quero%20escolher%20o%20Colab%20Full%20Day." target="_blank" rel="noopener">Escolher <span>→</span></a>
         </div>
       </article>
     </div>
@@ -486,11 +714,10 @@ footer{background:#0e0c0a;color:rgba(255,255,255,.56);padding:14px 0}
   </div>
 </section>
 
-<section class="final">
-  <img src="assets/closing-real.jpg" alt="Noiva com buquê branco">
-  <div class="container final-content">
+<section class="final final-v2">
+  <div class="container final-v2-grid">
     <h2 class="display reveal">VAMOS FAZER UMA COLAB COM A SUA <em>HISTÓRIA?</em></h2>
-    <a class="final-link reveal" href="https://wa.me/5549991070654?text=Oi%21%20Quero%20conversar%20sobre%20a%20Colab%20Wedding." target="_blank" rel="noopener">Falar com a Colab <span>→</span></a>
+    <a class="final-v2-link reveal" href="https://wa.me/5549991070654?text=Oi%21%20Quero%20conversar%20sobre%20a%20Colab%20Wedding." target="_blank" rel="noopener">Falar com a Colab <span>→</span></a>
   </div>
 </section>
 </main>
