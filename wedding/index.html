@@ -3,299 +3,209 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0c0c0c">
+<meta name="theme-color" content="#f7f4ef">
 <title>Colab Wedding</title>
-<meta name="description" content="Colab Wedding — StoryMaker para casamentos em tempo real.">
+<meta name="description" content="Colab Wedding — StoryMaker para casamentos.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Marcellus&display=swap" rel="stylesheet">
 <style>
 :root{
-  --black:#0c0c0c;
-  --black2:#141414;
-  --white:#f8f7f3;
-  --paper:#f3f0ea;
-  --ink:#121212;
-  --muted:#6b6a66;
-  --line:rgba(18,18,18,.16);
+  --ivory:#f7f4ef;
+  --ivory2:#f0ebe4;
+  --paper:#fcfaf7;
+  --ink:#171411;
+  --muted:#777069;
+  --taupe:#cfc2b5;
+  --taupe2:#ded5cb;
+  --line:rgba(23,20,17,.14);
+  --dark:#1c1815;
   --orange:#ff5a1f;
-  --orange2:#ff7c4c;
-  --max:1220px;
+  --serif:"Marcellus",Georgia,serif;
+  --sans:"Manrope",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
+  --max:1180px;
   --gutter:clamp(20px,4vw,58px);
-  --sans:"Inter Tight",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
-  --serif:"Instrument Serif",Georgia,serif;
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth;background:var(--black)}
-body{margin:0;font-family:var(--sans);background:var(--black);color:var(--white);overflow-x:hidden}
+html{scroll-behavior:smooth;background:var(--ivory)}
+body{margin:0;background:var(--ivory);color:var(--ink);font-family:var(--sans);overflow-x:hidden}
 a{color:inherit;text-decoration:none}
 button{font:inherit}
 .wrap{width:min(var(--max),calc(100% - 2*var(--gutter)));margin:auto}
-.reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.75,.2,1)}
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .75s ease,transform .75s cubic-bezier(.2,.7,.2,1)}
 .reveal.show{opacity:1;transform:none}
-.kicker{font-size:9px;text-transform:uppercase;letter-spacing:.19em;font-weight:800;color:var(--orange)}
-.cursor-glow{position:fixed;width:420px;height:420px;border-radius:50%;pointer-events:none;background:radial-gradient(circle,rgba(255,90,31,.17),rgba(255,90,31,0) 68%);transform:translate(-50%,-50%);z-index:0;opacity:.85;mix-blend-mode:screen}
-.progress{position:fixed;left:0;top:0;height:2px;background:var(--orange);z-index:120;width:0}
-
-/* HEADER */
-header{position:fixed;inset:0 0 auto;z-index:100;transition:.3s ease}
-header.scrolled{background:rgba(12,12,12,.78);backdrop-filter:blur(18px);border-bottom:1px solid rgba(255,255,255,.08)}
-.nav{height:68px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.kicker{font-size:9px;text-transform:uppercase;letter-spacing:.18em;font-weight:800;color:var(--muted)}
+.kicker b{color:var(--orange);font-weight:800}
+.display{font-family:var(--serif);font-weight:400;letter-spacing:-.025em;line-height:.98;margin:0}
+.muted{color:var(--muted)}
+header{position:sticky;top:0;z-index:100;background:rgba(247,244,239,.93);backdrop-filter:blur(18px);border-bottom:1px solid rgba(23,20,17,.07)}
+.nav{height:64px;display:flex;align-items:center;justify-content:space-between;gap:20px}
 .brand{font-size:20px;font-weight:800;letter-spacing:-.045em}
-.brand em{font-family:var(--serif);font-size:23px;font-weight:400;margin-left:6px;color:var(--orange2)}
+.brand span{font-family:var(--serif);font-weight:400;margin-left:6px;font-size:21px}
 .nav-links{display:flex;gap:24px;align-items:center}
-.nav-links a{font-size:9px;text-transform:uppercase;letter-spacing:.16em;font-weight:800;color:rgba(255,255,255,.72)}
-.nav-cta{border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:10px 14px!important;color:#fff!important}
-.menu{display:none;border:0;background:transparent;color:#fff;width:42px;height:42px}
-.menu:before,.menu:after,.menu span{content:"";display:block;width:22px;height:1px;background:currentColor;margin:5px auto}
-.mobile-nav{display:none;position:fixed;inset:0;z-index:95;background:var(--black);padding:104px var(--gutter) 30px}
+.nav-links a{font-size:9px;text-transform:uppercase;letter-spacing:.14em;font-weight:800;color:#5e5852}
+.nav-links .cta{border-bottom:1px solid var(--ink);padding-bottom:3px;color:var(--ink)}
+.menu{display:none;border:0;background:transparent;width:42px;height:42px;padding:0}
+.menu:before,.menu:after,.menu span{content:"";display:block;width:22px;height:1px;background:var(--ink);margin:5px auto}
+.mobile-nav{display:none;position:fixed;inset:64px 0 0;z-index:90;background:var(--ivory);padding:26px var(--gutter)}
 .mobile-nav.open{display:flex;flex-direction:column}
-.mobile-nav a{font-size:30px;font-weight:700;letter-spacing:-.04em;padding:16px 0;border-bottom:1px solid rgba(255,255,255,.12)}
-
-/* HERO */
-.hero{
-  min-height:100svh;position:relative;overflow:hidden;display:flex;align-items:flex-end;
-  background:
-    radial-gradient(circle at 74% 34%,rgba(255,90,31,.20),transparent 28%),
-    linear-gradient(180deg,#0b0b0b 0%,#111 100%);
-}
-.hero-orbit{position:absolute;right:-7vw;top:9vh;width:min(60vw,760px);aspect-ratio:1;pointer-events:none;opacity:.92}
-.hero-orbit .ring{position:absolute;border:1px solid rgba(255,255,255,.18);border-radius:50%;inset:0;animation:spin 22s linear infinite}
-.hero-orbit .ring.r2{inset:14%;border-color:rgba(255,90,31,.62);animation-duration:16s;animation-direction:reverse}
-.hero-orbit .ring.r3{inset:31%;border-color:rgba(255,255,255,.10);animation-duration:28s}
-.hero-orbit .dot{position:absolute;width:10px;height:10px;border-radius:50%;background:var(--orange);top:14%;left:52%;box-shadow:0 0 36px rgba(255,90,31,.75)}
-@keyframes spin{to{transform:rotate(360deg)}}
-.hero-inner{position:relative;z-index:2;padding:130px 0 64px;width:100%}
-.hero-grid{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(280px,.48fr);gap:80px;align-items:end}
-.hero-copy{max-width:780px}
-.hero-kicker{display:flex;align-items:center;gap:12px;margin-bottom:24px}
-.hero-kicker:before{content:"";width:36px;height:2px;background:var(--orange)}
-.hero h1{
-  font-size:clamp(58px,7.2vw,104px);line-height:.88;letter-spacing:-.065em;
-  margin:0;font-weight:700;max-width:900px
-}
-.hero h1 span{display:block}
-.hero h1 .accent{font-family:var(--serif);font-weight:400;font-style:italic;color:var(--orange2);letter-spacing:-.035em}
-.hero-copy p{font-size:17px;line-height:1.6;color:rgba(255,255,255,.66);max-width:610px;margin:28px 0 0}
-.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:30px}
-.btn{
-  min-height:46px;display:inline-flex;align-items:center;justify-content:center;gap:9px;
-  padding:0 18px;border-radius:999px;font-size:9px;letter-spacing:.13em;
-  text-transform:uppercase;font-weight:800
-}
-.btn.orange{background:var(--orange);color:#111}
-.btn.line{border:1px solid rgba(255,255,255,.22);color:#fff}
-.hero-side{padding-bottom:6px}
-.hero-side-line{border-top:1px solid rgba(255,255,255,.16);padding-top:16px}
-.hero-side strong{font-size:13px;line-height:1.35;display:block;max-width:260px}
-.hero-side p{font-size:11px;line-height:1.55;color:rgba(255,255,255,.46);margin:12px 0 0}
-.hero-signature{margin-top:34px;font-family:var(--serif);font-size:34px;line-height:.98;color:var(--orange2);max-width:220px}
-
-/* MARQUEE */
-.marquee{overflow:hidden;background:var(--orange);color:#111;border-top:1px solid rgba(0,0,0,.08);border-bottom:1px solid rgba(0,0,0,.08)}
-.marquee-track{display:flex;width:max-content;align-items:center;gap:25px;padding:12px 0;animation:move 18s linear infinite}
-.marquee span{font-size:12px;text-transform:uppercase;letter-spacing:.14em;font-weight:900;white-space:nowrap}
-.marquee i{font-style:normal;font-size:9px}
-@keyframes move{to{transform:translateX(-50%)}}
-
-/* LIGHT WORLD */
-.light{background:var(--white);color:var(--ink)}
-.story-intro{padding:108px 0 96px}
-.story-grid{display:grid;grid-template-columns:.76fr 1.24fr;gap:100px;align-items:start}
-.story-title{position:sticky;top:104px}
-.story-title h2{font-size:clamp(42px,5vw,68px);line-height:.94;letter-spacing:-.06em;margin:14px 0 0;max-width:500px}
-.story-copy{max-width:700px}
-.story-copy .lead{font-size:22px;line-height:1.36;letter-spacing:-.025em;font-weight:650;margin:0 0 22px}
-.story-copy p{font-size:15px;line-height:1.75;color:var(--muted);margin:0 0 14px}
-.story-quote{
-  margin-top:30px;padding:24px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);
-  font-size:18px;font-weight:700;letter-spacing:-.02em
-}
-.story-quote span{color:var(--orange)}
-.word-cloud{display:flex;flex-wrap:wrap;gap:9px;margin-top:34px}
-.word{
-  border:1px solid var(--line);border-radius:999px;padding:11px 14px;font-size:11px;
-  text-transform:uppercase;letter-spacing:.1em;font-weight:800;background:#fff
-}
-.word:nth-child(2),.word:nth-child(4){background:var(--ink);color:#fff;border-color:var(--ink)}
-
-/* PROCESS */
-.process-section{padding:0 0 108px}
-.process-shell{
-  background:var(--ink);color:#fff;border-radius:28px;padding:42px;
-  display:grid;grid-template-columns:.72fr 1.28fr;gap:70px;align-items:start
-}
-.process-shell h2{font-size:clamp(34px,4vw,56px);line-height:.96;letter-spacing:-.055em;margin:12px 0 0}
-.process-copy p{font-size:14px;line-height:1.7;color:rgba(255,255,255,.58);margin:0 0 14px}
-.process-steps{margin-top:28px}
-.step{display:grid;grid-template-columns:44px 1fr auto;gap:14px;padding:15px 0;border-top:1px solid rgba(255,255,255,.12);align-items:center}
-.step:last-child{border-bottom:1px solid rgba(255,255,255,.12)}
-.step-nr{font-size:9px;color:var(--orange);font-weight:800}
-.step-name{font-size:12px;text-transform:uppercase;letter-spacing:.12em;font-weight:800}
-.step-mark{font-size:13px;color:rgba(255,255,255,.34)}
-.realtime-note{
-  margin-top:28px;font-family:var(--serif);font-size:26px;line-height:1.15;
-  color:var(--orange2);max-width:560px
-}
-
-/* PLAN EXPERIENCE */
-.plans{padding:110px 0 118px;background:var(--paper);color:var(--ink)}
-.plans-head{display:flex;align-items:flex-end;justify-content:space-between;gap:48px;margin-bottom:34px}
-.plans-head h2{font-size:clamp(40px,5vw,68px);line-height:.94;letter-spacing:-.06em;margin:0;max-width:730px}
-.plans-head p{font-size:13px;line-height:1.6;color:var(--muted);max-width:430px;margin:0}
-.plan-stack{border-top:1px solid var(--ink)}
-.plan{
-  position:relative;border-bottom:1px solid var(--line);padding:28px 0 30px;
-  display:grid;grid-template-columns:70px 260px minmax(0,1fr) 150px;gap:24px;align-items:start;
-  transition:.25s ease
-}
-.plan:hover{padding-left:14px;padding-right:14px;background:#fff}
-.plan.featured{background:#fff}
-.plan.featured:before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--orange)}
-.plan-nr{font-size:10px;color:var(--orange);font-weight:800;padding-top:7px}
-.plan-name{font-size:29px;line-height:1;letter-spacing:-.05em;font-weight:800}
-.plan-hours{font-size:10px;text-transform:uppercase;letter-spacing:.11em;color:var(--muted);margin-top:9px;font-weight:700}
-.plan-badge{font-size:8px;text-transform:uppercase;letter-spacing:.13em;color:var(--orange);font-weight:900;margin-bottom:8px}
-.plan-copy strong{display:block;font-size:17px;line-height:1.35;letter-spacing:-.02em;margin-bottom:9px}
-.plan-copy p{font-size:12.8px;line-height:1.63;color:var(--muted);margin:0;max-width:650px}
+.mobile-nav a{font-family:var(--serif);font-size:31px;padding:15px 0;border-bottom:1px solid var(--line)}
+.hero{position:relative;overflow:hidden;padding:76px 0 58px;background:linear-gradient(180deg,var(--paper),var(--ivory))}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(300px,.7fr);gap:72px;align-items:center;min-height:calc(100svh - 122px)}
+.hero-copy{position:relative;z-index:2}
+.hero h1{font-size:clamp(54px,6.5vw,86px);max-width:820px}
+.hero h1 em{font-style:normal;color:#9a8d82}
+.hero-sub{font-size:17px;line-height:1.66;color:var(--muted);max-width:600px;margin:24px 0 0}
+.hero-actions{display:flex;gap:22px;align-items:center;flex-wrap:wrap;margin-top:28px}
+.hero-link{font-size:10px;text-transform:uppercase;letter-spacing:.12em;font-weight:800;padding-bottom:5px;border-bottom:1px solid var(--ink)}
+.hero-link.secondary{color:var(--muted);border-color:#aaa}
+.hero-link b{color:var(--orange);margin-left:7px}
+.hero-side{position:relative;height:520px;display:grid;place-items:center}
+.rings{position:relative;width:min(32vw,380px);aspect-ratio:1}
+.ring{position:absolute;border:1px solid rgba(86,75,65,.22);border-radius:50%;width:70%;height:82%;top:9%;left:6%;transform:rotate(-16deg)}
+.ring.r2{left:28%;top:12%;border-color:rgba(156,139,123,.5);transform:rotate(18deg)}
+.ring.r3{width:34%;height:34%;left:33%;top:33%;border-color:rgba(255,90,31,.3);opacity:.58}
+.hero-note{position:absolute;right:0;bottom:18px;width:250px;padding-top:14px;border-top:1px solid var(--line)}
+.hero-note strong{font-family:var(--serif);font-size:22px;font-weight:400;display:block;line-height:1.05}
+.hero-note span{display:block;font-size:11px;line-height:1.5;color:var(--muted);margin-top:8px}
+.intro{padding:82px 0 88px;background:var(--ivory)}
+.intro-grid{display:grid;grid-template-columns:.82fr 1.18fr;gap:90px;align-items:start}
+.intro h2{font-size:clamp(40px,4.6vw,62px);max-width:560px}
+.intro-copy{font-size:15px;line-height:1.78;color:var(--muted);max-width:650px}
+.intro-copy p{margin:0 0 15px}
+.intro-pull{margin-top:30px;padding-top:18px;border-top:1px solid var(--line);font-family:var(--serif);font-size:24px;line-height:1.2;color:#3a332d}
+.intro-pull b{color:var(--orange);font-weight:400}
+.motion{overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--paper)}
+.motion-track{width:max-content;display:flex;align-items:center;gap:26px;padding:14px 0;animation:slide 24s linear infinite}
+.motion span{font-family:var(--serif);font-size:33px;white-space:nowrap;color:#5b5148}
+.motion i{font-style:normal;color:var(--taupe);font-size:12px}
+.motion .micro{color:var(--orange)}
+@keyframes slide{to{transform:translateX(-50%)}}
+.plans{padding:96px 0 110px;background:var(--paper)}
+.plans-head{display:grid;grid-template-columns:1.1fr .9fr;gap:70px;align-items:end;margin-bottom:38px}
+.plans h2{font-size:clamp(42px,4.9vw,66px);max-width:690px}
+.plans-head p{font-size:14px;line-height:1.7;color:var(--muted);max-width:470px;margin:0}
+.plan-list{border-top:1px solid #aca39a}
+.plan{position:relative;display:grid;grid-template-columns:100px 220px minmax(0,1fr) 150px;gap:28px;padding:34px 0;border-bottom:1px solid var(--line);align-items:start;overflow:hidden}
+.plan:before{content:"";position:absolute;inset:0 auto 0 0;width:0;background:rgba(207,194,181,.22);transition:.35s ease;z-index:0}
+.plan:hover:before{width:100%}
+.plan>*{position:relative;z-index:1}
+.plan.featured{background:#f5efe9}
+.plan.featured:after{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--orange)}
+.plan-hour{font-family:var(--serif);font-size:48px;line-height:.9;color:#b7aa9d}
+.plan-name{font-size:25px;font-weight:700;letter-spacing:-.03em}
+.plan-tag{font-size:9px;text-transform:uppercase;letter-spacing:.13em;color:var(--muted);margin-top:7px;font-weight:800}
+.plan-badge{font-size:8px;text-transform:uppercase;letter-spacing:.14em;color:var(--orange);font-weight:800;margin-bottom:8px}
+.plan-copy strong{display:block;font-family:var(--serif);font-size:21px;line-height:1.22;font-weight:400;margin-bottom:11px}
+.plan-copy p{font-size:13px;line-height:1.65;color:var(--muted);margin:0;max-width:650px}
 .plan-side{text-align:right}
-.plan-price{font-size:31px;letter-spacing:-.05em;font-weight:800;line-height:1}
+.price{font-size:31px;font-weight:700;letter-spacing:-.04em}
 .plan-side small{display:block;font-size:8px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-top:5px}
-.plan-cta{display:inline-flex;align-items:center;gap:7px;margin-top:17px;font-size:9px;text-transform:uppercase;letter-spacing:.12em;font-weight:900}
-.plan-cta b{color:var(--orange);font-size:15px}
-
-/* INCLUDED */
-.included{padding:106px 0 110px;background:var(--white);color:var(--ink)}
-.included-grid{display:grid;grid-template-columns:.7fr 1.3fr;gap:92px}
-.included h2{font-size:clamp(38px,4.6vw,62px);line-height:.96;letter-spacing:-.055em;margin:12px 0 0}
-.included-copy p{font-size:13px;line-height:1.65;color:var(--muted);max-width:430px;margin:18px 0 0}
-.included-list{border-top:1px solid var(--ink)}
-.inc{
-  display:grid;grid-template-columns:34px 1fr auto;gap:12px;padding:15px 0;border-bottom:1px solid var(--line);align-items:center
-}
-.inc b{font-size:9px;color:var(--orange)}
-.inc span{font-size:13px;font-weight:650}
-.inc i{font-style:normal;color:#aaa;font-size:12px}
-
-/* EXTRAS */
-.extras{padding:102px 0 112px;background:var(--black);color:#fff}
-.extras-grid{display:grid;grid-template-columns:.72fr 1.28fr;gap:88px}
-.extras h2{font-size:clamp(38px,4.6vw,62px);line-height:.96;letter-spacing:-.055em;margin:12px 0 0;max-width:520px}
-.extras-copy{font-size:13px;line-height:1.65;color:rgba(255,255,255,.53);max-width:480px;margin-top:18px}
-.extra-list{border-top:1px solid rgba(255,255,255,.18)}
-.extra{border-bottom:1px solid rgba(255,255,255,.14)}
-.extra summary{
-  list-style:none;cursor:pointer;display:grid;grid-template-columns:1fr auto auto;
-  gap:20px;align-items:center;padding:19px 0
-}
+.choose{display:inline-flex;gap:7px;align-items:center;margin-top:18px;font-size:9px;text-transform:uppercase;letter-spacing:.12em;font-weight:800}
+.choose b{color:var(--orange);font-size:15px}
+.included{padding:94px 0 104px;background:var(--ivory)}
+.included-grid{display:grid;grid-template-columns:.72fr 1.28fr;gap:86px}
+.included h2{font-size:clamp(38px,4.5vw,58px);max-width:500px}
+.included-copy p{font-size:14px;line-height:1.65;color:var(--muted);max-width:440px}
+.included-list{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line)}
+.inc{padding:16px 0;border-bottom:1px solid var(--line);font-size:12.5px;line-height:1.42;display:flex;gap:10px}
+.inc:nth-child(odd){padding-right:22px}
+.inc:nth-child(even){padding-left:22px;border-left:1px solid var(--line)}
+.inc b{font-size:9px;color:#a5988c;flex:0 0 26px}
+.inc .dot{color:var(--orange);font-size:9px;margin-top:2px}
+.storymaker{padding:94px 0 106px;background:#eee7df;color:var(--ink)}
+.story-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:90px}
+.storymaker h2{font-size:clamp(39px,4.7vw,60px);max-width:570px}
+.story-copy p{font-size:14px;line-height:1.72;color:#6d655f;margin:0 0 14px;max-width:680px}
+.story-quote{font-family:var(--serif);font-size:25px;line-height:1.16;color:#574b42;margin-top:30px;max-width:620px}
+.story-quote b{color:var(--orange);font-weight:400}
+.steps{margin-top:30px;border-top:1px solid var(--line)}
+.step{display:grid;grid-template-columns:42px 1fr auto;gap:12px;padding:14px 0;border-bottom:1px solid var(--line);align-items:center}
+.step .nr{font-size:9px;color:#9f9287}
+.step .label{font-size:11px;text-transform:uppercase;letter-spacing:.11em;font-weight:800}
+.step .arrow{color:#b5aaa0}
+.extras{padding:94px 0 104px;background:var(--paper)}
+.extras-grid{display:grid;grid-template-columns:.76fr 1.24fr;gap:86px}
+.extras h2{font-size:clamp(38px,4.5vw,58px);max-width:520px}
+.extras-copy{font-size:14px;line-height:1.65;color:var(--muted);max-width:450px;margin-top:18px}
+.extra-list{border-top:1px solid #aca39a}
+.extra{border-bottom:1px solid var(--line)}
+.extra summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:1fr auto auto;gap:20px;align-items:center;padding:20px 0}
 .extra summary::-webkit-details-marker{display:none}
-.extra-name{font-size:19px;font-weight:700;letter-spacing:-.025em}
-.extra-hours{font-size:9px;text-transform:uppercase;letter-spacing:.11em;color:rgba(255,255,255,.45)}
-.extra-price{font-size:22px;font-weight:800}
-.extra-body{padding:0 0 18px;font-size:12px;line-height:1.6;color:rgba(255,255,255,.5);max-width:700px}
-
-/* FINAL */
-.final{
-  background:
-    radial-gradient(circle at 78% 20%,rgba(255,90,31,.21),transparent 22%),
-    var(--black);
-  color:#fff;padding:94px 0 106px;border-top:1px solid rgba(255,255,255,.09)
-}
-.final-grid{display:grid;grid-template-columns:1fr auto;gap:60px;align-items:end}
-.final h2{font-size:clamp(48px,6.5vw,90px);line-height:.9;letter-spacing:-.065em;margin:0;max-width:900px}
-.final h2 .serif{font-family:var(--serif);font-weight:400;font-style:italic;color:var(--orange2)}
-.final p{font-size:14px;line-height:1.6;color:rgba(255,255,255,.56);max-width:560px;margin:24px 0 0}
-.final-btn{
-  min-height:50px;display:inline-flex;align-items:center;gap:9px;background:var(--orange);color:#111;
-  padding:0 20px;border-radius:999px;font-size:9px;text-transform:uppercase;letter-spacing:.12em;font-weight:900;
-  white-space:nowrap
-}
-footer{background:#070707;border-top:1px solid rgba(255,255,255,.08);padding:14px 0;color:rgba(255,255,255,.42)}
+.extra-name{font-size:18px;font-weight:700;letter-spacing:-.02em}
+.extra-hours{font-size:9px;text-transform:uppercase;letter-spacing:.11em;color:var(--muted)}
+.extra-price{font-size:22px;font-weight:700}
+.extra-body{font-size:12.5px;line-height:1.6;color:var(--muted);padding:0 0 18px;max-width:680px}
+.close{padding:96px 0 88px;background:var(--dark);color:#fff}
+.close-grid{display:grid;grid-template-columns:1fr auto;gap:52px;align-items:end}
+.close h2{font-size:clamp(48px,6vw,80px);max-width:920px}
+.close h2 em{font-style:normal;font-family:var(--serif);font-weight:400;color:#d8c9bb}
+.close p{font-size:14px;line-height:1.6;color:rgba(255,255,255,.58);max-width:580px;margin:22px 0 0}
+.close-btn{min-height:48px;display:inline-flex;align-items:center;gap:9px;padding:0 18px;border:1px solid rgba(255,255,255,.34);border-radius:999px;font-size:9px;text-transform:uppercase;letter-spacing:.12em;font-weight:800;white-space:nowrap}
+.close-btn b{color:var(--orange);font-size:15px}
+footer{background:#120f0d;color:rgba(255,255,255,.42);padding:14px 0}
 .footer{display:flex;justify-content:space-between;gap:18px;font-size:8px;text-transform:uppercase;letter-spacing:.12em}
-.mobile-cta{display:none}
-
-/* MOBILE */
 @media(max-width:840px){
   :root{--gutter:20px}
-  .cursor-glow{display:none}
   .nav{height:58px}.nav-links{display:none}.menu{display:block}
-  .brand{font-size:18px}.brand em{font-size:20px}
-  .hero{min-height:auto}
-  .hero-orbit{width:420px;right:-210px;top:75px;opacity:.58}
-  .hero-inner{padding:105px 0 46px}
-  .hero-grid{grid-template-columns:1fr;gap:44px}
-  .hero h1{font-size:42px;line-height:.92;max-width:95%}
-  .hero-copy p{font-size:14.5px;line-height:1.6;max-width:92%}
-  .hero-side{display:grid;grid-template-columns:1fr auto;gap:20px;align-items:end}
-  .hero-side-line{max-width:230px}
-  .hero-signature{font-size:27px;text-align:right;margin:0;max-width:150px}
-  .btn{min-height:43px;padding:0 15px;font-size:8px}
-
-  .marquee-track{gap:18px;padding:10px 0;animation-duration:15s}
-  .marquee span{font-size:10px}
-
-  .story-intro{padding:70px 0 64px}
-  .story-grid{grid-template-columns:1fr;gap:26px}
-  .story-title{position:static}
-  .story-title h2{font-size:34px}
-  .story-copy .lead{font-size:18px}
-  .story-copy p{font-size:14px}
-  .story-quote{font-size:16px;padding:19px 0}
-  .word{font-size:9px;padding:9px 11px}
-
-  .process-section{padding:0 0 72px}
-  .process-shell{border-radius:22px;padding:26px 22px;grid-template-columns:1fr;gap:28px}
-  .process-shell h2{font-size:34px}
-  .process-copy p{font-size:13px}
-  .step{grid-template-columns:34px 1fr auto;padding:13px 0}
-  .realtime-note{font-size:22px}
-
-  .plans{padding:70px 0 78px}
-  .plans-head{display:block;margin-bottom:26px}
-  .plans-head h2{font-size:35px}
-  .plans-head p{font-size:12.8px;margin-top:13px}
-  .plan{grid-template-columns:34px 1fr auto;gap:12px;padding:23px 0}
-  .plan:hover{padding-left:0;padding-right:0;background:transparent}
+  .brand{font-size:18px}.brand span{font-size:19px}
+  .mobile-nav{inset:58px 0 0}
+  .hero{padding:36px 0 42px}
+  .hero-grid{grid-template-columns:1fr;gap:22px;min-height:auto}
+  .hero h1{font-size:39px;line-height:.98;max-width:94%}
+  .hero-sub{font-size:14.5px;line-height:1.62;max-width:94%}
+  .hero-side{height:260px;order:-1;margin-top:10px}
+  .rings{width:250px}
+  .hero-note{width:205px;right:0;bottom:0}
+  .hero-note strong{font-size:18px}
+  .hero-note span{font-size:10.5px}
+  .hero-actions{margin-top:24px}
+  .hero-link{font-size:9px}
+  .intro{padding:66px 0 58px}
+  .intro-grid,.plans-head,.included-grid,.story-grid,.extras-grid{grid-template-columns:1fr;gap:24px}
+  .intro h2,.plans h2,.included h2,.storymaker h2,.extras h2{font-size:32px;line-height:1}
+  .intro-copy{font-size:14px}
+  .intro-pull{font-size:20px}
+  .motion-track{gap:19px;padding:11px 0;animation-duration:18s}
+  .motion span{font-size:27px}
+  .plans{padding:68px 0 78px}
+  .plans-head{margin-bottom:26px}
+  .plans-head p{font-size:13px}
+  .plan{grid-template-columns:48px 1fr auto;gap:12px;padding:24px 0}
   .plan.featured{margin-inline:-20px;padding-inline:20px}
-  .plan-name{font-size:24px}
+  .plan-hour{font-size:34px}
+  .plan-name{font-size:22px}
+  .plan-tag{font-size:8px}
   .plan-copy{grid-column:2/-1}
-  .plan-copy strong{font-size:16px}
-  .plan-copy p{font-size:12.6px}
+  .plan-copy strong{font-size:18px}
+  .plan-copy p{font-size:12.7px}
   .plan-side{grid-column:3;grid-row:1;text-align:right}
-  .plan-price{font-size:27px}
-  .plan-cta{margin-top:12px}
-
-  .included{padding:70px 0 76px}
-  .included-grid{grid-template-columns:1fr;gap:30px}
-  .included h2{font-size:34px}
-  .inc{grid-template-columns:28px 1fr auto;padding:13px 0}
-  .inc span{font-size:12.5px}
-
-  .extras{padding:70px 0 78px}
-  .extras-grid{grid-template-columns:1fr;gap:30px}
-  .extras h2{font-size:34px}
+  .price{font-size:27px}
+  .choose{margin-top:12px}
+  .included{padding:68px 0 74px}
+  .included-copy p{font-size:13px}
+  .included-list{grid-template-columns:1fr}
+  .inc:nth-child(odd),.inc:nth-child(even){padding:14px 0;border-left:0}
+  .storymaker{padding:68px 0 74px}
+  .story-copy p{font-size:13.3px}
+  .story-quote{font-size:21px}
+  .step{padding:13px 0}
+  .extras{padding:68px 0 74px}
+  .extras-copy{font-size:13px}
   .extra summary{grid-template-columns:1fr auto;gap:6px 14px}
   .extra-hours{grid-column:1;grid-row:2}
   .extra-price{grid-column:2;grid-row:1/3;align-self:center}
   .extra-body{font-size:12px}
-
-  .final{padding:72px 0 92px}
-  .final-grid{grid-template-columns:1fr;gap:30px}
-  .final h2{font-size:42px}
-  .final p{font-size:13px}
-  .final-btn{width:max-content}
-
-  .mobile-cta{
-    position:fixed;z-index:90;left:14px;right:14px;bottom:calc(12px + env(safe-area-inset-bottom));
-    min-height:52px;border-radius:999px;background:var(--orange);color:#111;
-    display:flex;align-items:center;justify-content:space-between;padding:0 16px;
-    box-shadow:0 14px 36px rgba(0,0,0,.30);font-size:9px;text-transform:uppercase;letter-spacing:.12em;font-weight:900
-  }
-  footer{padding-bottom:82px}
+  .close{padding:70px 0 64px}
+  .close-grid{grid-template-columns:1fr;gap:28px}
+  .close h2{font-size:38px;line-height:.98}
+  .close p{font-size:13px}
+  .close-btn{width:max-content}
+  .footer{font-size:7px}
 }
 @media(max-width:380px){
-  .hero h1{font-size:38px}
-  .plan{grid-template-columns:30px 1fr}
+  .hero h1{font-size:36px}
+  .plan{grid-template-columns:42px 1fr}
   .plan-side{grid-column:2;grid-row:auto;text-align:left}
   .plan-copy{grid-column:2}
 }
@@ -306,268 +216,98 @@ footer{background:#070707;border-top:1px solid rgba(255,255,255,.08);padding:14p
 </style>
 </head>
 <body>
-<div class="progress"></div>
-<div class="cursor-glow" aria-hidden="true"></div>
-
 <header>
   <div class="wrap nav">
-    <a class="brand" href="#top">COLAB<em>Wedding</em></a>
+    <a class="brand" href="#top">COLAB <span>Wedding</span></a>
     <nav class="nav-links">
       <a href="#experiencia">Experiência</a>
-      <a href="#storymaker">StoryMaker</a>
       <a href="#planos">Planos</a>
-      <a class="nav-cta" href="#contato">Falar com a Colab</a>
+      <a href="#storymaker">StoryMaker</a>
+      <a class="cta" href="#contato">Falar com a Colab</a>
     </nav>
     <button class="menu" aria-label="Abrir menu"><span></span></button>
   </div>
 </header>
-
 <div class="mobile-nav">
   <a href="#experiencia">Experiência</a>
-  <a href="#storymaker">StoryMaker</a>
   <a href="#planos">Planos</a>
+  <a href="#storymaker">StoryMaker</a>
   <a href="#outros">Outros momentos</a>
 </div>
-
 <main id="top">
-
 <section class="hero">
-  <div class="hero-orbit" aria-hidden="true">
-    <div class="ring"></div><div class="ring r2"></div><div class="ring r3"></div><div class="dot"></div>
-  </div>
-  <div class="wrap hero-inner">
-    <div class="hero-grid">
-      <div class="hero-copy reveal">
-        <div class="hero-kicker kicker">StoryMaker · Real Time</div>
-        <h1><span>UM OLHAR ATENTO</span><span>PARA O <span class="accent">GRANDE DIA.</span></span></h1>
-        <p>Enquanto vocês vivem cada segundo, a Colab registra tudo aquilo que merece ser revivido.</p>
-        <div class="hero-actions">
-          <a class="btn orange" href="#planos">Conhecer os planos ↘</a>
-          <a class="btn line" href="#experiencia">Entender a experiência</a>
-        </div>
+  <div class="wrap hero-grid">
+    <div class="hero-copy reveal">
+      <div class="kicker"><b>COLAB WEDDING</b> · STORYMAKER</div>
+      <h1 class="display">UM OLHAR ATENTO PARA O <em>GRANDE DIA.</em></h1>
+      <p class="hero-sub">Enquanto vocês vivem cada segundo, a Colab registra tudo aquilo que merece ser revivido.</p>
+      <div class="hero-actions">
+        <a class="hero-link" href="#planos">VER EXPERIÊNCIAS <b>↘</b></a>
+        <a class="hero-link secondary" href="#experiencia">CONHECER A COLAB</a>
       </div>
-      <aside class="hero-side reveal">
-        <div class="hero-side-line">
-          <strong>O casamento acontece uma vez. O que passa despercebido também faz parte da história.</strong>
-          <p>A Colab acompanha o dia de dentro da experiência, com atenção ao que acontece ao redor.</p>
-        </div>
-        <div class="hero-signature">Você vive. A gente não deixa passar.</div>
-      </aside>
+    </div>
+    <div class="hero-side reveal" aria-hidden="true">
+      <div class="rings"><div class="ring"></div><div class="ring r2"></div><div class="ring r3"></div></div>
+      <div class="hero-note"><strong>Real time, com presença e sensibilidade.</strong><span>Uma camada espontânea da história, enquanto ela acontece.</span></div>
     </div>
   </div>
 </section>
-
-<div class="marquee" aria-hidden="true">
-  <div class="marquee-track">
-    <span>Bastidores</span><i>•</i><span>Encontros</span><i>•</i><span>Detalhes</span><i>•</i><span>Reações</span><i>•</i>
-    <span>Bastidores</span><i>•</i><span>Encontros</span><i>•</i><span>Detalhes</span><i>•</i><span>Reações</span><i>•</i>
-  </div>
-</div>
-
-<div class="light">
-
-<section class="story-intro" id="experiencia">
-  <div class="wrap story-grid">
-    <div class="story-title reveal">
-      <div class="kicker">O que a Colab percebe</div>
-      <h2>TEM COISA QUE VOCÊ VAI VER SÓ DEPOIS.</h2>
-    </div>
-    <div class="story-copy reveal">
-      <p class="lead">A reação de quem esperava pela sua entrada. Um olhar, uma reação, um abraço, alguém tentando segurar o choro.</p>
-      <p>A Colab está ali para perceber, registrar e transformar esses pequenos acontecimentos em parte da história de vocês.</p>
-      <div class="story-quote">O casamento não acontece só onde todo mundo está olhando. <span>É por isso que o nosso olhar está ao redor.</span></div>
-      <div class="word-cloud">
-        <span class="word">Bastidores</span><span class="word">Encontros</span><span class="word">Detalhes</span><span class="word">Reações</span>
-      </div>
-    </div>
+<section class="intro" id="experiencia">
+  <div class="wrap intro-grid">
+    <div class="reveal"><div class="kicker">O QUE ACONTECE AO REDOR</div><h2 class="display">TEM COISA QUE VOCÊ VAI VER SÓ DEPOIS.</h2></div>
+    <div class="reveal"><div class="intro-copy"><p>A reação de quem esperava pela sua entrada. Um olhar, uma reação, um abraço, alguém tentando segurar o choro.</p><p>A Colab está ali para perceber, registrar e transformar esses pequenos acontecimentos em parte da história de vocês.</p></div><div class="intro-pull">O casamento não acontece só onde todo mundo está olhando. <b>É aí que mora muita coisa.</b></div></div>
   </div>
 </section>
-
-<section class="process-section" id="storymaker">
-  <div class="wrap process-shell reveal">
-    <div>
-      <div class="kicker">StoryMaker</div>
-      <h2>UM OUTRO OLHAR SOBRE O MESMO DIA.</h2>
-    </div>
-    <div class="process-copy">
-      <p>O StoryMaker não substitui a fotografia ou o filme.</p>
-      <p>É a camada mais espontânea da história. Aquela que faz vocês lembrarem não só de como o dia parecia, mas de como ele foi vivido.</p>
-      <p>Enquanto o casamento acontece, a Colab registra, seleciona, edita, legenda e publica os stories acompanhando a sequência dos acontecimentos.</p>
-
-      <div class="process-steps">
-        <div class="step"><span class="step-nr">01</span><span class="step-name">Capta</span><span class="step-mark">→</span></div>
-        <div class="step"><span class="step-nr">02</span><span class="step-name">Seleciona</span><span class="step-mark">→</span></div>
-        <div class="step"><span class="step-nr">03</span><span class="step-name">Edita</span><span class="step-mark">→</span></div>
-        <div class="step"><span class="step-nr">04</span><span class="step-name">Legenda</span><span class="step-mark">→</span></div>
-        <div class="step"><span class="step-nr">05</span><span class="step-name">Publica</span><span class="step-mark">✓</span></div>
-      </div>
-      <div class="realtime-note">É real time, mas com sensibilidade para entender o timing de cada momento.</div>
-    </div>
-  </div>
-</section>
-
-</div>
-
+<div class="motion" aria-hidden="true"><div class="motion-track"><span>Bastidores</span><i>•</i><span>Encontros</span><i class="micro">•</i><span>Detalhes</span><i>•</i><span>Reações</span><i>•</i><span>Bastidores</span><i>•</i><span>Encontros</span><i class="micro">•</i><span>Detalhes</span><i>•</i><span>Reações</span><i>•</i></div></div>
 <section class="plans" id="planos">
   <div class="wrap">
-    <div class="plans-head reveal">
-      <h2>TRÊS FORMAS DE VIVER A EXPERIÊNCIA COLAB.</h2>
-      <p>O mesmo olhar, em diferentes tempos de cobertura. Escolha o formato que melhor acompanha o ritmo do casamento.</p>
-    </div>
-
-    <div class="plan-stack">
-      <article class="plan reveal">
-        <div class="plan-nr">01</div>
-        <div>
-          <div class="plan-name">Colab Moment</div>
-          <div class="plan-hours">4 horas</div>
-        </div>
-        <div class="plan-copy">
-          <strong>Para acompanhar os momentos que concentram a emoção do casamento.</strong>
-          <p>Quatro horas de cobertura com o olhar da Colab para registrar bastidores, cerimônia, encontros e tudo aquilo que acontece ao redor.</p>
-        </div>
-        <div class="plan-side">
-          <div class="plan-price">R$ 890</div>
-          <small>investimento</small>
-          <a class="plan-cta" href="https://wa.me/5549991070654?text=Oi%21%20Quero%20escolher%20o%20Colab%20Moment." target="_blank" rel="noopener">Escolher <b>→</b></a>
-        </div>
-      </article>
-
-      <article class="plan featured reveal">
-        <div class="plan-nr">02</div>
-        <div>
-          <div class="plan-badge">● Mais escolhido</div>
-          <div class="plan-name">Colab Experience</div>
-          <div class="plan-hours">6 horas</div>
-        </div>
-        <div class="plan-copy">
-          <strong>Para acompanhar mais capítulos do casamento e deixar a história ganhar ainda mais forma.</strong>
-          <p>6 horas de cobertura para estar presente nos bastidores, cerimônia, recepção e em tudo o que acontece entre um momento e outro.</p>
-        </div>
-        <div class="plan-side">
-          <div class="plan-price">R$ 1.490</div>
-          <small>investimento</small>
-          <a class="plan-cta" href="https://wa.me/5549991070654?text=Oi%21%20Quero%20escolher%20o%20Colab%20Experience." target="_blank" rel="noopener">Escolher <b>→</b></a>
-        </div>
-      </article>
-
-      <article class="plan reveal">
-        <div class="plan-nr">03</div>
-        <div>
-          <div class="plan-name">Colab Full Day</div>
-          <div class="plan-hours">10 horas</div>
-        </div>
-        <div class="plan-copy">
-          <strong>Para contar a história por completo.</strong>
-          <p>10 horas de cobertura acompanhando o casamento desde o making of, os preparativos e a expectativa antes da cerimônia, até a chegada dos convidados, decoração, cerimônia, recepção, jantar e festa.<br><br>Assim, quando vocês voltarem a esse dia, não vão lembrar só do que aconteceu. Vão reviver tudo o que sentiram ao longo dele.</p>
-        </div>
-        <div class="plan-side">
-          <div class="plan-price">R$ 2.190</div>
-          <small>investimento</small>
-          <a class="plan-cta" href="https://wa.me/5549991070654?text=Oi%21%20Quero%20escolher%20o%20Colab%20Full%20Day." target="_blank" rel="noopener">Escolher <b>→</b></a>
-        </div>
-      </article>
+    <div class="plans-head reveal"><h2 class="display">TRÊS FORMAS DE VIVER A EXPERIÊNCIA COLAB.</h2><p>O mesmo olhar, em diferentes tempos de cobertura. Escolha o formato que acompanha melhor o ritmo do casamento.</p></div>
+    <div class="plan-list">
+      <article class="plan reveal"><div class="plan-hour">04</div><div><div class="plan-name">Colab Moment</div><div class="plan-tag">4 horas de cobertura</div></div><div class="plan-copy"><strong>Para acompanhar os momentos que concentram a emoção do casamento.</strong><p>Quatro horas de cobertura com o olhar da Colab para registrar bastidores, cerimônia, encontros e tudo aquilo que acontece ao redor.</p></div><div class="plan-side"><div class="price">R$ 890</div><small>investimento</small><a class="choose" href="https://wa.me/5549991070654?text=Oi%21%20Quero%20escolher%20o%20Colab%20Moment." target="_blank" rel="noopener">ESCOLHER <b>→</b></a></div></article>
+      <article class="plan featured reveal"><div class="plan-hour">06</div><div><div class="plan-badge">Mais escolhido</div><div class="plan-name">Colab Experience</div><div class="plan-tag">6 horas de cobertura</div></div><div class="plan-copy"><strong>Para acompanhar mais capítulos do casamento e deixar a história ganhar ainda mais forma.</strong><p>6 horas de cobertura para estar presente nos bastidores, cerimônia, recepção e em tudo o que acontece entre um momento e outro.</p></div><div class="plan-side"><div class="price">R$ 1.490</div><small>investimento</small><a class="choose" href="https://wa.me/5549991070654?text=Oi%21%20Quero%20escolher%20o%20Colab%20Experience." target="_blank" rel="noopener">ESCOLHER <b>→</b></a></div></article>
+      <article class="plan reveal"><div class="plan-hour">10</div><div><div class="plan-name">Colab Full Day</div><div class="plan-tag">10 horas de cobertura</div></div><div class="plan-copy"><strong>Para contar a história por completo.</strong><p>10 horas de cobertura acompanhando o casamento desde o making of, os preparativos e a expectativa antes da cerimônia, até a chegada dos convidados, decoração, cerimônia, recepção, jantar e festa.<br><br>Assim, quando vocês voltarem a esse dia, não vão lembrar só do que aconteceu. Vão reviver tudo o que sentiram ao longo dele.</p></div><div class="plan-side"><div class="price">R$ 2.190</div><small>investimento</small><a class="choose" href="https://wa.me/5549991070654?text=Oi%21%20Quero%20escolher%20o%20Colab%20Full%20Day." target="_blank" rel="noopener">ESCOLHER <b>→</b></a></div></article>
     </div>
   </div>
 </section>
-
 <section class="included">
   <div class="wrap included-grid">
-    <div class="reveal">
-      <div class="kicker">Em todos os planos</div>
-      <h2>EM TODA EXPERIÊNCIA COLAB.</h2>
-      <div class="included-copy"><p>Independentemente do tempo de cobertura, alguns cuidados fazem parte de todos os planos.</p></div>
-    </div>
+    <div class="reveal"><div class="kicker">EM TODOS OS FORMATOS</div><h2 class="display">EM TODA EXPERIÊNCIA COLAB.</h2><div class="included-copy"><p>Independentemente do tempo de cobertura, alguns cuidados fazem parte de todos os planos.</p></div></div>
     <div class="included-list reveal">
-      <div class="inc"><b>01</b><span>Stories durante o evento</span><i>✓</i></div>
-      <div class="inc"><b>02</b><span>Captação em formato vertical</span><i>✓</i></div>
-      <div class="inc"><b>03</b><span>Edição e publicação em tempo real</span><i>✓</i></div>
-      <div class="inc"><b>04</b><span>Legendas e construção da narrativa</span><i>✓</i></div>
-      <div class="inc"><b>05</b><span>Registros espontâneos e bastidores</span><i>✓</i></div>
-      <div class="inc"><b>06</b><span>Material captado entregue via Drive</span><i>✓</i></div>
-      <div class="inc"><b>07</b><span>Alinhamento prévio do casamento</span><i>✓</i></div>
+      <div class="inc"><b>01</b><span class="dot">•</span><span>Stories durante o evento</span></div><div class="inc"><b>02</b><span class="dot">•</span><span>Captação em formato vertical</span></div><div class="inc"><b>03</b><span class="dot">•</span><span>Edição e publicação em tempo real</span></div><div class="inc"><b>04</b><span class="dot">•</span><span>Legendas e construção da narrativa</span></div><div class="inc"><b>05</b><span class="dot">•</span><span>Registros espontâneos e bastidores</span></div><div class="inc"><b>06</b><span class="dot">•</span><span>Material captado entregue via Drive</span></div><div class="inc"><b>07</b><span class="dot">•</span><span>Alinhamento prévio do casamento</span></div>
     </div>
   </div>
 </section>
-
+<section class="storymaker" id="storymaker">
+  <div class="wrap story-grid">
+    <div class="reveal"><div class="kicker">STORYMAKER · REAL TIME</div><h2 class="display">UM OUTRO OLHAR SOBRE O MESMO DIA.</h2></div>
+    <div class="reveal"><div class="story-copy"><p>O StoryMaker não substitui a fotografia ou o filme.</p><p>É a camada mais espontânea da história. Aquela que faz vocês lembrarem não só de como o dia parecia, mas de como ele foi vivido.</p><p>Enquanto o casamento acontece, a Colab registra, seleciona, edita, legenda e publica os stories acompanhando a sequência dos acontecimentos.</p><p>Tudo vai ganhando forma enquanto o dia acontece, construindo uma narrativa do início ao fim.</p></div><div class="story-quote">É real time, <b>mas com sensibilidade para entender o timing de cada momento.</b></div><div class="steps"><div class="step"><span class="nr">01</span><span class="label">Capta</span><span class="arrow">→</span></div><div class="step"><span class="nr">02</span><span class="label">Seleciona</span><span class="arrow">→</span></div><div class="step"><span class="nr">03</span><span class="label">Edita</span><span class="arrow">→</span></div><div class="step"><span class="nr">04</span><span class="label">Legenda</span><span class="arrow">→</span></div><div class="step"><span class="nr">05</span><span class="label">Publica</span><span class="arrow">✓</span></div></div></div>
+  </div>
+</section>
 <section class="extras" id="outros">
   <div class="wrap extras-grid">
-    <div class="reveal">
-      <div class="kicker">Outros capítulos</div>
-      <h2>TEM MUITA HISTÓRIA ANTES DO “SIM”.</h2>
-      <p class="extras-copy">Civil, pré-wedding, Bride Shower e jantar de noivado também podem ter a experiência Colab.</p>
-    </div>
+    <div class="reveal"><div class="kicker">OUTROS CAPÍTULOS</div><h2 class="display">TEM MUITA HISTÓRIA ANTES DO “SIM”.</h2><p class="extras-copy">Civil, pré-wedding, Bride Shower e jantar de noivado também podem ter a experiência Colab.</p></div>
     <div class="extra-list reveal">
-      <details class="extra">
-        <summary><span class="extra-name">Casamento Civil</span><span class="extra-hours">até 2 horas</span><span class="extra-price">R$ 450</span></summary>
-        <div class="extra-body">Stories durante o evento · 1 Reel editado · Material via Drive.</div>
-      </details>
-      <details class="extra">
-        <summary><span class="extra-name">Pré-Wedding</span><span class="extra-hours">até 4 horas</span><span class="extra-price">R$ 650</span></summary>
-        <div class="extra-body">Stories/conteúdo vertical · 1 Reel editado · Registros espontâneos · Material via Drive.</div>
-      </details>
-      <details class="extra">
-        <summary><span class="extra-name">Bride Shower</span><span class="extra-hours">até 4 horas</span><span class="extra-price">R$ 650</span></summary>
-        <div class="extra-body">Stories durante o evento · 2 Reels editados · Registros espontâneos/trends · Material via Drive.</div>
-      </details>
-      <details class="extra">
-        <summary><span class="extra-name">Jantar de Noivado</span><span class="extra-hours">até 5 horas</span><span class="extra-price">R$ 890</span></summary>
-        <div class="extra-body">Stories durante o evento · 2 Reels editados · Registros espontâneos · Material via Drive.</div>
-      </details>
+      <details class="extra"><summary><span class="extra-name">Casamento Civil</span><span class="extra-hours">até 2 horas</span><span class="extra-price">R$ 450</span></summary><div class="extra-body">Stories durante o evento · 1 Reel editado · Material via Drive.</div></details>
+      <details class="extra"><summary><span class="extra-name">Pré-Wedding</span><span class="extra-hours">até 4 horas</span><span class="extra-price">R$ 650</span></summary><div class="extra-body">Stories/conteúdo vertical · 1 Reel editado · Registros espontâneos · Material via Drive.</div></details>
+      <details class="extra"><summary><span class="extra-name">Bride Shower</span><span class="extra-hours">até 4 horas</span><span class="extra-price">R$ 650</span></summary><div class="extra-body">Stories durante o evento · 2 Reels editados · Registros espontâneos/trends · Material via Drive.</div></details>
+      <details class="extra"><summary><span class="extra-name">Jantar de Noivado</span><span class="extra-hours">até 5 horas</span><span class="extra-price">R$ 890</span></summary><div class="extra-body">Stories durante o evento · 2 Reels editados · Registros espontâneos · Material via Drive.</div></details>
     </div>
   </div>
 </section>
-
-<section class="final" id="contato">
-  <div class="wrap final-grid">
-    <div class="reveal">
-      <h2>VAMOS FAZER UMA COLAB COM A SUA <span class="serif">HISTÓRIA?</span></h2>
-      <p>Escolha a experiência que mais combina com o casamento de vocês e fale com a gente para confirmar a disponibilidade da data.</p>
-    </div>
-    <a class="final-btn reveal" href="https://wa.me/5549991070654?text=Oi%21%20Quero%20consultar%20a%20disponibilidade%20da%20Colab%20Wedding." target="_blank" rel="noopener">Consultar disponibilidade ↗</a>
+<section class="close" id="contato">
+  <div class="wrap close-grid">
+    <div class="reveal"><h2 class="display">VAMOS FAZER UMA COLAB COM A SUA <em>HISTÓRIA?</em></h2><p>Escolha a experiência que mais combina com o casamento de vocês e fale com a gente para confirmar a disponibilidade da data.</p></div>
+    <a class="close-btn reveal" href="https://wa.me/5549991070654?text=Oi%21%20Quero%20consultar%20a%20disponibilidade%20da%20Colab%20Wedding." target="_blank" rel="noopener">CONSULTAR DISPONIBILIDADE <b>↗</b></a>
   </div>
 </section>
-
 </main>
-
-<a class="mobile-cta" href="https://wa.me/5549991070654?text=Oi%21%20Quero%20consultar%20a%20disponibilidade%20da%20Colab%20Wedding." target="_blank" rel="noopener">
-  <span>Consultar disponibilidade</span><b>↗</b>
-</a>
-
-<footer>
-  <div class="wrap footer"><span>Colab Wedding</span><span>StoryMaker · Real Time</span></div>
-</footer>
-
+<footer><div class="wrap footer"><span>Colab Wedding</span><span>StoryMaker · Real Time</span></div></footer>
 <script>
-const header=document.querySelector('header');
 const menu=document.querySelector('.menu');
 const mobile=document.querySelector('.mobile-nav');
-const progress=document.querySelector('.progress');
-const glow=document.querySelector('.cursor-glow');
-
-menu?.addEventListener('click',()=>{
-  mobile.classList.toggle('open');
-  document.body.style.overflow=mobile.classList.contains('open')?'hidden':'';
-});
-mobile?.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{
-  mobile.classList.remove('open');document.body.style.overflow='';
-}));
-
-addEventListener('scroll',()=>{
-  header.classList.toggle('scrolled',scrollY>24);
-  const h=document.documentElement.scrollHeight-innerHeight;
-  progress.style.width=(h?scrollY/h*100:0)+'%';
-},{passive:true});
-
-addEventListener('pointermove',e=>{
-  if(glow){glow.style.left=e.clientX+'px';glow.style.top=e.clientY+'px'}
-},{passive:true});
-
-const io=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting){e.target.classList.add('show');io.unobserve(e.target)}
-  })
-},{threshold:.08,rootMargin:'0px 0px -24px 0px'});
+menu?.addEventListener('click',()=>{mobile.classList.toggle('open');document.body.style.overflow=mobile.classList.contains('open')?'hidden':''});
+mobile?.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{mobile.classList.remove('open');document.body.style.overflow=''}));
+const io=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('show');io.unobserve(e.target)}})},{threshold:.08,rootMargin:'0px 0px -24px 0px'});
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 </script>
 </body>
