@@ -40,23 +40,40 @@ function save(s){S=s;localStorage.setItem(SK,JSON.stringify(s));SESSION_KEYS.fil
 function clear(){S=null;SESSION_KEYS.forEach(k=>localStorage.removeItem(k))}
 function read(){for(const k of SESSION_KEYS)try{let s=JSON.parse(localStorage.getItem(k)||'null');if(s?.access_token)return s}catch{}return null}
 const wait=ms=>new Promise(x=>setTimeout(x,ms));
-async function refresh(){if(!S?.refresh_token)return false;let r=await tf(B+'/auth/v1/token?grant_type=refresh_token',{method:'POST',headers:{apikey:K,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:S.refresh_token})});if(!r.ok){clear();return false}save(await r.json());return true}
+let refreshSessionFlightV739=null;
+async function refresh(){
+ if(refreshSessionFlightV739)return refreshSessionFlightV739;
+ if(!S?.refresh_token)return false;
+ const token=S.refresh_token;
+ refreshSessionFlightV739=(async()=>{
+  const r=await tf(B+'/auth/v1/token?grant_type=refresh_token',{method:'POST',headers:{apikey:K,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:token})});
+  const x=await r.json().catch(()=>({}));
+  if(!r.ok){
+   if(r.status===400&&/refresh_token_not_found|invalid refresh token|refresh_token_already_used/i.test(String(x.error_code||'')+' '+String(x.msg||x.message||''))){clear();return false}
+   throw Error(x.msg||x.message||'Não foi possível renovar sua sessão agora.');
+  }
+  save(x);return true;
+ })();
+ try{return await refreshSessionFlightV739}finally{refreshSessionFlightV739=null}
+}
 async function api(path,o={}){
- let h={apikey:K,Authorization:'Bearer '+S.access_token,'Content-Type':'application/json',...o.headers};
- const req=()=>tf(B+path,{...o,headers:h},o.timeout||15000);
+ if(!S?.access_token)throw Error('Sua sessão expirou. Entre novamente.');
+ const req=()=>tf(B+path,{...o,headers:{apikey:K,Authorization:'Bearer '+S.access_token,'Content-Type':'application/json',...o.headers}},o.timeout||15000);
  let r=await req(),body=await r.text();
  const futureJwt=()=>r.status===401&&/PGRST303/i.test(body)&&/issued at future/i.test(body);
  if(futureJwt()){
-   for(const ms of[2500,4000,6000]){await wait(ms);r=await req();body=await r.text();if(!futureJwt())break}
+  for(const ms of [2000,4000,8000,12000]){
+   await wait(ms);r=await req();body=await r.text();if(!futureJwt())break;
+  }
  }
  if(r.status===401&&!futureJwt()){
-   if(await refresh()){h.Authorization='Bearer '+S.access_token;await wait(2500);r=await req();body=await r.text();if(futureJwt()){await wait(4000);r=await req();body=await r.text()}}
+  if(await refresh()){r=await req();body=await r.text()}
  }
  if(!r.ok){
-   if(futureJwt())throw Error('Não foi possível sincronizar sua sessão. Tente entrar novamente em alguns segundos.');
-   let m='';try{let j=JSON.parse(body);m=j.message||j.msg||j.error_description||''}catch{}throw Error(m||'Não foi possível carregar o sistema.');
+  let m='';try{const j=JSON.parse(body);m=j.message||j.msg||j.error_description||''}catch{}
+  throw Error(m||'Não foi possível carregar o sistema.');
  }
- return body?JSON.parse(body):null
+ return body?JSON.parse(body):null;
 }
 function toast(s){document.querySelector('.toast')?.remove();document.body.insertAdjacentHTML('beforeend','<div class="toast">'+E(s)+'</div>');setTimeout(()=>document.querySelector('.toast')?.remove(),2500)}
 async function boot(){S=read();if(!S)return setTimeout(()=>auth(),350);save(S);try{if(S.expires_at&&S.expires_at*1000<Date.now()+30000&&!await refresh())return auth();await hydrate()}catch(e){console.error(e);clear();auth('Não consegui restaurar sua sessão. Entre novamente.')}}
