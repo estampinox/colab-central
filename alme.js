@@ -54,4 +54,4 @@ const bindBeforeV655=bind;
 bind=function(){bindBeforeV655();const cid=M?.role==='client'?M.client_id:MD?.clientId;if(!isAlmeV648(cid))return;document.querySelectorAll('[data-alme-save="dates"]').forEach(b=>b.onclick=almeSaveDatesV655)};
 // ===== FIM V6.55 =====
 
-boot();
+// Startup runs after all modules are loaded in index.html.
