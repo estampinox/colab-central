@@ -127,6 +127,7 @@
   const c704Kind=c=>{const f=String(c.format||'static_post');return ['reel','video'].includes(f)?'VÍDEO':f==='carousel'?'CARROSSEL':f==='story'?'STORY':'POST'};
   const c704Thumb=c=>socialAssetV550(c,true);
   const c704Card=c=>'<article class="c704-piece" role="button" tabindex="0" data-contentopen="'+E(c.id)+'">'+c704Thumb(c)+'<span class="c704-piececopy"><small>'+E(c704Kind(c))+(c.publication_time?' · '+E(String(c.publication_time).slice(0,5)):'')+'</small><b>'+E(c.title||'Conteúdo')+'</b><em class="s-'+E(String(c.status||'editing'))+'">'+E(c704Status(c))+'</em></span><i class="c704-arrow">→</i></article>';
+  window.c704Card=c704Card;
 
   function c704Calendar(items,month){
     const [y,m]=month.split('-').map(Number),days=new Date(y,m,0).getDate(),offset=(new Date(y,m-1,1).getDay()+6)%7,cells=[];
