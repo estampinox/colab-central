@@ -350,13 +350,7 @@
         await hydrate();
       }catch(err){
         const m=String(err?.message||'');
-        if(/PGRST303|issued at future|sincronizar sua sessão|Failed to fetch|NetworkError|abort/i.test(m)){
-          /* Critical: keep S + refresh_token. The Auth login succeeded. */
-          R.innerHTML='<div class="load"><div><div class="logo">C<span>O</span>LAB</div><h2>Conectando sua sessão…</h2><p>Seu acesso foi confirmado. Estamos sincronizando os dados.</p><button id="retryAuth736" class="btn pri">Continuar</button></div></div>';
-          document.getElementById('retryAuth736')?.addEventListener('click',async()=>{try{await hydrate()}catch(_){boot()}});
-          setTimeout(async()=>{try{await hydrate()}catch(_){}},5000);
-          return;
-        }
+        if(dataUnavailableV741(err)){sessionUnavailableV741(err);return;}
         throw err;
       }
     }catch(err){
@@ -365,7 +359,7 @@
       if(/PGRST303|issued at future/i.test(m)){
         return auth('O acesso foi confirmado, mas a sincronização demorou. Tente entrar novamente; sua senha não foi alterada.');
       }
-      auth('Não foi possível entrar agora. Se a senha não for aceita, use “Esqueci minha senha”.');
+      auth('Não foi possível entrar agora. Tente novamente em instantes.');
       const input=document.querySelector('#af input[name="email"]'); if(input)input.value=email;
     }finally{
       if(button&&document.body.contains(button)){button.disabled=false;button.textContent=MODE==='login'?'Entrar':'Criar conta'}
