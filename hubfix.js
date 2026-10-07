@@ -55,14 +55,14 @@
 (function(){
   const formatName=v=>({reel:'Reels',carousel:'Carrossel',story:'Stories',static_post:'Post',video:'Vídeo',ad_creative:'Criativo'})[String(v||'')]||'Formato a definir';
   window.ideaCardV591=function(idea){
-    const b=ideaBriefV591(idea), missing=ideaMissingV591(idea)||[], ready=!missing.length;
+    const b=ideaBriefV591(idea), missing=ideaMissingV591(idea)||[], ready=!missing.length, canSend=!!String(idea.title||'').trim();
     const converted=idea.status==='converted'||!!idea.converted_content_id;
     const p=typeof pillar==='function'?pillar(b.editorial_pillar_id):null;
     const summary=String(b.narrative||b.objective||idea.notes||'').trim();
     const status=converted?'Em produção':ready?'Pronta':'Revisar';
     const statusClass=converted||ready?'ready':'draft';
     const meta=(p?.name?p.name+' · ':'')+formatName(b.format);
-    const missingText=missing.length?'Falta preencher: '+missing.join(' · '):'';
+    const missingText=missing.length?'Completar na produção: '+missing.join(' · '):'';
     return '<article class="v591-idea-card c733-idea '+(ready?'ready ':'')+(converted?'converted':'')+'">'+
       '<div class="v591-idea-card-head c733-head"><div><small>'+E(meta)+'</small><h3>'+E(idea.title||'Ideia sem título')+'</h3></div><span class="'+statusClass+'">'+status+'</span></div>'+
       (summary?'<p class="c733-summary">'+E(summary.slice(0,180))+(summary.length>180?'…':'')+'</p>':'')+
@@ -71,7 +71,7 @@
         '<button type="button" class="btn ghost small" data-v591-idea-edit="'+idea.id+'">Revisar / editar</button>'+
         (converted?
           '<button type="button" class="btn ghost small" data-v591-open-content="'+E(idea.converted_content_id||'')+'">Abrir produção →</button>':
-          '<button type="button" class="btn pri small" data-v591-send-production="'+idea.id+'" '+(ready?'':'disabled aria-disabled="true"')+'>Enviar para produção →</button>')+
+          '<button type="button" class="btn pri small" data-v591-send-production="'+idea.id+'" '+(canSend?'':'disabled aria-disabled="true"')+'>Enviar para produção →</button>')+
         '<details class="c733-more"><summary aria-label="Mais opções">•••</summary><div><button type="button" data-v626-delete-idea="'+idea.id+'">'+(converted?'Excluir do Banco de Ideias':'Excluir ideia')+'</button></div></details>'+
       '</div></article>';
   };
@@ -397,4 +397,28 @@
   return flight;
  };
  const css=document.createElement('style');css.textContent='.c739-session{min-height:100dvh;display:flex;flex-direction:column;justify-content:center;padding:32px;max-width:540px;margin:auto}.c739-session h2{font-size:25px;line-height:1.2}.c739-session p{font-size:16px;line-height:1.5;color:#999}.load .logo{max-width:150px;max-height:110px;overflow:hidden;margin:0 auto 20px}.load .logo img,.load .logo svg{max-width:150px!important;max-height:110px!important;width:100%!important;height:auto!important}.load h2{font-size:25px}.load p{font-size:16px;padding:0 20px;max-width:500px;margin:16px auto}';document.head.appendChild(css);
+})();
+
+/* 7.43 — one production transfer per idea while the request is pending. */
+(function(){
+ const send=sendIdeaToProductionV591;
+ const pending=new Map();
+ sendIdeaToProductionV591=function(id){
+  if(pending.has(id))return pending.get(id);
+  const idea=(D.insights||[]).find(row=>row.id===id);
+  if(!idea)return Promise.resolve();
+  if(idea.converted_content_id||idea.status==='converted'){
+   if(idea.converted_content_id){clientHubIdV5=idea.client_id;clientHubTabsV563[idea.client_id]='workflow';V='clientHub';MD={type:'contentDetail',id:idea.converted_content_id};render()}
+   return Promise.resolve();
+  }
+  const buttons=[...document.querySelectorAll('[data-v591-send-production]')].filter(button=>button.dataset.v591SendProduction===id);
+  const labels=buttons.map(button=>button.textContent);
+  buttons.forEach(button=>{button.disabled=true;button.textContent='Enviando…'});
+  const flight=Promise.resolve().then(()=>send(id)).finally(()=>{
+   pending.delete(id);
+   buttons.forEach((button,index)=>{if(document.body.contains(button)){button.disabled=!String(idea.title||'').trim();button.textContent=labels[index]}});
+  });
+  pending.set(id,flight);
+  return flight;
+ };
 })();
