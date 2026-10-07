@@ -71,12 +71,20 @@ async function api(path,o={}){
  }
  if(!r.ok){
   let m='';try{const j=JSON.parse(body);m=j.message||j.msg||j.error_description||''}catch{}
-  throw Error(m||'Não foi possível carregar o sistema.');
+  const error=Error(m||'Não foi possível carregar o sistema.');error.status=r.status;throw error;
  }
  return body?JSON.parse(body):null;
 }
 function toast(s){document.querySelector('.toast')?.remove();document.body.insertAdjacentHTML('beforeend','<div class="toast">'+E(s)+'</div>');setTimeout(()=>document.querySelector('.toast')?.remove(),2500)}
-async function boot(){S=read();if(!S)return setTimeout(()=>auth(),350);save(S);try{if(S.expires_at&&S.expires_at*1000<Date.now()+30000&&!await refresh())return auth();await hydrate()}catch(e){console.error(e);clear();auth('Não consegui restaurar sua sessão. Entre novamente.')}}
+
+function dataUnavailableV741(error){return Number(error?.status)>=500||/PGRST303|issued at future|sincronizar sua sessão|Failed to fetch|NetworkError|abort/i.test(String(error?.message||''))}
+function sessionUnavailableV741(error){
+ const unavailable=Number(error?.status)>=500;
+ R.innerHTML='<div class="c739-session" role="status"><h2>'+ (unavailable?'Serviço temporariamente indisponível':'Não foi possível carregar seus dados')+'</h2><p>Seu login foi confirmado. '+(unavailable?'O servidor de dados ainda não está respondendo.':'Estamos com dificuldade para conectar ao servidor de dados.')+'</p><button id="retryData741" class="btn pri" type="button">Tentar novamente</button></div>';
+ document.getElementById('retryData741')?.addEventListener('click',async function(){this.disabled=true;this.textContent='Conectando…';try{await hydrate()}catch(err){if(S?.access_token&&dataUnavailableV741(err))sessionUnavailableV741(err);else auth('Não foi possível carregar seus dados. Tente entrar novamente.')}});
+}
+
+async function boot(){S=read();if(!S)return setTimeout(()=>auth(),350);save(S);try{if(S.expires_at&&S.expires_at*1000<Date.now()+30000&&!await refresh())return auth();await hydrate()}catch(e){console.error(e);if(S?.access_token&&dataUnavailableV741(e))return sessionUnavailableV741(e);clear();auth('Não consegui restaurar sua sessão. Entre novamente.')}}
 async function hydrate(){let uid=S.user?.id;if(!uid)return auth();let ms=await api('/rest/v1/user_memberships?select=*&user_id=eq.'+uid);M=ms?.[0];if(!M)return pending();await load();render()}
 async function load(){if(typeof loadWarningsV566!=='undefined')loadWarningsV566=[];let uid=S.user?.id;if(M.role==='team'){
  let q=[
