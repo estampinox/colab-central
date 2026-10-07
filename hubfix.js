@@ -380,3 +380,26 @@
     };
   }
 })();
+
+/* 7.39 — bounded automatic session recovery; one hydration at a time. */
+(function(){
+ const originalHydrate=hydrate;
+ let flight=null;
+ hydrate=function(){
+  if(flight)return flight;
+  flight=(async()=>{
+   for(let attempt=0;attempt<3;attempt++){
+    try{return await originalHydrate()}catch(error){
+     const message=String(error?.message||'');
+     const recoverable=/PGRST303|issued at future|sincronizar sua sessão|Failed to fetch|NetworkError|abort/i.test(message);
+     if(!recoverable||!S?.access_token||attempt===2)throw error;
+     R.innerHTML='<div class="c739-session" role="status"><h2>Carregando seu escritório…</h2><p>Seu login foi confirmado. Recuperando a conexão com os dados.</p></div>';
+     await wait(3000);
+    }
+   }
+  })();
+  flight.finally(()=>{flight=null}).catch(()=>{});
+  return flight;
+ };
+ const css=document.createElement('style');css.textContent='.c739-session{min-height:100dvh;display:flex;flex-direction:column;justify-content:center;padding:32px;max-width:540px;margin:auto}.c739-session h2{font-size:25px;line-height:1.2}.c739-session p{font-size:16px;line-height:1.5;color:#999}.load .logo{max-width:150px;max-height:110px;overflow:hidden;margin:0 auto 20px}.load .logo img,.load .logo svg{max-width:150px!important;max-height:110px!important;width:100%!important;height:auto!important}.load h2{font-size:25px}.load p{font-size:16px;padding:0 20px;max-width:500px;margin:16px auto}';document.head.appendChild(css);
+})();
