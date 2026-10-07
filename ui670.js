@@ -262,7 +262,7 @@
     if(clientHubTabsV563[cid]!=='overview')return html;
     html=html.split(' data-v563-active').join('');
     const overview=c717Overview(cid).replace(' data-v563-active','');
-    const nav=/(<nav class="v591-client-nav"[\\s\\S]*?<\\/nav>)/;
+    const nav=/(<nav class="v591-client-nav"[\s\S]*?<\/nav>)/;
     if(nav.test(html)){
       html=html.replace(nav,'$1'+overview);
     }else{
@@ -409,7 +409,7 @@ bind=function(){
       '<button class="'+(active==='files'?'on':'')+'" data-client-tab="files">Arquivos</button>'+
       '<button class="'+(['services','contact','forms','finance','history','more'].includes(active)?'on':'')+'" data-client-tab="more">Mais</button>'+
     '</nav>';
-    html=html.replace(/<nav class="v591-client-nav[^"]*"[\\s\\S]*?<\\/nav>/,nav);
+    html=html.replace(/<nav class="v591-client-nav[^"]*"[\s\S]*?<\/nav>/,nav);
     if(active==='ideas'&&!html.includes('c701-ideas-pane')){
       const pane=clientIdeasPaneV591(cid);
       const grid='<div class="v5-hub-grid v563-client-panes">';
