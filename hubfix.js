@@ -387,6 +387,7 @@
  let flight=null;
  hydrate=function(){
   if(flight)return flight;
+  if(!R.querySelector('.auth,.shell,.app-shell,.clientmode'))R.innerHTML='<div class="c739-session" role="status"><h2>Carregando seu escritório…</h2><p>Verificando a conexão com seus dados.</p></div>';
   flight=(async()=>{
    for(let attempt=0;attempt<3;attempt++){
     try{return await originalHydrate()}catch(error){
