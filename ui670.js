@@ -21,7 +21,7 @@
       await api('/rest/v1/content_team_workflow',{method:'POST',headers:{Prefer:'return=minimal'},body:JSON.stringify({organization_id:M.organization_id,client_id:idea.client_id,content_id:content.id,source_insight_id:idea.id,internal_status:'visual_production',assigned_to:owner,content_owner_id:idea.created_by||S.user?.id,design_owner_id:owner,reviewer_id:reviewer,next_action:workflowNextActionV591(content,'visual_production'),brief,slides,created_by:S.user?.id,stalled_since:now,updated_at:now})});
       await patch('client_insights',idea.id,{status:'converted',converted_content_id:content.id,updated_at:now});
       await workflowActivityV583(content,'created','Ideia enviada para produção',null,'visual_production',{source_idea_id:idea.id});
-      contentClient=idea.client_id; clientHubTabsV563[idea.client_id]='workflow'; MD=null; await load(); render(); toast('Enviado para produção ✦');
+      contentClient=idea.client_id; clientHubIdV5=idea.client_id; clientHubTabsV563[idea.client_id]='workflow'; V='clientHub'; MD=null; await load(); render(); toast('Enviado para produção ✦');
     }catch(error){toast(error.message)}
   };
 
