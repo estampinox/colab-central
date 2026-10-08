@@ -360,7 +360,7 @@ c717Overview=function(cid){
   const adjust=all.filter(x=>x.status==='changes_requested').length;
   return '<section class="c717-overview" id="overview"><header class="c717-overhead"><div><small>VISÃO GERAL · '+E(client.name||'CLIENTE')+'</small><h2>Operação agora</h2></div><button class="btn pri" data-m="contentNew">＋ Conteúdo</button></header>'+
   '<div class="c717-radar"><button data-client-tab="workflow"><b>'+live.length+'</b><span>em andamento</span></button><button data-client-tab="workflow"><b>'+waiting+'</b><span>com cliente</span></button><button data-client-tab="workflow"><b>'+adjust+'</b><span>ajustes</span></button><button data-client-tab="ideas"><b>'+ideas.length+'</b><span>ideias</span></button></div>'+
-  '<section class="c717-block"><div class="c717-title"><div><small>CONTEÚDOS</small><h3>Em andamento</h3></div><button data-client-tab="workflow">Ver todos →</button></div><div class="c717-content-grid">'+(live.slice(0,4).map(c704Card).join('')||'<div class="c704-empty">Nenhum conteúdo em andamento.</div>')+'</div></section>'+
+  '<section class="c717-block"><div class="c717-title"><div><small>CONTEÚDOS</small><h3>Em andamento</h3></div><button data-client-tab="workflow">Ver todos →</button></div><div class="c717-content-grid">'+(live.slice(0,4).map(c744OverviewCard).join('')||'<div class="c704-empty">Nenhum conteúdo em andamento.</div>')+'</div></section>'+
   '<section class="c717-block ideas"><div class="c717-title"><div><small>BANCO DE IDEIAS</small><h3>Ideias para produzir</h3></div><button data-client-tab="ideas">Ver banco →</button></div><div class="c717-idea-grid">'+(ideas.slice(0,3).map(ideaCardV591).join('')||'<div class="c704-empty">Nenhuma ideia aguardando produção.</div>')+'</div></section></section>';
 };
 
