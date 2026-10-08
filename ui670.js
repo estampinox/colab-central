@@ -247,15 +247,30 @@
     return result;
   };
 
+
+  /* 7.44 — conteúdo legível no painel da cliente; não reutilizar c704-piece aqui */
+  function c744OverviewCard(c){
+    const id=E(c.id||''), title=E(c.title||'Conteúdo sem título');
+    const formats={reel:'Reels',reels:'Reels',carousel:'Carrossel',static_post:'Post',story:'Stories',stories:'Stories',video:'Vídeo',ad_creative:'Criativo'};
+    const steps={idea:'Ideia',script:'Roteiro',production:'Produção',editing:'Em produção',review:'Revisão interna',approval:'Aguardando cliente',changes_requested:'Ajustes solicitados',approved:'Aprovado',scheduled:'Programado',published:'Publicado'};
+    const fmt=formats[c.format]||'Formato a definir', stage=steps[c.status]||'Em andamento';
+    const owner=typeof profile==='function'&&c.assigned_to?profile(c.assigned_to)?.display_name:'';
+    return '<article class="c744-piece"><button type="button" class="c744-open" data-contentopen="'+id+'" aria-label="Abrir conteúdo: '+title+'">'+
+      '<span class="c744-top"><span class="c744-format">'+E(fmt)+'</span><span class="c744-stage">'+E(stage)+'</span></span>'+
+      '<strong class="c744-title">'+title+'</strong>'+
+      '<span class="c744-bottom"><span>'+E(owner||'Abrir ficha do conteúdo')+'</span><span>Ver conteúdo <b>→</b></span></span>'+
+      '</button><details class="c736-content-more c744-more"><summary aria-label="Mais opções">•••</summary><div><button type="button" data-c736-delete-content="'+id+'">Excluir conteúdo</button></div></details></article>';
+  }
+
   // 7.17 — painel operacional da Visão geral
   function c717Overview(cid){
     const client=cl(cid)||{};
     const all=(D.contents||[]).filter(x=>x.client_id===cid);
-    const live=all.filter(x=>x.status!=='published').sort((a,b)=>String(b.updated_at||b.created_at||'').localeCompare(String(a.updated_at||a.created_at||''))).slice(0,4);
+    const live=all.filter(x=>x.status!=='published').sort((a,b)=>String(b.updated_at||b.created_at||'').localeCompare(String(a.updated_at||a.created_at||''))).slice(0,6);
     const ideas=(D.insights||[]).filter(i=>i.client_id===cid&&i.status!=='converted'&&!i.converted_content_id).slice(0,3);
     const waiting=all.filter(x=>x.status==='approval').length;
     const adjust=all.filter(x=>x.status==='changes_requested').length;
-    return '<section class="c717-overview" id="overview" data-v563-active><header class="c717-overhead"><div><small>VISÃO GERAL · '+E(client.name||'CLIENTE')+'</small><h2>Operação agora</h2></div><button class="btn pri" data-m="contentNew">＋ Conteúdo</button></header><div class="c717-radar"><button data-client-tab="workflow"><b>'+live.length+'</b><span>em andamento</span></button><button data-client-tab="workflow"><b>'+waiting+'</b><span>com cliente</span></button><button data-client-tab="workflow"><b>'+adjust+'</b><span>ajustes</span></button><button data-client-tab="ideas"><b>'+ideas.length+'</b><span>ideias</span></button></div><section class="c717-block"><div class="c717-title"><div><small>CONTEÚDOS</small><h3>Em andamento</h3></div><button data-client-tab="workflow">Ver todos →</button></div><div class="c717-content-grid">'+(live.map(c704Card).join('')||'<div class="c704-empty">Nenhum conteúdo em andamento.</div>')+'</div></section><section class="c717-block ideas"><div class="c717-title"><div><small>BANCO DE IDEIAS</small><h3>Ideias para produzir</h3></div><button data-client-tab="ideas">Ver banco →</button></div><div class="c717-idea-grid">'+(ideas.map(ideaCardV591).join('')||'<div class="c704-empty">Nenhuma ideia aguardando produção.</div>')+'</div></section></section>';
+    return '<section class="c717-overview" id="overview" data-v563-active><header class="c717-overhead"><div><small>VISÃO GERAL · '+E(client.name||'CLIENTE')+'</small><h2>Operação agora</h2></div><button class="btn pri" data-m="contentNew">＋ Conteúdo</button></header><div class="c717-radar"><button data-client-tab="workflow"><b>'+all.filter(x=>x.status!=='published').length+'</b><span>em andamento</span></button><button data-client-tab="workflow"><b>'+waiting+'</b><span>com cliente</span></button><button data-client-tab="workflow"><b>'+adjust+'</b><span>ajustes</span></button><button data-client-tab="ideas"><b>'+ideas.length+'</b><span>ideias</span></button></div><section class="c717-block"><div class="c717-title"><div><small>CONTEÚDOS</small><h3>Em andamento</h3></div><button data-client-tab="workflow">Ver todos →</button></div><div class="c717-content-grid">'+(live.map(c744OverviewCard).join('')||'<div class="c704-empty">Nenhum conteúdo em andamento.</div>')+'</div></section><section class="c717-block ideas"><div class="c717-title"><div><small>BANCO DE IDEIAS</small><h3>Ideias para produzir</h3></div><button data-client-tab="ideas">Ver banco →</button></div><div class="c717-idea-grid">'+(ideas.map(ideaCardV591).join('')||'<div class="c704-empty">Nenhuma ideia aguardando produção.</div>')+'</div></section></section>';
   }
   const clientHubBefore717=clientHubPageV5;
   clientHubPageV5=function(cid){
