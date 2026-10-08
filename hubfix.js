@@ -122,6 +122,7 @@
   document.addEventListener('keydown',function(e){
     if(typeof V!=='undefined'&&V!=='clientHub')return;
     if(e.key!=='Enter'&&e.key!==' ')return;
+    if(e.target.closest('.c736-content-more,select,input,textarea,a,[data-ap]'))return;
     const card=e.target.closest('[data-contentopen]');
     if(!card)return;
     e.preventDefault();openContent734(card.dataset.contentopen);
@@ -231,8 +232,11 @@
     if(typeof V==='undefined'||V!=='clientHub')return;
     const root=document.querySelector('.c717-overview')||document.querySelector('.main');
     if(!root)return;
-    root.querySelectorAll('[data-contentopen]').forEach(card=>{
-      const id=card.dataset.contentopen;
+    root.querySelectorAll('[data-contentopen]').forEach(trigger=>{
+      // Media and opening buttons share the content ID; actions belong to the card.
+      const card=trigger.closest('.c744-piece,article[data-contentopen]');
+      if(!card)return;
+      const id=card.dataset.contentopen||trigger.dataset.contentopen;
       if(!id||card.querySelector('.c736-content-more'))return;
       card.classList.add('c736-has-menu');
       const wrap=document.createElement('div');
